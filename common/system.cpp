@@ -52,10 +52,9 @@ OSystem::OSystem() {
 #if defined(USE_UPDATES)
 	_updateManager = 0;
 #endif
-//TODO: define USE_CLOUD
-//#if defined(USE_CLOUD)
+#if defined(USE_CLOUD)
 	_cloudThread = 0;
-//#endif
+#endif
 	_fsFactory = 0;
 }
 
@@ -79,11 +78,10 @@ OSystem::~OSystem() {
 	_updateManager = 0;
 #endif
 
-//TODO: define USE_CLOUD
-//#if defined(USE_CLOUD)
+#if defined(USE_CLOUD)
 	delete _cloudThread;
 	_cloudThread = 0;
-//#endif
+#endif
 
 	delete _savefileManager;
 	_savefileManager = 0;

@@ -949,6 +949,8 @@ const Feature s_features[] = {
 	{  "freetype",   "USE_FREETYPE2", "freetype",         true, "FreeType support" },
 	{      "jpeg",        "USE_JPEG", "jpeg-static",      true, "libjpeg support" },
 	{"fluidsynth",  "USE_FLUIDSYNTH", "libfluidsynth",    true, "FluidSynth support" },
+	{   "libcurl",     "USE_LIBCURL", "libcurl",          true, "libcurl support" },
+	{    "sdlnet",     "USE_SDL_NET", "SDL_net",          true, "SDL_net support" },
 
 	// Feature flags
 	{            "bink",             "USE_BINK",         "", true,  "Bink video support" },
@@ -960,6 +962,7 @@ const Feature s_features[] = {
 	{          "opengl",           "USE_OPENGL",         "", true,  "OpenGL support" },
 	{        "opengles",             "USE_GLES",         "", true,  "forced OpenGL ES mode" },
 	{         "taskbar",          "USE_TASKBAR",         "", true,  "Taskbar integration support" },
+	{           "cloud",            "USE_CLOUD",         "", true,  "Cloud integration support" },
 	{     "translation",      "USE_TRANSLATION",         "", true,  "Translation support" },
 	{          "vkeybd",        "ENABLE_VKEYBD",         "", false, "Virtual keyboard support"},
 	{       "keymapper",     "ENABLE_KEYMAPPER",         "", false, "Keymapper support"},
