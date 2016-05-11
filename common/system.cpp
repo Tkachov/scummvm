@@ -33,7 +33,7 @@
 #ifdef ENABLE_EVENTRECORDER
 #include "gui/EventRecorder.h"
 #endif
-#include "backends/cloud/cloudthread.h"
+#include "common/cloudmanager.h"
 
 #include "backends/audiocd/default/default-audiocd.h"
 #include "backends/fs/fs-factory.h"
