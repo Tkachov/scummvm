@@ -53,7 +53,7 @@ OSystem::OSystem() {
 	_updateManager = 0;
 #endif
 #if defined(USE_CLOUD)
-	_cloudThread = 0;
+	_cloudManager = 0;
 #endif
 	_fsFactory = 0;
 }
@@ -79,8 +79,8 @@ OSystem::~OSystem() {
 #endif
 
 #if defined(USE_CLOUD)
-	delete _cloudThread;
-	_cloudThread = 0;
+	delete _cloudManager;
+	_cloudManager = 0;
 #endif
 
 	delete _savefileManager;
