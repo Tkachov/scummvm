@@ -20,33 +20,32 @@
 *
 */
 
-#ifndef BACKENDS_NETWORKING_CURL_REQUEST_H
-#define BACKENDS_NETWORKING_CURL_REQUEST_H
+#ifndef BACKENDS_CLOUD_STORAGEFILE_H
+#define BACKENDS_CLOUD_STORAGEFILE_H
 
-#include "common/callback.h"
+#include "common/str.h"
 
-namespace Networking {
+namespace Cloud {
 
-class Request {
-protected:
-	/**
-	* Callback, which should be called before Request returns true in handle().
-	* That's the way Requests pass the result to the code which asked to create this request.
-	*/
+/**
+* StorageFile represents a file storaged on remote cloud storage.
+* It contains basic information about a file, and might be used
+* when listing directories or syncing files.
+*/
 
-	Common::BaseCallback<> *_callback;
+class StorageFile {
+	Common::String _path, _name;
+	uint32 _size, _timestamp;
+	bool _isDirectory;
 
 public:
-	Request(Common::BaseCallback<> *cb): _callback(cb) {};
-	virtual ~Request() { delete _callback; };
+	StorageFile(Common::String pth, uint32 sz, uint32 ts, bool dir);
 
-	/**
-	* Method, which does actual work. Depends on what this Request is doing.
-	*
-	* @return true if request's work is complete and it may be removed from Storage's list
-	*/
-
-	virtual bool handle() = 0;
+	Common::String path() const { return _path; }
+	Common::String name() const { return _name; }
+	uint32 size() const { return _size; }
+	uint32 timestamp() const { return _timestamp; }
+	bool isDirectory() const { return _isDirectory; }
 };
 
 } //end of namespace Cloud

@@ -35,17 +35,6 @@ namespace Dropbox {
 Common::String DropboxStorage::KEY; //can't use ConfMan there yet, loading it on instance creation/auth
 Common::String DropboxStorage::SECRET; //TODO: hide these secrets somehow
 
-static void printJsonCallback(void *ptr) {
-	Common::JSONValue *json = (Common::JSONValue *)ptr;
-	if (json) {
-		debug("printJsonCallback:");
-		debug("%s", json->stringify(true).c_str());
-		delete json;
-	} else {
-		debug("printJsonCallback: got NULL instead of JSON!");
-	}
-}
-
 static void saveAccessTokenCallback(void *ptr) {
 	Common::JSONValue *json = (Common::JSONValue *)ptr;
 	if (json) {
@@ -56,9 +45,12 @@ static void saveAccessTokenCallback(void *ptr) {
 		if (!result.contains("access_token") || !result.contains("uid")) {
 			warning("Bad response, no token/uid passed");
 		} else {
-			ConfMan.set("current_storage_type", "Dropbox", "cloud");
-			ConfMan.set("current_storage_access_token", result.getVal("access_token")->asString(), "cloud");
-			ConfMan.set("current_storage_user_id", result.getVal("uid")->asString(), "cloud");
+			//we suppose that's the first storage
+			ConfMan.set("storages_number", "1", "cloud");
+			ConfMan.set("current_storage", "1", "cloud");
+			ConfMan.set("storage1_type", "Dropbox", "cloud");
+			ConfMan.set("storage1_access_token", result.getVal("access_token")->asString(), "cloud");
+			ConfMan.set("storage1_user_id", result.getVal("uid")->asString(), "cloud");
 			ConfMan.removeKey("dropbox_code", "cloud");
 			debug("Now please restart ScummVM to apply the changes.");
 		}
@@ -77,36 +69,68 @@ DropboxStorage::~DropboxStorage() {
 	curl_global_cleanup();
 }
 
-void DropboxStorage::listDirectory(Common::String path) {	
+void DropboxStorage::saveConfig(Common::String keyPrefix) {
+	ConfMan.set(keyPrefix + "type", "Dropbox", "cloud");
+	ConfMan.set(keyPrefix + "access_token", _token, "cloud");
+	ConfMan.set(keyPrefix + "user_id", _uid, "cloud");
 }
 
-void DropboxStorage::syncSaves() {
-	//not syncing, but already something:
-	printInfo();
+void DropboxStorage::syncSaves(BoolCallback callback) {
+	//this is not the real syncSaves() implementation
+	info(new Common::Callback<DropboxStorage, StorageInfo>(this, &DropboxStorage::infoMethodCallback));
+	//that line meant the following:
+	//"please, do the info API request and, when it's finished, call the infoMethodCallback() of me"
 }
 
-void DropboxStorage::printInfo() {
-	Networking::CurlJsonRequest *request = new Networking::CurlJsonRequest(printJsonCallback, "https://api.dropboxapi.com/1/account/info");
+void DropboxStorage::info(StorageInfoCallback outerCallback) {
+	Common::BaseCallback<> *innerCallback = new Common::CallbackBridge<DropboxStorage, StorageInfo>(this, &DropboxStorage::infoInnerCallback, outerCallback);
+	Networking::CurlJsonRequest *request = new Networking::CurlJsonRequest(innerCallback, "https://api.dropboxapi.com/1/account/info");
 	request->addHeader("Authorization: Bearer " + _token);
 	ConnMan.addRequest(request);
+	//that callback bridge wraps the outerCallback (passed in arguments from user) into innerCallback
+	//so, when CurlJsonRequest is finished, it calls the innerCallback
+	//innerCallback (which is DropboxStorage::infoInnerCallback in this case) processes the void *ptr
+	//and then calls the outerCallback (which wants to receive StorageInfo, not void *)
 }
 
-DropboxStorage *DropboxStorage::loadFromConfig() {
+void DropboxStorage::infoInnerCallback(StorageInfoCallback outerCallback, void *jsonPointer) {
+	Common::JSONValue *json = (Common::JSONValue *)jsonPointer;
+	if (!json) {
+		warning("NULL passed instead of JSON");
+		delete outerCallback;
+		return;
+	}
+
+	if (outerCallback) {
+		//TODO: check that JSON doesn't contain some error message instead of an actual response
+		//TODO: use JSON fields to construct StorageInfo		
+		(*outerCallback)(StorageInfo(json->stringify()));
+		delete outerCallback;
+	}
+	
+	delete json;
+}
+
+void DropboxStorage::infoMethodCallback(StorageInfo storageInfo) {
+	debug("info: %s", storageInfo.info().c_str());
+}
+
+DropboxStorage *DropboxStorage::loadFromConfig(Common::String keyPrefix) {
 	KEY = ConfMan.get("DROPBOX_KEY", "cloud");
 	SECRET = ConfMan.get("DROPBOX_SECRET", "cloud");
 
-	if (!ConfMan.hasKey("current_storage_access_token", "cloud")) {
+	if (!ConfMan.hasKey(keyPrefix + "access_token", "cloud")) {
 		warning("No access_token found");
 		return 0;
 	}
 
-	if (!ConfMan.hasKey("current_storage_user_id", "cloud")) {
+	if (!ConfMan.hasKey(keyPrefix + "user_id", "cloud")) {
 		warning("No user_id found");
 		return 0;
 	}
 
-	Common::String accessToken = ConfMan.get("current_storage_access_token", "cloud");
-	Common::String userId = ConfMan.get("current_storage_user_id", "cloud");
+	Common::String accessToken = ConfMan.get(keyPrefix + "access_token", "cloud");
+	Common::String userId = ConfMan.get(keyPrefix + "user_id", "cloud");
 	return new DropboxStorage(accessToken, userId);
 }
 
@@ -142,7 +166,8 @@ void DropboxStorage::authThroughConsole() {
 }
 
 void DropboxStorage::getAccessToken(Common::String code) {
-	Networking::CurlJsonRequest *request = new Networking::CurlJsonRequest(saveAccessTokenCallback, "https://api.dropboxapi.com/1/oauth2/token");
+	Common::BaseCallback<> *callback = new Common::GlobalFunctionCallback(saveAccessTokenCallback);
+	Networking::CurlJsonRequest *request = new Networking::CurlJsonRequest(callback, "https://api.dropboxapi.com/1/oauth2/token");
 	request->addPostField("code=" + code);
 	request->addPostField("grant_type=authorization_code");
 	request->addPostField("client_id=" + KEY);

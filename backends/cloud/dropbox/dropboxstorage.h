@@ -24,7 +24,7 @@
 #define BACKENDS_CLOUD_DROPBOX_STORAGE_H
 
 #include "backends/cloud/storage.h"
-#include "backends/cloud/manager.h"
+#include "common/callback.h"
 
 namespace Cloud {
 namespace Dropbox {
@@ -39,17 +39,66 @@ class DropboxStorage: public Cloud::Storage {
 
 	static void getAccessToken(Common::String code);
 
+	/** Constructs StorageInfo based on JSON response from cloud. */
+	void infoInnerCallback(StorageInfoCallback outerCallback, void *json);
+
 public:	
 	virtual ~DropboxStorage();
 
-	virtual void listDirectory(Common::String path);
-	virtual void syncSaves();
-	virtual void printInfo();	
+	/**
+	* Storage methods, which are used by CloudManager to save
+	* storage in configuration file.
+	*/
+
+	/**
+	* Save storage data using ConfMan.
+	* @param keyPrefix all saved keys must start with this prefix.
+	* @note every Storage must write keyPrefix + "type" key
+	*       with common value (e.g. "Dropbox").
+	*/
+
+	virtual void saveConfig(Common::String keyPrefix);
+
+	/** Public Cloud API comes down there. */
+
+	/** Returns Common::Array<StorageFile>. */
+	virtual void listDirectory(Common::String path, FileArrayCallback callback) {} //TODO
+
+	/** Calls the callback when finished. */
+	virtual void upload(Common::String path, Common::ReadStream* contents, BoolCallback callback) {} //TODO
+
+	/** Returns pointer to Common::ReadStream. */
+	virtual void download(Common::String path, ReadStreamCallback callback) {} //TODO
+
+	/** Calls the callback when finished. */
+	virtual void remove(Common::String path, BoolCallback callback) {} //TODO
+
+	/** Calls the callback when finished. */
+	virtual void syncSaves(BoolCallback callback);
+
+	/** Calls the callback when finished. */
+	virtual void createDirectory(Common::String path, BoolCallback callback) {} //TODO
+
+	/** Calls the callback when finished. */
+	virtual void touch(Common::String path, BoolCallback callback) {} //TODO
+
+	/** Returns the StorageInfo struct. */
+	virtual void info(StorageInfoCallback callback);
+
+	/** This method is passed into info(). (Temporary) */
+	void infoMethodCallback(StorageInfo storageInfo);
+
+	/** Returns whether saves sync process is running. */
+	virtual bool isSyncing() { return false; } //TODO
+
+	/** Returns whether there are any requests running. */
+	virtual bool isWorking() { return false; } //TODO
+
 	/**
 	* Load token and user id from configs and return DropboxStorage for those.	
 	* @return pointer to the newly created DropboxStorage or 0 if some problem occured.
 	*/
-	static DropboxStorage *loadFromConfig();
+	static DropboxStorage *loadFromConfig(Common::String keyPrefix);
 
 	/**
 	* Returns Dropbox auth link.

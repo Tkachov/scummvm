@@ -20,35 +20,29 @@
 *
 */
 
-#ifndef BACKENDS_NETWORKING_CURL_REQUEST_H
-#define BACKENDS_NETWORKING_CURL_REQUEST_H
+#include "backends/cloud/storagefile.h"
 
-#include "common/callback.h"
+namespace Cloud {
 
-namespace Networking {
+StorageFile::StorageFile(Common::String pth, uint32 sz, uint32 ts, bool dir) {
+	_path = pth;
 
-class Request {
-protected:
-	/**
-	* Callback, which should be called before Request returns true in handle().
-	* That's the way Requests pass the result to the code which asked to create this request.
-	*/
+	_name = pth;
+	if (_name.size() != 0) {
+		uint32 i = _name.size() - 1;
+		while (true) {
+			if (_name[i] == '/' || _name[i] == '\\') {
+				_name.erase(0, i);
+				break;
+			}
+			if (i == 0) break;
+			--i;
+		}
+	}
 
-	Common::BaseCallback<> *_callback;
-
-public:
-	Request(Common::BaseCallback<> *cb): _callback(cb) {};
-	virtual ~Request() { delete _callback; };
-
-	/**
-	* Method, which does actual work. Depends on what this Request is doing.
-	*
-	* @return true if request's work is complete and it may be removed from Storage's list
-	*/
-
-	virtual bool handle() = 0;
-};
+	_size = sz;
+	_timestamp = ts;
+	_isDirectory = dir;
+}
 
 } //end of namespace Cloud
-
-#endif

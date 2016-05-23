@@ -20,33 +20,26 @@
 *
 */
 
-#ifndef BACKENDS_NETWORKING_CURL_REQUEST_H
-#define BACKENDS_NETWORKING_CURL_REQUEST_H
+#ifndef BACKENDS_CLOUD_STORAGEINFO_H
+#define BACKENDS_CLOUD_STORAGEINFO_H
 
-#include "common/callback.h"
+#include "common/str.h"
 
-namespace Networking {
+namespace Cloud {
 
-class Request {
-protected:
-	/**
-	* Callback, which should be called before Request returns true in handle().
-	* That's the way Requests pass the result to the code which asked to create this request.
-	*/
+/**
+* StorageInfo contains information about remote cloud storage.
+* It's disk quota usage, owner name, and such.
+*/
 
-	Common::BaseCallback<> *_callback;
+class StorageInfo {
+	/** Temporary StorageInfo just contains raw JSON, received from cloud storage. */
+	Common::String _info;
 
 public:
-	Request(Common::BaseCallback<> *cb): _callback(cb) {};
-	virtual ~Request() { delete _callback; };
+	StorageInfo(Common::String info): _info(info) {}
 
-	/**
-	* Method, which does actual work. Depends on what this Request is doing.
-	*
-	* @return true if request's work is complete and it may be removed from Storage's list
-	*/
-
-	virtual bool handle() = 0;
+	Common::String info() const { return _info; }
 };
 
 } //end of namespace Cloud

@@ -23,37 +23,70 @@
 #ifndef BACKENDS_CLOUD_STORAGE_H
 #define BACKENDS_CLOUD_STORAGE_H
 
+#include "common/array.h"
+#include "common/stream.h"
 #include "common/str.h"
+#include "common/callback.h"
+#include "backends/cloud/storagefile.h"
+#include "backends/cloud/storageinfo.h"
 
 namespace Cloud {
 
 class Storage {
 public:
+	typedef Common::BaseCallback< Common::Array<StorageFile> > *FileArrayCallback;
+	typedef Common::BaseCallback<Common::ReadStream *> *ReadStreamCallback;
+	typedef Common::BaseCallback<StorageInfo> *StorageInfoCallback;
+	typedef Common::BaseCallback<bool> *BoolCallback;
+
 	Storage() {}
 	virtual ~Storage() {}
 
 	/**
-	* Lists given directory.
-	*
-	* @param path		directory to list	
-	*/
-
-	//TODO: actually make it list directories
-	//TODO: add some callback to pass gathered files list
-
-	virtual void listDirectory(Common::String path) = 0;
+	 * Storage methods, which are used by CloudManager to save
+	 * storage in configuration file.
+	 */
 
 	/**
-	* Starts saves syncing process.
-	*/
+	 * Save storage data using ConfMan.
+	 * @param keyPrefix all saved keys must start with this prefix.
+	 * @note every Storage must write keyPrefix + "type" key
+	 *       with common value (e.g. "Dropbox").
+	 */
 
-	virtual void syncSaves() = 0;
+	virtual void saveConfig(Common::String keyPrefix) = 0;
 
-	/**
-	* Prints user info on console. (Temporary)
-	*/
+	/** Public Cloud API comes down there. */
 
-	virtual void printInfo() = 0;
+	/** Returns Common::Array<StorageFile>. */
+	virtual void listDirectory(Common::String path, FileArrayCallback callback) = 0;
+
+	/** Calls the callback when finished. */
+	virtual void upload(Common::String path, Common::ReadStream* contents, BoolCallback callback) = 0;
+
+	/** Returns pointer to Common::ReadStream. */
+	virtual void download(Common::String path, ReadStreamCallback callback) = 0;
+
+	/** Calls the callback when finished. */
+	virtual void remove(Common::String path, BoolCallback callback) = 0;
+
+	/** Calls the callback when finished. */
+	virtual void syncSaves(BoolCallback callback) = 0;
+
+	/** Calls the callback when finished. */
+	virtual void createDirectory(Common::String path, BoolCallback callback) = 0;
+
+	/** Calls the callback when finished. */
+	virtual void touch(Common::String path, BoolCallback callback) = 0;
+
+	/** Returns the StorageInfo struct. */
+	virtual void info(StorageInfoCallback callback) = 0;
+
+	/** Returns whether saves sync process is running. */
+	virtual bool isSyncing() = 0;
+
+	/** Returns whether there are any requests running. */
+	virtual bool isWorking() = 0;
 };
 
 } //end of namespace Cloud

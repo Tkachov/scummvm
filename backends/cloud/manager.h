@@ -29,16 +29,18 @@
 namespace Cloud {
 
 class Manager: public Common::CloudManager {
-	Storage* _currentStorage;
+	Common::Array<Storage *> _storages;
+	uint _currentStorageIndex;
 
 public:
 	Manager();
 	virtual ~Manager();
 
 	virtual void init();
+	virtual void save();
 
-	virtual Storage* getCurrentStorage();
-	virtual void syncSaves();
+	virtual Storage *getCurrentStorage();
+	virtual void syncSaves(Storage::BoolCallback callback);
 };
 
 } //end of namespace Cloud
