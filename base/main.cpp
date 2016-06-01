@@ -66,7 +66,9 @@
 #endif
 
 #include "backends/keymapper/keymapper.h"
-#include "common/cloudmanager.h"
+#ifdef USE_CLOUD
+#include "backends/cloud/cloudmanager.h"
+#endif
 #ifdef USE_LIBCURL
 #include "backends/networking/curl/connectionmanager.h"
 #endif
@@ -473,9 +475,9 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 #endif
 		
 #ifdef USE_CLOUD
-	system.getCloudManager()->init();
-	system.getCloudManager()->syncSaves();
-	system.getCloudManager()->testFeature(); //TODO: remove later
+	CloudMan.init();
+	CloudMan.syncSaves();
+	CloudMan.testFeature(); //TODO: remove later
 #endif
 
 	// Unless a game was specified, show the launcher dialog
@@ -588,6 +590,10 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 	}
 #ifdef USE_LIBCURL
 	Networking::ConnectionManager::destroy();
+#endif
+#ifdef USE_CLOUD
+	//I think it's important to destroy it after ConnectionManager
+	Cloud::CloudManager::destroy();
 #endif
 	PluginManager::instance().unloadAllPlugins();
 	PluginManager::destroy();
