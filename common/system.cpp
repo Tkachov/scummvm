@@ -33,7 +33,6 @@
 #ifdef ENABLE_EVENTRECORDER
 #include "gui/EventRecorder.h"
 #endif
-#include "common/cloudmanager.h"
 
 #include "backends/audiocd/default/default-audiocd.h"
 #include "backends/fs/fs-factory.h"
@@ -51,9 +50,6 @@ OSystem::OSystem() {
 #endif
 #if defined(USE_UPDATES)
 	_updateManager = 0;
-#endif
-#if defined(USE_CLOUD)
-	_cloudManager = 0;
 #endif
 	_fsFactory = 0;
 }
@@ -76,11 +72,6 @@ OSystem::~OSystem() {
 #if defined(USE_UPDATES)
 	delete _updateManager;
 	_updateManager = 0;
-#endif
-
-#if defined(USE_CLOUD)
-	delete _cloudManager;
-	_cloudManager = 0;
 #endif
 
 	delete _savefileManager;
