@@ -74,7 +74,12 @@ public:
 	void fillSurface();
 	void blitSurface(const Graphics::Surface *source, const Common::Rect &r);
 	void blitSubSurface(const Graphics::Surface *source, const Common::Rect &r);
-	void blitAlphaBitmap(const Graphics::Surface *source, const Common::Rect &r);
+	void blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r);
+	void blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r,
+			GUI::ThemeEngine::AutoScaleMode autoscale = GUI::ThemeEngine::kAutoScaleNone,
+			Graphics::DrawStep::VectorAlignment xAlign = Graphics::DrawStep::kVectorAlignManual,
+			Graphics::DrawStep::VectorAlignment yAlign = Graphics::DrawStep::kVectorAlignManual,
+			int alpha = 255);
 
 	void applyScreenShading(GUI::ThemeEngine::ShadingStyle shadingStyle);
 

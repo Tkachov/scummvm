@@ -31,11 +31,13 @@
 #include "graphics/cursorman.h"
 #include "graphics/fontman.h"
 #include "graphics/surface.h"
+#include "graphics/transparent_surface.h"
 #include "graphics/VectorRenderer.h"
 #include "graphics/fonts/bdf.h"
 #include "graphics/fonts/ttf.h"
 
 #include "image/bmp.h"
+#include "image/png.h"
 
 #include "gui/widget.h"
 #include "gui/ThemeEngine.h"
@@ -155,6 +157,19 @@ protected:
 	bool _alpha;
 };
 
+class ThemeItemABitmap : public ThemeItem {
+public:
+	ThemeItemABitmap(ThemeEngine *engine, const Common::Rect &area, Graphics::TransparentSurface *bitmap, ThemeEngine::AutoScaleMode autoscale, int alpha) :
+		ThemeItem(engine, area), _bitmap(bitmap), _autoscale(autoscale), _alpha(alpha) {}
+
+	void drawSelf(bool draw, bool restore);
+
+protected:
+	Graphics::TransparentSurface *_bitmap;
+	ThemeEngine::AutoScaleMode _autoscale;
+	int _alpha;
+};
+
 
 
 /**********************************************************
@@ -260,10 +275,20 @@ void ThemeItemBitmap::drawSelf(bool draw, bool restore) {
 
 	if (draw) {
 		if (_alpha)
-			_engine->renderer()->blitAlphaBitmap(_bitmap, _area);
+			_engine->renderer()->blitKeyBitmap(_bitmap, _area);
 		else
 			_engine->renderer()->blitSubSurface(_bitmap, _area);
 	}
+
+	_engine->addDirtyRect(_area);
+}
+
+void ThemeItemABitmap::drawSelf(bool draw, bool restore) {
+	if (restore)
+		_engine->restoreBackground(_area);
+
+	if (draw)
+		_engine->renderer()->blitAlphaBitmap(_bitmap, _area, _autoscale, Graphics::DrawStep::kVectorAlignManual, Graphics::DrawStep::kVectorAlignManual, _alpha);
 
 	_engine->addDirtyRect(_area);
 }
@@ -338,6 +363,15 @@ ThemeEngine::~ThemeEngine() {
 		}
 	}
 	_bitmaps.clear();
+
+	for (AImagesMap::iterator i = _abitmaps.begin(); i != _abitmaps.end(); ++i) {
+		Graphics::TransparentSurface *surf = i->_value;
+		if (surf) {
+			surf->free();
+			delete surf;
+		}
+	}
+	_abitmaps.clear();
 
 	delete _parser;
 	delete _themeEval;
@@ -463,6 +497,15 @@ void ThemeEngine::refresh() {
 			}
 		}
 		_bitmaps.clear();
+
+		for (AImagesMap::iterator i = _abitmaps.begin(); i != _abitmaps.end(); ++i) {
+			Graphics::TransparentSurface *surf = i->_value;
+			if (surf) {
+				surf->free();
+				delete surf;
+			}
+		}
+		_abitmaps.clear();
 	}
 
 	init();
@@ -644,27 +687,96 @@ bool ThemeEngine::addBitmap(const Common::String &filename) {
 	if (surf)
 		return true;
 
-	// If not, try to load the bitmap via the BitmapDecoder class.
-	Image::BitmapDecoder bitmapDecoder;
 	const Graphics::Surface *srcSurface = 0;
-	Common::ArchiveMemberList members;
-	_themeFiles.listMatchingMembers(members, filename);
-	for (Common::ArchiveMemberList::const_iterator i = members.begin(), end = members.end(); i != end; ++i) {
-		Common::SeekableReadStream *stream = (*i)->createReadStream();
-		if (stream) {
-			bitmapDecoder.loadStream(*stream);
-			srcSurface = bitmapDecoder.getSurface();
-			delete stream;
-			if (srcSurface)
-				break;
-		}
-	}
 
-	if (srcSurface && srcSurface->format.bytesPerPixel != 1)
-		surf = srcSurface->convertTo(_overlayFormat);
+	if (filename.hasSuffix(".png")) {
+		// Maybe it is PNG?
+#ifdef USE_PNG
+		Image::PNGDecoder decoder;
+		Common::ArchiveMemberList members;
+		_themeFiles.listMatchingMembers(members, filename);
+		for (Common::ArchiveMemberList::const_iterator i = members.begin(), end = members.end(); i != end; ++i) {
+			Common::SeekableReadStream *stream = (*i)->createReadStream();
+			if (stream) {
+				if (!decoder.loadStream(*stream))
+					error("Error decoding PNG");
+
+				srcSurface = decoder.getSurface();
+				delete stream;
+				if (srcSurface)
+					break;
+			}
+		}
+
+		if (srcSurface && srcSurface->format.bytesPerPixel != 1)
+			surf = srcSurface->convertTo(_overlayFormat);
+#else
+		error("No PNG support compiled in");
+#endif
+	} else {
+		// If not, try to load the bitmap via the BitmapDecoder class.
+		Image::BitmapDecoder bitmapDecoder;
+		Common::ArchiveMemberList members;
+		_themeFiles.listMatchingMembers(members, filename);
+		for (Common::ArchiveMemberList::const_iterator i = members.begin(), end = members.end(); i != end; ++i) {
+			Common::SeekableReadStream *stream = (*i)->createReadStream();
+			if (stream) {
+				bitmapDecoder.loadStream(*stream);
+				srcSurface = bitmapDecoder.getSurface();
+				delete stream;
+				if (srcSurface)
+					break;
+			}
+		}
+
+		if (srcSurface && srcSurface->format.bytesPerPixel != 1)
+			surf = srcSurface->convertTo(_overlayFormat);
+	}
 
 	// Store the surface into our hashmap (attention, may store NULL entries!)
 	_bitmaps[filename] = surf;
+
+	return surf != 0;
+}
+
+bool ThemeEngine::addAlphaBitmap(const Common::String &filename) {
+	// Nothing has to be done if the bitmap already has been loaded.
+	Graphics::TransparentSurface *surf = _abitmaps[filename];
+	if (surf)
+		return true;
+
+	const Graphics::TransparentSurface *srcSurface = 0;
+
+	if (filename.hasSuffix(".png")) {
+		// Maybe it is PNG?
+#ifdef USE_PNG
+		Image::PNGDecoder decoder;
+		Common::ArchiveMemberList members;
+		_themeFiles.listMatchingMembers(members, filename);
+		for (Common::ArchiveMemberList::const_iterator i = members.begin(), end = members.end(); i != end; ++i) {
+			Common::SeekableReadStream *stream = (*i)->createReadStream();
+			if (stream) {
+				if (!decoder.loadStream(*stream))
+					error("Error decoding PNG");
+
+				srcSurface = new Graphics::TransparentSurface(*decoder.getSurface(), true);
+				delete stream;
+				if (srcSurface)
+					break;
+			}
+		}
+
+		if (srcSurface && srcSurface->format.bytesPerPixel != 1)
+			surf = srcSurface->convertTo(_overlayFormat);
+#else
+		error("No PNG support compiled in");
+#endif
+	} else {
+		error("Only PNG is supported as alphabitmap");
+	}
+
+	// Store the surface into our hashmap (attention, may store NULL entries!)
+	_abitmaps[filename] = surf;
 
 	return surf != 0;
 }
@@ -896,6 +1008,21 @@ void ThemeEngine::queueBitmap(const Graphics::Surface *bitmap, const Common::Rec
 	}
 }
 
+void ThemeEngine::queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, AutoScaleMode autoscale, int alpha) {
+
+	Common::Rect area = r;
+	area.clip(_screen.w, _screen.h);
+
+	ThemeItemABitmap *q = new ThemeItemABitmap(this, area, bitmap, autoscale, alpha);
+
+	if (_buffering) {
+		_screenQueue.push_back(q);
+	} else {
+		q->drawSelf(true, false);
+		delete q;
+	}
+}
+
 
 
 /**********************************************************
@@ -1049,6 +1176,8 @@ void ThemeEngine::drawDialogBackground(const Common::Rect &r, DialogBackground b
 	case kDialogBackgroundDefault:
 		queueDD(kDDDefaultBackground, r);
 		break;
+	case kDialogBackgroundNone:
+		break;
 	}
 }
 
@@ -1089,6 +1218,13 @@ void ThemeEngine::drawSurface(const Common::Rect &r, const Graphics::Surface &su
 		return;
 
 	queueBitmap(&surface, r, themeTrans);
+}
+
+void ThemeEngine::drawASurface(const Common::Rect &r, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha) {
+	if (!ready())
+		return;
+
+	queueABitmap(&surface, r, autoscale, alpha);
 }
 
 void ThemeEngine::drawWidgetBackground(const Common::Rect &r, uint16 hints, WidgetBackground background, WidgetStateInfo state) {
