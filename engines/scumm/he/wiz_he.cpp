@@ -31,6 +31,7 @@
 #include "scumm/scumm.h"
 #include "scumm/util.h"
 #include "scumm/he/wiz_he.h"
+#include "scumm/he/moonbase/moonbase.h"
 
 namespace Scumm {
 
@@ -976,7 +977,7 @@ void Wiz::decompressRawWizImage(uint8 *dst, int dstPitch, int dstType, const uin
 	}
 }
 
-int Wiz::isWizPixelNonTransparent(const uint8 *data, int x, int y, int w, int h, uint8 bitDepth) {
+int Wiz::isPixelNonTransparent(const uint8 *data, int x, int y, int w, int h, uint8 bitDepth) {
 	if (x < 0 || x >= w || y < 0 || y >= h) {
 		return 0;
 	}
@@ -1434,7 +1435,7 @@ void Wiz::displayWizImage(WizImage *pwi) {
 }
 
 uint8 *Wiz::drawWizImage(int resNum, int state, int maskNum, int maskState, int x1, int y1, int zorder, int shadow, int zbuffer, const Common::Rect *clipBox, int flags, int dstResNum, const uint8 *palPtr, uint32 conditionBits) {
-	debug(3, "drawWizImage(resNum %d, state %d maskNum %d maskState %d x1 %d y1 %d flags 0x%X zorder %d shadow %d zbuffer %d dstResNum %d conditionBits: 0x%x)", resNum, state, maskNum, maskState, x1, y1, flags, zorder, shadow, zbuffer, dstResNum, conditionBits);
+	debug(7, "drawWizImage(resNum %d, state %d maskNum %d maskState %d x1 %d y1 %d flags 0x%X zorder %d shadow %d zbuffer %d dstResNum %d conditionBits: 0x%x)", resNum, state, maskNum, maskState, x1, y1, flags, zorder, shadow, zbuffer, dstResNum, conditionBits);
 	uint8 *dataPtr;
 	uint8 *dst = NULL;
 
@@ -1454,7 +1455,7 @@ uint8 *Wiz::drawWizImage(int resNum, int state, int maskNum, int maskState, int 
 	uint32 comp   = READ_LE_UINT32(wizh + 0x0);
 	uint32 width  = READ_LE_UINT32(wizh + 0x4);
 	uint32 height = READ_LE_UINT32(wizh + 0x8);
-	debug(3, "wiz_header.comp = %d wiz_header.w = %d wiz_header.h = %d", comp, width, height);
+	debug(7, "wiz_header.comp = %d wiz_header.w = %d wiz_header.h = %d", comp, width, height);
 
 	uint8 *mask = NULL;
 	if (maskNum) {
@@ -1571,8 +1572,17 @@ uint8 *Wiz::drawWizImage(int resNum, int state, int maskNum, int maskState, int 
 		transColor = (trns == NULL) ? _vm->VAR(_vm->VAR_WIZ_TCOLOR) : -1;
 	}
 
-	drawWizImageEx(dst, dataPtr, mask, dstPitch, dstType, cw, ch, x1, y1, width, height,
-		state, &rScreen, flags, palPtr, transColor, _vm->_bytesPerPixel, xmapPtr, conditionBits);
+	if (_vm->_game.id == GID_MOONBASE &&
+			((ScummEngine_v100he *)_vm)->_moonbase->isFOW(resNum, state, conditionBits)) {
+		((ScummEngine_v100he *)_vm)->_moonbase->renderFOW(dst, dstPitch, dstType, cw, ch, flags);
+		x1 = 0;
+		y1 = 0;
+		width = rScreen.width();
+		height = rScreen.height();
+	} else {
+		drawWizImageEx(dst, dataPtr, mask, dstPitch, dstType, cw, ch, x1, y1, width, height,
+			state, &rScreen, flags, palPtr, transColor, _vm->_bytesPerPixel, xmapPtr, conditionBits);
+	}
 
 	if (!(flags & kWIFBlitToMemBuffer) && dstResNum == 0) {
 		Common::Rect rImage(x1, y1, x1 + width, y1 + height);
@@ -1598,7 +1608,7 @@ void Wiz::drawWizImageEx(uint8 *dst, uint8 *dataPtr, uint8 *maskPtr, int dstPitc
 	uint32 comp   = READ_LE_UINT32(wizh + 0x0);
 	uint32 width  = READ_LE_UINT32(wizh + 0x4);
 	uint32 height = READ_LE_UINT32(wizh + 0x8);
-	debug(3, "wiz_header.comp = %d wiz_header.w = %d wiz_header.h = %d", comp, width, height);
+	debug(7, "wiz_header.comp = %d wiz_header.w = %d wiz_header.h = %d", comp, width, height);
 
 	uint8 *wizd = _vm->findWrappedBlock(MKTAG('W','I','Z','D'), dataPtr, state, 0);
 	assert(wizd);
@@ -1738,7 +1748,7 @@ void Wiz::copyCompositeWizImage(uint8 *dst, uint8 *wizPtr, uint8 *compositeInfoB
 			drawFlags = flags;
 		}
 
-		uint srcw1, srch1;
+		uint srcw1 = 0, srch1 = 0;
 		if (drawFlags & (kWIFFlipX | kWIFFlipY)) {
 			uint8 *wizh = _vm->findWrappedBlock(MKTAG('W','I','Z','H'), wizPtr, subState, 0);
 			assert(wizh);
@@ -1755,8 +1765,6 @@ void Wiz::copyCompositeWizImage(uint8 *dst, uint8 *wizPtr, uint8 *compositeInfoB
 		if (layerCmdDataBits & kWCFSubConditionBits) {
 			subConditionBits = READ_LE_UINT32(cmdPtr);
 			cmdPtr += 4;
-		} else {
-			subConditionBits = 0;
 		}
 
 		drawWizImageEx(dst, nestedWizHeader, maskPtr, dstPitch, dstType, dstw, dsth, srcx + xPos, srcy + yPos, srcw, srch,
@@ -1773,11 +1781,12 @@ void Wiz::copy555WizImage(uint8 *dst, uint8 *wizd, int dstPitch, int dstType,
 	switch (rawROP) {
 	default:
 	case 1:
+		rawROP = 1;
 		// MMX_PREMUL_ALPHA_COPY
 		break;
 
 	case 2:
-		warning("T14: MMX_ADDITIVE");
+		//warning("T14: MMX_ADDITIVE");
 		break;
 
 	case 3:
@@ -1789,7 +1798,7 @@ void Wiz::copy555WizImage(uint8 *dst, uint8 *wizd, int dstPitch, int dstType,
 		break;
 
 	case 5:
-		warning("T14: MMX_CHEAP_50_50");
+		//warning("T14: MMX_CHEAP_50_50");
 		break;
 
 	case 6:
@@ -1805,7 +1814,7 @@ void Wiz::copy555WizImage(uint8 *dst, uint8 *wizd, int dstPitch, int dstType,
 	uint32 compID = READ_LE_UINT32(wizd);
 
 	if (compID == 0x12340102) {
-		_vm->_moonbase->blitT14WizImage(dst, dstw, dsth, dstPitch, clipBox, wizd, srcx, srcy, rawROP, paramROP);
+		((ScummEngine_v100he *)_vm)->_moonbase->blitT14WizImage(dst, dstw, dsth, dstPitch, clipBox, wizd, srcx, srcy, rawROP, paramROP);
 	} else if (compID == 0x12340802) {
 		warning("Distorion codec");
 	} else if (compID == 0x12340902) {
@@ -2306,14 +2315,6 @@ void Wiz::displayWizComplexImage(const WizParameters *params) {
 			if (flags & kWIFIsPolygon) {
 				drawWizPolygon(params->img.resNum, state, po_x, flags, shadow, dstResNum, palette);
 			} else {
-				if (_vm->_game.id == GID_MOONBASE) {
-					if (params->img.resNum == _vm->_moonbase->_fowSentinelImage &&
-							state == _vm->_moonbase->_fowSentinelState &&
-							params->conditionBits == _vm->_moonbase->_fowSentinelConditionBits)
-						_vm->_moonbase->renderFOW();
-				}
-
-
 				drawWizImage(params->img.resNum, state, 0, 0, po_x, po_y, params->img.zorder, shadow, zbuffer, r, flags, dstResNum, _vm->getHEPaletteSlot(palette), params->conditionBits);
 			}
 		}
@@ -2699,6 +2700,10 @@ void Wiz::processWizImage(const WizParameters *params) {
 void Wiz::getWizImageDim(int resNum, int state, int32 &w, int32 &h) {
 	uint8 *dataPtr = _vm->getResourceAddress(rtImage, resNum);
 	assert(dataPtr);
+	getWizImageDim(dataPtr, state, w, h);
+}
+
+void Wiz::getWizImageDim(uint8 *dataPtr, int state, int32 &w, int32 &h) {
 	uint8 *wizh = _vm->findWrappedBlock(MKTAG('W','I','Z','H'), dataPtr, state, 0);
 	assert(wizh);
 	w = READ_LE_UINT32(wizh + 0x4);
@@ -2708,6 +2713,10 @@ void Wiz::getWizImageDim(int resNum, int state, int32 &w, int32 &h) {
 void Wiz::getWizImageSpot(int resId, int state, int32 &x, int32 &y) {
 	uint8 *dataPtr = _vm->getResourceAddress(rtImage, resId);
 	assert(dataPtr);
+	getWizImageSpot(dataPtr, state, x, y);
+}
+
+void Wiz::getWizImageSpot(uint8 *dataPtr, int state, int32 &x, int32 &y) {
 	uint8 *spotPtr = _vm->findWrappedBlock(MKTAG('S','P','O','T'), dataPtr, state, 0);
 	if (spotPtr) {
 		x = READ_LE_UINT32(spotPtr + 0);
@@ -2745,6 +2754,11 @@ int Wiz::getWizImageData(int resNum, int state, int type) {
 int Wiz::getWizImageStates(int resNum) {
 	const uint8 *dataPtr = _vm->getResourceAddress(rtImage, resNum);
 	assert(dataPtr);
+
+	return getWizImageStates(dataPtr);
+}
+
+int Wiz::getWizImageStates(const uint8 *dataPtr) {
 	if (READ_BE_UINT32(dataPtr) == MKTAG('M','U','L','T')) {
 		const byte *offs, *wrap;
 
@@ -2763,9 +2777,14 @@ int Wiz::getWizImageStates(int resNum) {
 }
 
 int Wiz::isWizPixelNonTransparent(int resNum, int state, int x, int y, int flags) {
-	int ret = 0;
 	uint8 *data = _vm->getResourceAddress(rtImage, resNum);
 	assert(data);
+
+	return isWizPixelNonTransparent(data, state, x, y, flags);
+}
+
+int Wiz::isWizPixelNonTransparent(uint8 *data, int state, int x, int y, int flags) {
+	int ret = 0;
 	uint8 *wizh = _vm->findWrappedBlock(MKTAG('W','I','Z','H'), data, state, 0);
 	assert(wizh);
 	int c = READ_LE_UINT32(wizh + 0x0);
@@ -2789,7 +2808,7 @@ int Wiz::isWizPixelNonTransparent(int resNum, int state, int x, int y, int flags
 			}
 			break;
 		case 1:
-			ret = isWizPixelNonTransparent(wizd, x, y, w, h, 1);
+			ret = isPixelNonTransparent(wizd, x, y, w, h, 1);
 			break;
 #ifdef USE_RGB_COLOR
 		case 2:
@@ -2802,7 +2821,7 @@ int Wiz::isWizPixelNonTransparent(int resNum, int state, int x, int y, int flags
 			break;
 		}
 		case 5:
-			ret = isWizPixelNonTransparent(wizd, x, y, w, h, 2);
+			ret = isPixelNonTransparent(wizd, x, y, w, h, 2);
 			break;
 #endif
 		default:

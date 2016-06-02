@@ -27,8 +27,6 @@
 #ifdef ENABLE_HE
 #include "scumm/he/floodfill_he.h"
 #include "scumm/he/wiz_he.h"
-
-#include "scumm/he/moonbase/moonbase.h"
 #endif
 #include "scumm/actor_he.h"	// For AuxBlock & AuxEntry
 
@@ -186,8 +184,11 @@ protected:
 };
 
 #ifdef ENABLE_HE
+class Moonbase;
+
 class ScummEngine_v71he : public ScummEngine_v70he {
 	friend class Wiz;
+	friend class Moonbase;
 
 protected:
 	bool _skipProcessActors;
@@ -246,10 +247,6 @@ public:
 	void queueAuxEntry(int actorNum, int subIndex);
 
 	void remapHEPalette(const uint8 *src, uint8 *dst);
-
-public:
-	/* Moonbase stuff */
-	Moonbase *_moonbase;
 };
 
 class ScummEngine_v72he : public ScummEngine_v71he {
@@ -429,6 +426,7 @@ protected:
 
 class ScummEngine_v90he : public ScummEngine_v80he {
 	friend class LogicHE;
+	friend class Moonbase;
 	friend class MoviePlayer;
 	friend class Sprite;
 
@@ -439,7 +437,7 @@ protected:
 		byte filename[260];
 		int32 status;
 		int32 flags;
-		int32 unk2;
+		int32 number;
 		int32 wizResNum;
 	};
 
@@ -577,15 +575,24 @@ protected:
 };
 
 class ScummEngine_v100he : public ScummEngine_v99he {
+friend class AI;
+
 protected:
 	ResType _heResType;
 	int32 _heResId;
 
 	byte _debugInputBuffer[256];
+
 public:
-	ScummEngine_v100he(OSystem *syst, const DetectorResult &dr) : ScummEngine_v99he(syst, dr) {}
+	Moonbase *_moonbase;
+
+public:
+	ScummEngine_v100he(OSystem *syst, const DetectorResult &dr);
+	~ScummEngine_v100he();
 
 	virtual void resetScumm();
+
+	virtual void setupScummVars();
 
 protected:
 	virtual void setupOpcodes();
@@ -632,6 +639,14 @@ protected:
 	void o100_getSpriteInfo();
 	void o100_getWizData();
 	void o100_getVideoData();
+
+protected:
+	byte VAR_U32_USER_VAR_A;
+	byte VAR_U32_USER_VAR_B;
+	byte VAR_U32_USER_VAR_C;
+	byte VAR_U32_USER_VAR_D;
+	byte VAR_U32_USER_VAR_E;
+	byte VAR_U32_USER_VAR_F;
 };
 
 class ScummEngine_vCUPhe : public Engine {

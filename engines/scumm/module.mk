@@ -139,7 +139,16 @@ MODULE_OBJS += \
 	he/logic/moonbase_logic.o \
 	he/logic/puttrace.o \
 	he/logic/soccer.o \
-	he/moonbase/moonbase.o
+	he/moonbase/ai_defenseunit.o \
+	he/moonbase/ai_main.o \
+	he/moonbase/ai_node.o \
+	he/moonbase/ai_targetacquisition.o \
+	he/moonbase/ai_traveller.o \
+	he/moonbase/ai_tree.o \
+	he/moonbase/ai_types.o \
+	he/moonbase/ai_weapon.o \
+	he/moonbase/moonbase.o \
+	he/moonbase/moonbase_fow.o
 endif
 
 # This module can be built as a plugin

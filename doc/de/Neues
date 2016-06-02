@@ -11,7 +11,16 @@ Programmcodes finden Sie auf Englisch unter:
      Diese Funktion war im originalen Interpreter nur im Hercules-Darstellungsmodus
      verfügbar.
 
-1.8.1 (DD.MM.YYYY)
+ SCI:
+   - Fehlende Dialogzeile in QfG3 hinzugefügt, die mit drei zusätzlichen Punkten
+     belohnt wird. Diese Dialogzeile fehlt im Originalspiel, weshalb
+     es bislang unmöglich war, die maximale Punktzahl im Spiel zu erreichen.
+
+1.8.1 (25.05.2016)
+ Neue Portierungen:
+   - Portierung für den Nintendo 3DS hinzugefügt.
+   - Portierung für Android SDL hinzugefügt.
+
  Allgemein:
    - "TESTING"-Markierung von mehreren unterstützten Spielen entfernt.
    - Chinesische Übersetzung (Pinyin) der Benutzeroberfläche hinzugefügt.
@@ -51,6 +60,7 @@ Programmcodes finden Sie auf Englisch unter:
  Lab:
    - Aufhängen während der End-Sequenz behoben.
    - Interne Spiel-Bedienelemente verbessert.
+   - Aufhängen bei einigen Animationen im Spiel behoben.
 
  SAGA:
    - Fehlerhafte Farben der Bedienelemente in der französischen und deutschen

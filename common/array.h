@@ -361,6 +361,84 @@ protected:
 
 };
 
+/**
+ * Double linked list with sorted nodes.
+ */
+template<class T>
+class SortedArray : public Array<T> {
+public:
+	typedef T *iterator;
+	typedef uint size_type;
+
+	SortedArray(int (*comparator)(const void *, const void *)) {
+		_comparator = comparator;
+	}
+
+	/**
+	 * Inserts element at the sorted position.
+	 */
+	void insert(const T &element) {
+		if (!this->_size) {
+			this->insert_aux(this->_storage, &element, &element + 1);
+			return;
+		}
+
+		T *where = (T *)bsearchMin(element, this->front(), this->_size, sizeof(T), _comparator);
+		insert(where, element);
+	}
+
+	T &operator[](size_type idx) {
+		error("Operation not allowed with SortedArray");
+	}
+
+	void insert_at(size_type idx, const T &element) {
+		error("Operation not allowed with SortedArray");
+	}
+
+	void insert_at(size_type idx, const Array<T> &array) {
+		error("Operation not allowed with SortedArray");
+	}
+
+	void insert(iterator pos, const T &element) {
+		error("Operation not allowed with SortedArray");
+	}
+
+	void push_back(const T &element) {
+		error("Operation not allowed with SortedArray");
+	}
+
+	void push_back(const Array<T> &array) {
+		error("Operation not allowed with SortedArray");
+	}
+
+private:
+	// Based on code Copyright (C) 2008-2009 Ksplice, Inc.
+	// Author: Tim Abbott <tabbott@ksplice.com>
+	// Licensed under GPLv2+
+	void *bsearchMin(void *key, void *base, uint num, uint size_,
+					int (*cmp)(const void *key, const void *elt)) {
+		uint start_ = 0, end_ = num;
+		int result;
+
+		while (start_ < end_) {
+			uint mid = start_ + (end_ - start_) / 2;
+
+			result = cmp(key, (byte *)base + mid * size_);
+			if (result < 0)
+				end_ = mid;
+			else if (result > 0)
+				start_ = mid + 1;
+			else
+				return (void *)((byte *)base + mid * size_);
+		}
+
+		return (void *)((byte *)base + start_ * size_);
+	}
+
+private:
+	int (*_comparator)(const void *, const void *);
+};
+
 } // End of namespace Common
 
 #endif

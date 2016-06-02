@@ -1,7 +1,7 @@
 For a more comprehensive changelog of the latest experimental code, see:
         https://github.com/scummvm/scummvm/commits/
 
-1.9.0 (XXXX-XX-XX)
+1.9.0 (YYYY-MM-DD)
  AGI:
    - Added support for Hercules rendering. Both green and amber modes are
      supported.
@@ -10,7 +10,16 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Added optional "pause, when entering commands" feature, that was only
      available in the original interpreter for Hercules rendering.
 
-1.8.1 (XXXX-XX-XX)
+ SCI:
+   - Fix a missing dialog line in QfG3 which awards the player with 3 additional
+     points. This is a bug in the original game interpreter. Due to this bug,
+     it was not possible to get all points in the original game.
+
+1.8.1 (2016-05-25)
+ New ports:
+   - Added Nintendo 3DS port.
+   - Added Android SDL port.
+
  General:
    - Removed TESTING flag from several supported games.
    - Added Chinese Pinyin translation.
@@ -48,6 +57,7 @@ For a more comprehensive changelog of the latest experimental code, see:
  Lab:
    - Fixed lock-up during ending sequence.
    - Improved internal game controls.
+   - Fixed lock-up during some in-game animations.
 
  SAGA:
    - Fixed user interface colors in the French and German versions of I Have No

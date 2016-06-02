@@ -311,6 +311,12 @@ ThemeEngine::ThemeEngine(Common::String id, GraphicsMode mode) :
 	_themeArchive = 0;
 	_initOk = false;
 
+	_cursorHotspotX = _cursorHotspotY = 0;
+	_cursorWidth = _cursorHeight = 0;
+	_cursorPalSize = 0;
+
+	_needPaletteUpdates = false;
+
 	// We prefer files in archive bundles over the common search paths.
 	_themeFiles.add("default", &SearchMan, 0, false);
 }
@@ -1259,8 +1265,15 @@ void ThemeEngine::updateScreen(bool render) {
 		_screenQueue.clear();
 	}
 
-	if (render)
+	if (render) {
+#ifdef LAYOUT_DEBUG_DIALOG
+		_vectorRenderer->fillSurface();
+		_themeEval->debugDraw(&_screen, _font);
+		_vectorRenderer->copyWholeFrame(_system);
+#else
 		renderDirtyScreen();
+#endif
+	}
 }
 
 void ThemeEngine::addDirtyRect(Common::Rect r) {

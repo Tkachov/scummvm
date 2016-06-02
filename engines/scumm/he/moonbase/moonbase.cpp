@@ -21,24 +21,67 @@
  */
 
 #include "scumm/he/intern_he.h"
+#include "scumm/he/moonbase/moonbase.h"
+#include "scumm/he/moonbase/ai_main.h"
 
 namespace Scumm {
 
-Moonbase::Moonbase() {
-	_fowSentinelImage = -1;
-	_fowSentinelState = -1;
-	_fowSentinelConditionBits = 0;
+Moonbase::Moonbase(ScummEngine_v100he *vm) : _vm(vm) {
+	initFOW();
+
+	_ai = new AI(_vm);
 }
 
 Moonbase::~Moonbase() {
+	delete _ai;
 }
 
-void Moonbase::renderFOW() {
-	warning("STUB: renderFOW()");
+int Moonbase::readFromArray(int array, int y, int x) {
+	_vm->VAR(_vm->VAR_U32_ARRAY_UNK) = array;
+
+	return _vm->readArray(_vm->VAR_U32_ARRAY_UNK, y, x);
 }
+
+void Moonbase::deallocateArray(int array) {
+	_vm->VAR(_vm->VAR_U32_ARRAY_UNK) = array;
+
+	return _vm->nukeArray(_vm->VAR_U32_ARRAY_UNK);
+}
+
+int Moonbase::callScummFunction(int scriptNumber, int paramCount,...) {
+	va_list va_params;
+	va_start(va_params, paramCount);
+	int args[25];
+
+	memset(args, 0, sizeof(args));
+
+	Common::String str;
+	str = Common::String::format("callScummFunction(%d, [", scriptNumber);
+
+	for (int i = 0; i < paramCount; i++) {
+		args[i] = va_arg(va_params, int);
+
+		str += Common::String::format("%d ", args[i]);
+	}
+	str += "])";
+
+	debug(0, "%s", str.c_str());
+
+
+	va_end(va_params);
+
+	_vm->runScript(scriptNumber, 0, 1, args);
+
+	return _vm->pop();
+}
+
 
 void Moonbase::blitT14WizImage(uint8 *dst, int dstw, int dsth, int dstPitch, const Common::Rect *clipBox,
 		 uint8 *wizd, int x, int y, int rawROP, int paramROP) {
+	bool premulAlpa = false;
+
+	if (rawROP == 1)
+		premulAlpa = true;
 
 	Common::Rect clippedDstRect(dstw, dsth);
 	if (clipBox) {
@@ -89,22 +132,41 @@ void Moonbase::blitT14WizImage(uint8 *dst, int dstw, int dsth, int dstPitch, con
 			int code = *codes - 2;
 			codes++;
 
-			if (code == 0) { // quad
-				for (int c = 0; c < 4; c++) {
+			if (code <= 0) { // quad or single
+				uint8 *src;
+				int cnt;
+				if (code == 0) { // quad
+					src = quadsOffset;
+					quadsOffset += 8;
+					cnt = 4; // 4 pixels
+				} else { // single
+					src = singlesOffset;
+					singlesOffset += 2;
+					cnt = 1;
+				}
+
+				for (int c = 0; c < cnt; c++) {
 					if (pixels >= sx) {
-						WRITE_LE_UINT16(dst1, READ_LE_UINT16(quadsOffset));
+						if (rawROP == 1) { // MMX_PREMUL_ALPHA_COPY
+							WRITE_LE_UINT16(dst1, READ_LE_UINT16(src));
+						} else if (rawROP == 2) { // MMX_ADDITIVE
+							uint16 color = READ_LE_UINT16(src);
+							uint16 orig = READ_LE_UINT16(dst1);
+
+							uint32 r = MIN<uint32>(0x7c00, (orig & 0x7c00) + (color & 0x7c00));
+							uint32 g = MIN<uint32>(0x03e0, (orig & 0x03e0) + (color & 0x03e0));
+							uint32 b = MIN<uint32>(0x001f, (orig & 0x001f) + (color & 0x001f));
+							WRITE_LE_UINT16(dst1, (r | g | b));
+						} else if (rawROP == 5) { // MMX_CHEAP_50_50
+							uint16 color = (READ_LE_UINT16(src) >> 1) & 0x3DEF;
+							uint16 orig = (READ_LE_UINT16(dst1) >> 1) & 0x3DEF;
+							WRITE_LE_UINT16(dst1, (color + orig));
+						}
 						dst1 += 2;
 					}
-					quadsOffset += 2;
+					src += 2;
 					pixels++;
 				}
-			} else if (code < 0) { // single
-				if (pixels >= sx) {
-					WRITE_LE_UINT16(dst1, READ_LE_UINT16(singlesOffset));
-					dst1 += 2;
-				}
-				singlesOffset += 2;
-				pixels++;
 			} else { // skip
 				if ((code & 1) == 0) {
 					code >>= 1;
@@ -120,25 +182,26 @@ void Moonbase::blitT14WizImage(uint8 *dst, int dstw, int dsth, int dstPitch, con
 						uint16 color = READ_LE_UINT16(singlesOffset);
 						uint32 orig = READ_LE_UINT16(dst1);
 
-						//WRITE_LE_UINT16(dst1, color); // ENABLE_PREMUL_ALPHA = 0
-						// ENABLE_PREMUL_ALPHA = 2
-						if (alpha > 32) {
-							alpha -= 32;
-
-							uint32 oR = orig & 0x7c00;
-							uint32 oG = orig & 0x03e0;
-							uint32 oB = orig & 0x1f;
-							uint32 dR = ((((color & 0x7c00) - oR) * alpha) >> 5) + oR;
-							uint32 dG = ((((color &  0x3e0) - oG) * alpha) >> 5) + oG;
-							uint32 dB = ((((color &   0x1f) - oB) * alpha) >> 5) + oB;
-
-							WRITE_LE_UINT16(dst1, (dR & 0x7c00) | (dG & 0x3e0) | (dB & 0x1f));
+						if (!premulAlpa) {
+							WRITE_LE_UINT16(dst1, color); // ENABLE_PREMUL_ALPHA = 0
 						} else {
-							uint32 pix = ((orig << 16) | orig) & 0x3e07c1f;
-							pix = (((pix * alpha) & 0xffffffff) >> 5) & 0x3e07c1f;
-							pix = ((pix << 16) + pix + color) & 0xffff;
+							if (alpha > 32) {
+								alpha -= 32;
 
-							WRITE_LE_UINT16(dst1, pix);
+								uint32 oR = orig & 0x7c00;
+								uint32 oG = orig & 0x03e0;
+								uint32 oB = orig & 0x1f;
+								uint32 dR = ((((color & 0x7c00) - oR) * alpha) >> 5) + oR;
+								uint32 dG = ((((color &  0x3e0) - oG) * alpha) >> 5) + oG;
+								uint32 dB = ((((color &   0x1f) - oB) * alpha) >> 5) + oB;
+
+								WRITE_LE_UINT16(dst1, (dR & 0x7c00) | (dG & 0x3e0) | (dB & 0x1f));
+							} else {
+								uint32 pix = ((orig << 16) | orig) & 0x3e07c1f;
+								pix = (((pix * alpha) & 0xffffffff) >> 5) & 0x3e07c1f;
+								pix = ((pix >> 16) + pix + color) & 0xffff;
+								WRITE_LE_UINT16(dst1, pix);
+							}
 						}
 
 						dst1 += 2;
