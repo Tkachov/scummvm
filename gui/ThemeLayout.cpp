@@ -49,16 +49,17 @@ void ThemeLayout::importLayout(ThemeLayout *layout) {
 	}
 }
 
-bool ThemeLayout::getWidgetData(const Common::String &name, int16 &x, int16 &y, uint16 &w, uint16 &h) {
+bool ThemeLayout::getWidgetData(const Common::String &name, int16 &x, int16 &y, uint16 &w, uint16 &h, Common::Rect &clippingArea) {
 	if (name.empty()) {
 		assert(getLayoutType() == kLayoutMain);
 		x = _x; y = _y;
 		w = _w; h = _h;
+		clippingArea = _clippingArea;
 		return true;
 	}
 
 	for (uint i = 0; i < _children.size(); ++i) {
-		if (_children[i]->getWidgetData(name, x, y, w, h))
+		if (_children[i]->getWidgetData(name, x, y, w, h, clippingArea))
 			return true;
 	}
 
@@ -136,10 +137,11 @@ void ThemeLayout::debugDraw(Graphics::Surface *screen, const Graphics::Font *fon
 #endif
 
 
-bool ThemeLayoutWidget::getWidgetData(const Common::String &name, int16 &x, int16 &y, uint16 &w, uint16 &h) {
+bool ThemeLayoutWidget::getWidgetData(const Common::String &name, int16 &x, int16 &y, uint16 &w, uint16 &h, Common::Rect &clippingArea) {
 	if (name == _name) {
 		x = _x; y = _y;
 		w = _w; h = _h;
+		clippingArea = _clippingArea;
 		return true;
 	}
 
@@ -161,7 +163,8 @@ void ThemeLayoutMain::reflowLayout() {
 		_children[0]->resetLayout();
 		_children[0]->setWidth(_w);
 		_children[0]->setHeight(_h);
-		_children[0]->reflowLayout();
+		_children[0]->setClippingArea(_clippingArea);
+		_children[0]->reflowLayout();		
 
 		if (_w == -1)
 			_w = _children[0]->getWidth();
@@ -203,10 +206,11 @@ void ThemeLayoutStacked::reflowLayoutVertical() {
 		_children[i]->offsetY(curY);
 
 		// Center child if it this has been requested *and* the space permits it.
+		int ox = curX;
 		if (_centered && _children[i]->getWidth() < _w && _w != -1) {
-			_children[i]->offsetX((_w >> 1) - (_children[i]->getWidth() >> 1));
-		} else
-			_children[i]->offsetX(curX);
+			ox = (_w >> 1) - (_children[i]->getWidth() >> 1);
+		}
+		_children[i]->offsetX(ox);
 
 		// Advance the vertical offset by the height of the newest item, plus
 		// the item spacing value.
@@ -221,6 +225,84 @@ void ThemeLayoutStacked::reflowLayoutVertical() {
 	// too often. Correct that.
 	if (!_children.empty())
 		_h -= _spacing;
+
+	// If there were any items with undetermined height, then compute and set
+	// their height now. We do so by determining how much space is left, and
+	// then distributing this equally over all items which need auto-resizing.
+	if (rescount) {
+		int newh = (getParentHeight() - _h - _padding.bottom) / rescount;
+
+		for (int i = 0; i < rescount; ++i) {
+			// Set the height of the item.
+			_children[resize[i]]->setHeight(newh);
+			// Increase the height of this ThemeLayoutStacked accordingly, and
+			// then shift all subsequence children.
+			_h += newh;
+			for (uint j = resize[i] + 1; j < _children.size(); ++j)
+				_children[j]->offsetY(newh);
+		}
+	}
+
+	_clippingArea = Common::Rect(0, 0, _w, _h);
+	for (uint i = 0; i < _children.size(); ++i)
+		_children[i]->setClippingArea(_clippingArea);
+}
+
+void ThemeLayoutStacked::reflowLayoutScrollbox() {
+	int curX, curY;
+	int resize[8];
+	int rescount = 0;
+
+	curX = _padding.left;
+	curY = _padding.top;
+	_h = _padding.top + _padding.bottom;
+	int mxW = getParentWidth();
+	int mxH = getParentHeight();
+	int shX = -25;
+	int shY = -20;
+	curX += shX;
+	curY += shY;
+	_clippingArea = Common::Rect(0, 0, mxW, mxH);
+
+	for (uint i = 0; i < _children.size(); ++i) {
+
+		_children[i]->resetLayout();
+		_children[i]->reflowLayout();
+
+		if (_children[i]->getWidth() == -1)
+			_children[i]->setWidth((_w == -1 ? getParentWidth() : _w) - _padding.left - _padding.right);
+
+		if (_children[i]->getHeight() == -1) {
+			assert(rescount < ARRAYSIZE(resize));
+			resize[rescount++] = i;
+			_children[i]->setHeight(0);
+		}
+		
+		_children[i]->offsetY(curY);
+		_children[i]->setClippingArea(_clippingArea);
+
+		// Center child if it this has been requested *and* the space permits it.
+		int ox = curX;
+		if (_centered && _children[i]->getWidth() < _w && _w != -1) {
+			ox = (_w >> 1) - (_children[i]->getWidth() >> 1);
+		}
+		_children[i]->offsetX(ox);
+
+		// Advance the vertical offset by the height of the newest item, plus
+		// the item spacing value.
+		curY += _children[i]->getHeight() + _spacing;
+
+		// Update width and height of this stack layout
+		_w = MAX(_w, (int16)(_children[i]->getWidth() + _padding.left + _padding.right));
+		_h += _children[i]->getHeight() + _spacing;
+	}
+
+	// If there are any children at all, then we added the spacing value once
+	// too often. Correct that.
+	if (!_children.empty())
+		_h -= _spacing;
+
+	if (_h > mxH) _h = mxH;
 
 	// If there were any items with undetermined height, then compute and set
 	// their height now. We do so by determining how much space is left, and
@@ -301,6 +383,10 @@ void ThemeLayoutStacked::reflowLayoutHorizontal() {
 				_children[j]->offsetX(neww);
 		}
 	}
+
+	_clippingArea = Common::Rect(0, 0, _w, _h);
+	for (uint i = 0; i < _children.size(); ++i)
+		_children[i]->setClippingArea(_clippingArea);
 }
 
 } // End of namespace GUI

@@ -67,6 +67,7 @@ void TabWidget::init() {
 	int y = _butTP - _tabHeight;
 	_navLeft = new ButtonWidget(this, x, y, _butW, _butH, "<", 0, kCmdLeft);
 	_navRight = new ButtonWidget(this, x + _butW + 2, y, _butW, _butH, ">", 0, kCmdRight);
+	_clippingArea = Common::Rect(0, 0, _w, _h);
 }
 
 TabWidget::~TabWidget() {
@@ -256,6 +257,7 @@ void TabWidget::adjustTabs(int value) {
 }
 
 void TabWidget::reflowLayout() {
+	_clippingArea = Common::Rect(0, 0, _w, _h);
 	Widget::reflowLayout();
 
 	for (uint i = 0; i < _tabs.size(); ++i) {
