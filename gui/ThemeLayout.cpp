@@ -258,7 +258,7 @@ void ThemeLayoutStacked::reflowLayoutScrollbox() {
 	_h = _padding.top + _padding.bottom;
 	int mxW = getParentWidth();
 	int mxH = getParentHeight();
-	int shX = -25;
+	int shX = -60;
 	int shY = -20;
 	curX += shX;
 	curY += shY;
