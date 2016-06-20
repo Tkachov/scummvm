@@ -881,7 +881,10 @@ void ThemeEngine::queueDDTextClip(TextData type, TextColor color, const Common::
 	if (_texts[type] == 0)
 		return;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> e594cbd... GUI: Use boss's x/y/w/h instead of clippingArea
 
 	Common::Rect area = r;
 	area.clip(_screen.w, _screen.h);
