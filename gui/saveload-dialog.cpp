@@ -297,14 +297,16 @@ void SaveLoadChooserSimple::reflowLayout() {
 	if (g_gui.xmlEval()->getVar("Globals.SaveLoadChooser.ExtInfo.Visible") == 1 && _thumbnailSupport) {
 		int16 x, y;
 		uint16 w, h;
+		Common::Rect clippingArea;
 
-		if (!g_gui.xmlEval()->getWidgetData("SaveLoadChooser.Thumbnail", x, y, w, h))
+		if (!g_gui.xmlEval()->getWidgetData("SaveLoadChooser.Thumbnail", x, y, w, h, clippingArea))
 			error("Error when loading position data for Save/Load Thumbnails");
 
 		int thumbW = kThumbnailWidth;
 		int thumbH = kThumbnailHeight2;
 		int thumbX = x + (w >> 1) - (thumbW >> 1);
 		int thumbY = y + kLineHeight;
+		//TODO: use clip?
 
 		int textLines = 0;
 		if (!_saveDateSupport)
@@ -697,7 +699,9 @@ void SaveLoadChooserGrid::reflowLayout() {
 
 	int16 x, y;
 	uint16 w;
-	g_gui.xmlEval()->getWidgetData("SaveLoadChooser.List", x, y, w, availableHeight);
+	Common::Rect clippingArea;
+	g_gui.xmlEval()->getWidgetData("SaveLoadChooser.List", x, y, w, availableHeight, clippingArea);
+	//TODO: use clip?
 
 	const int16 buttonWidth = kThumbnailWidth + 6;
 	const int16 buttonHeight = kThumbnailHeight2 + 6;

@@ -50,7 +50,7 @@ void ThemeEval::reset() {
 	_layouts.clear();
 }
 
-bool ThemeEval::getWidgetData(const Common::String &widget, int16 &x, int16 &y, uint16 &w, uint16 &h) {
+bool ThemeEval::getWidgetData(const Common::String &widget, int16 &x, int16 &y, uint16 &w, uint16 &h, Common::Rect &clippingArea) {
 	Common::StringTokenizer tokenizer(widget, ".");
 
 	if (widget.hasPrefix("Dialog."))
@@ -62,7 +62,7 @@ bool ThemeEval::getWidgetData(const Common::String &widget, int16 &x, int16 &y, 
 	if (!_layouts.contains(dialogName))
 		return false;
 
-	return _layouts[dialogName]->getWidgetData(widgetName, x, y, w, h);
+	return _layouts[dialogName]->getWidgetData(widgetName, x, y, w, h, clippingArea);
 }
 
 Graphics::TextAlign ThemeEval::getWidgetTextHAlign(const Common::String &widget) {
@@ -103,6 +103,7 @@ void ThemeEval::addWidget(const Common::String &name, int w, int h, const Common
 void ThemeEval::addDialog(const Common::String &name, const Common::String &overlays, bool enabled, int inset) {
 	int16 x, y;
 	uint16 w, h;
+	Common::Rect clippingArea;
 
 	ThemeLayout *layout = 0;
 
@@ -110,7 +111,7 @@ void ThemeEval::addDialog(const Common::String &name, const Common::String &over
 		layout = new ThemeLayoutMain(inset, inset, g_system->getOverlayWidth() - 2 * inset, g_system->getOverlayHeight() - 2 * inset);
 	} else if (overlays == "screen_center") {
 		layout = new ThemeLayoutMain(-1, -1, -1, -1);
-	} else if (getWidgetData(overlays, x, y, w, h)) {
+	} else if (getWidgetData(overlays, x, y, w, h, clippingArea)) { //todo clip?
 		layout = new ThemeLayoutMain(x + inset, y + inset, w - 2 * inset, h - 2 * inset);
 	}
 
