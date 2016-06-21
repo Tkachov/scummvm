@@ -318,9 +318,18 @@ void ButtonWidget::handleMouseDown(int x, int y, int button, int clickCount) {
 	setPressedState();
 }
 
+<<<<<<< HEAD
 void ButtonWidget::drawWidget() {
 	g_gui.theme()->drawButtonClip(
 		Common::Rect(_x, _y, _x + _w, _y + _h), getBossClipRect(),
+=======
+void ButtonWidget::drawWidget() {	
+	int px = _boss->getAbsX();
+	int py = _boss->getAbsY();
+	g_gui.theme()->drawButtonClip(
+		Common::Rect(_x, _y, _x + _w, _y + _h),
+		Common::Rect(px, py, px + _boss->getWidth(), py + _boss->getHeight()),
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		_label, _state, getFlags()
 	);
 }

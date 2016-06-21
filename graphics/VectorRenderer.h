@@ -368,7 +368,11 @@ public:
 	/**
 	 * DrawStep callback functions for each drawing feature
 	 */
+<<<<<<< HEAD
 	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+=======
+	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		uint16 x, y, w, h, radius;
 
 		radius = stepGetRadius(step, area);
@@ -377,47 +381,79 @@ public:
 		drawCircleClip(x + radius, y + radius, radius, clip);
 	}
 
+<<<<<<< HEAD
 	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+=======
+	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawSquareClip(x, y, w, h, clip);
 	}
 
+<<<<<<< HEAD
 	void drawCallback_LINE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+=======
+	void drawCallback_LINE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawLineClip(x, y, x + w, y + w, clip);
 	}
 
+<<<<<<< HEAD
 	void drawCallback_ROUNDSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+=======
+	void drawCallback_ROUNDSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawRoundedSquareClip(x, y, stepGetRadius(step, area), w, h, clip);
 	}
 
+<<<<<<< HEAD
 	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 		fillSurfaceClip(clip);
 	}
 
 	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+=======
+	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+		fillSurface();
+	}
+
+	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawTriangleClip(x, y, w, h, (TriangleOrientation)step.extraData, clip);
 	}
 
+<<<<<<< HEAD
 	void drawCallback_BEVELSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+=======
+	void drawCallback_BEVELSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawBeveledSquareClip(x, y, w, h, _bevel, clip);
 	}
 
+<<<<<<< HEAD
 	void drawCallback_TAB(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+=======
+	void drawCallback_TAB(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawTabClip(x, y, stepGetRadius(step, area), w, h, clip);
 	}
 
+<<<<<<< HEAD
 	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+=======
+	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 <<<<<<< HEAD
@@ -430,7 +466,11 @@ public:
 >>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
 	}
 
+<<<<<<< HEAD
 	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+=======
+	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 <<<<<<< HEAD
@@ -441,7 +481,11 @@ public:
 >>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 	}
 
+<<<<<<< HEAD
 	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+=======
+	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawCrossClip(x, y, w, h, clip);

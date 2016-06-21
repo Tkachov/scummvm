@@ -309,6 +309,7 @@ void ThemeItemDrawDataClip::drawSelf(bool draw, bool restore) {
 
 	if (draw) {
 		Common::List<Graphics::DrawStep>::const_iterator step;
+<<<<<<< HEAD
 		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step) {
 			_engine->renderer()->drawStepClip(_area, _clip, *step, _dynamicData);
 		}
@@ -316,6 +317,12 @@ void ThemeItemDrawDataClip::drawSelf(bool draw, bool restore) {
 
 	extendedRect.clip(_clip);
 
+=======
+		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step)
+			_engine->renderer()->drawStep(_area, *step, _dynamicData);
+	}
+
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 	_engine->addDirtyRect(extendedRect);
 }
 
@@ -986,8 +993,14 @@ void ThemeEngine::queueDDClip(DrawData type, const Common::Rect &r, const Common
 
 	Common::Rect area = r;
 	area.clip(_screen.w, _screen.h);
+<<<<<<< HEAD
 
 	ThemeItemDrawDataClip *q = new ThemeItemDrawDataClip(this, _widgets[type], area, clippingRect, dynamic);
+=======
+	area.clip(clippingRect);
+
+	ThemeItemDrawData *q = new ThemeItemDrawData(this, _widgets[type], area, dynamic);
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 
 	if (_buffering) {
 		if (_widgets[type]->_buffer) {
