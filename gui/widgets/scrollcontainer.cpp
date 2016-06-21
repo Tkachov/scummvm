@@ -57,8 +57,11 @@ void ScrollContainerWidget::init() {
 	_scrolledX = 0;
 	_scrolledY = 0;
 	_limitH = 140;
+<<<<<<< HEAD
 	_clippingArea = Common::Rect(0, 0, _w, _h);
 >>>>>>> 75117ff... GUI: Add ScrollContainer
+=======
+>>>>>>> 2ef853d... GUI: Remove _clippingArea from ScrollContainer
 	recalc();
 }
 
@@ -186,7 +189,6 @@ Widget *ScrollContainerWidget::findWidget(int x, int y) {
 }
 
 void ScrollContainerWidget::reflowLayout() {
-	_clippingArea = Common::Rect(0, 0, _w, _h);
 	recalc();
 	Widget::reflowLayout();
 }
