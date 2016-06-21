@@ -30,7 +30,7 @@
 namespace GUI {
 
 GuiObject::GuiObject(const Common::String &name)
-	: _x(-1000), _y(-1000), _w(0), _h(0), _clippingArea(0, 0, 0, 0), _name(name), _firstWidget(0), _textDrawableArea(Common::Rect(0, 0, 0, 0)) {
+	: _x(-1000), _y(-1000), _w(0), _h(0), _name(name), _firstWidget(0), _textDrawableArea(Common::Rect(0, 0, 0, 0)) {
 	reflowLayout();
 }
 
@@ -41,11 +41,10 @@ GuiObject::~GuiObject() {
 
 void GuiObject::reflowLayout() {
 	if (!_name.empty()) {
-		if (!g_gui.xmlEval()->getWidgetData(_name, _x, _y, _w, _h, _clippingArea)) {
+		if (!g_gui.xmlEval()->getWidgetData(_name, _x, _y, _w, _h)) {
 			error("Could not load widget position for '%s'", _name.c_str());
 		}
-		//debug("%s got %d %d pos %u %u clip", _name.c_str(), _x, _y, _clipW, _clipH);
-		/*
+
 		if (_x < 0)
 			error("Widget <%s> has x < 0 (%d)", _name.c_str(), _x);
 		if (_x >= g_gui.getWidth())
@@ -58,7 +57,6 @@ void GuiObject::reflowLayout() {
 			error("Widget <%s> has y > %d (%d)", _name.c_str(), g_gui.getHeight(), _y);
 		if (_y + _h > g_gui.getHeight())
 			error("Widget <%s> has y + h > %d (%d)", _name.c_str(), g_gui.getHeight(), _y + _h);
-			*/
 	}
 }
 
