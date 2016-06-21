@@ -323,6 +323,7 @@ void ThemeItemDrawDataClip::drawSelf(bool draw, bool restore) {
 		Common::List<Graphics::DrawStep>::const_iterator step;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step) {
 			_engine->renderer()->drawStepClip(_area, _clip, *step, _dynamicData);
 		}
@@ -344,6 +345,12 @@ void ThemeItemDrawDataClip::drawSelf(bool draw, bool restore) {
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
 =======
 >>>>>>> 1f9b907... GUI: Make PopUpWidget clip
+=======
+		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step)
+			_engine->renderer()->drawStep(_area, *step, _dynamicData);
+	}
+
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 	_engine->addDirtyRect(extendedRect);
 }
 
@@ -1025,6 +1032,7 @@ void ThemeEngine::queueDDClip(DrawData type, const Common::Rect &r, const Common
 	area.clip(_screen.w, _screen.h);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	ThemeItemDrawDataClip *q = new ThemeItemDrawDataClip(this, _widgets[type], area, clippingRect, dynamic);
 =======
@@ -1036,6 +1044,11 @@ void ThemeEngine::queueDDClip(DrawData type, const Common::Rect &r, const Common
 
 	ThemeItemDrawDataClip *q = new ThemeItemDrawDataClip(this, _widgets[type], area, clippingRect, dynamic);
 >>>>>>> ea6c017... GUI: clippingRect propogated deeper
+=======
+	area.clip(clippingRect);
+
+	ThemeItemDrawData *q = new ThemeItemDrawData(this, _widgets[type], area, dynamic);
+>>>>>>> 038b5e6... GUI: Prepare button to be clipped
 
 	if (_buffering) {
 		if (_widgets[type]->_buffer) {

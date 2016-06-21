@@ -360,6 +360,9 @@ public:
 	void drawButtonClip(const Common::Rect &r, const Common::Rect &clippingRect, const Common::String &str,
 		WidgetStateInfo state = kStateEnabled, uint16 hints = 0);
 
+	void drawButtonClip(const Common::Rect &r, const Common::Rect &clippingRect, const Common::String &str,
+		WidgetStateInfo state = kStateEnabled, uint16 hints = 0);
+
 	void drawSurface(const Common::Rect &r, const Graphics::Surface &surface,
 <<<<<<< HEAD
 	                 WidgetStateInfo state = kStateEnabled, int alpha = 256, bool themeTrans = false);
