@@ -1033,6 +1033,7 @@ void ThemeEngine::queueDDClip(DrawData type, const Common::Rect &r, const Common
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	ThemeItemDrawDataClip *q = new ThemeItemDrawDataClip(this, _widgets[type], area, clippingRect, dynamic);
 =======
@@ -1049,6 +1050,10 @@ void ThemeEngine::queueDDClip(DrawData type, const Common::Rect &r, const Common
 
 	ThemeItemDrawData *q = new ThemeItemDrawData(this, _widgets[type], area, dynamic);
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+
+	ThemeItemDrawDataClip *q = new ThemeItemDrawDataClip(this, _widgets[type], area, clippingRect, dynamic);
+>>>>>>> ea6c017... GUI: clippingRect propogated deeper
 
 	if (_buffering) {
 		if (_widgets[type]->_buffer) {
