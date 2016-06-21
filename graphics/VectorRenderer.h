@@ -176,7 +176,11 @@ public:
 	 * @param r Radius of the corners.
 	 */
 	virtual void drawRoundedSquare(int x, int y, int r, int w, int h) = 0;
+<<<<<<< HEAD
 	virtual void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) = 0;
+=======
+	virtual void drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch) = 0;
+>>>>>>> ea6c017... GUI: clippingRect propogated deeper
 
 	/**
 	 * Draws a triangle starting at (x,y) with the given base and height.
@@ -408,7 +412,11 @@ public:
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
+<<<<<<< HEAD
 		drawRoundedSquareClip(x, y, stepGetRadius(step, area), w, h, clip);
+=======
+		drawRoundedSquareClip(x, y, stepGetRadius(step, area), w, h, clip.left, clip.top, clip.right-clip.left, clip.bottom-clip.top);
+>>>>>>> ea6c017... GUI: clippingRect propogated deeper
 	}
 
 <<<<<<< HEAD
