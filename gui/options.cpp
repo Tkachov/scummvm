@@ -42,6 +42,8 @@
 #include "audio/musicplugin.h"
 #include "audio/mixer.h"
 #include "audio/fmopl.h"
+#include "widgets/scrollbar.h"
+#include "widgets/scrollcontainer.h"
 
 namespace GUI {
 
@@ -1247,6 +1249,45 @@ GlobalOptionsDialog::GlobalOptionsDialog()
 	new ButtonWidget(tab, "GlobalOptions_Misc.UpdatesCheckManuallyButton", _("Check now"), 0, kUpdatesCheckCmd);
 #endif
 
+<<<<<<< HEAD
+=======
+#ifdef USE_CLOUD
+	//
+	// 7) The cloud tab
+	//
+	if (g_system->getOverlayWidth() > 320)
+		tab->addTab(_("Cloud"));
+	else
+		tab->addTab(_c("Cloud", "lowres"));
+
+	ScrollContainerWidget *container = new ScrollContainerWidget(tab, "GlobalOptions_Cloud.Container");
+
+	_selectedStorageIndex = CloudMan.getStorageIndex();
+
+	_storagePopUpDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StoragePopupDesc", _("Storage:"), _("Active cloud storage"));
+	_storagePopUp = new PopUpWidget(container, "GlobalOptions_Cloud_Container.StoragePopup");
+	Common::StringArray list = CloudMan.listStorages();
+	for (uint32 i = 0; i < list.size(); ++i)
+		_storagePopUp->appendEntry(list[i], i);
+	_storagePopUp->setSelected(_selectedStorageIndex);
+
+	_storageUsernameDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsernameDesc", _("Username:"), _("Username used by this storage"));
+	_storageUsername = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsernameLabel", "<none>");
+
+	_storageUsedSpaceDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsedSpaceDesc", _("Used space:"), _("Space used by ScummVM's saves on this storage"));
+	_storageUsedSpace = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsedSpaceLabel", "0 bytes");
+
+	_storageLastSyncDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageLastSyncDesc", _("Last sync time:"), _("When this storage did saves sync last time"));
+	_storageLastSync = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageLastSyncLabel", "<never>");
+
+	_storageConnectButton = new ButtonWidget(container, "GlobalOptions_Cloud_Container.ConnectButton", _("Connect"), _("Open wizard dialog to connect your cloud storage account"), kConfigureStorageCmd);
+	_storageRefreshButton = new ButtonWidget(container, "GlobalOptions_Cloud_Container.RefreshButton", _("Refresh"), _("Refresh current cloud storage information (username and usage)"), kRefreshStorageCmd);
+
+	setupCloudTab();
+	_redrawCloudTab = false;
+#endif
+
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 	// Activate the first tab
 	tab->setActiveTab(0);
 	_tabWidget = tab;
