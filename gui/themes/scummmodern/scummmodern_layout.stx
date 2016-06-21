@@ -606,7 +606,11 @@
 						type = 'PopUp'
 				/>
 			</layout>
+<<<<<<< HEAD
 			<!-- <space size='100'/> -->
+=======
+			<space size='10'/>
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
 				<widget name = 'StorageUsernameDesc'
 						type = 'OptionsLabel'
@@ -615,7 +619,11 @@
 						height = 'Globals.Line.Height'
 				/>
 			</layout>
+<<<<<<< HEAD
 			<!-- <space size='100'/> -->
+=======
+			<space size='10'/>
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
 				<widget name = 'StorageUsedSpaceDesc'
 						type = 'OptionsLabel'
@@ -624,7 +632,11 @@
 						height = 'Globals.Line.Height'
 				/>
 			</layout>
+<<<<<<< HEAD
 			<!-- <space size='100'/> -->
+=======
+			<space size='10'/>
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
 				<widget name = 'StorageLastSyncDesc'
 						type = 'OptionsLabel'
@@ -633,7 +645,11 @@
 						height = 'Globals.Line.Height'
 				/>
 			</layout>
+<<<<<<< HEAD
 			<!-- <space size='100'/> -->
+=======
+			<space size='10'/>
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
 				<widget name = 'ConnectButton'
 						type = 'Button'

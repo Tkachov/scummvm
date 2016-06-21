@@ -44,6 +44,14 @@
 #include "audio/fmopl.h"
 #include "widgets/scrollbar.h"
 #include "widgets/scrollcontainer.h"
+<<<<<<< HEAD
+=======
+
+#ifdef USE_CLOUD
+#include "backends/cloud/cloudmanager.h"
+#include "gui/storagewizarddialog.h"
+#endif
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 
 namespace GUI {
 
