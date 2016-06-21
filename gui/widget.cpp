@@ -274,12 +274,17 @@ void StaticTextWidget::setAlign(Graphics::TextAlign align) {
 void StaticTextWidget::drawWidget() {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	int px = _boss->getAbsX();
 	int py = _boss->getAbsY();
 >>>>>>> 75117ff... GUI: Add ScrollContainer
 =======
 >>>>>>> 1f9b907... GUI: Make PopUpWidget clip
+=======
+	int px = _boss->getAbsX();
+	int py = _boss->getAbsY();
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 	g_gui.theme()->drawTextClip(
 		Common::Rect(_x, _y, _x+_w, _y+_h),	getBossClipRect(),
 		_label, _state, _align, ThemeEngine::kTextInversionNone, 0, true, _font

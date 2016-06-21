@@ -43,6 +43,7 @@ void ScrollContainerWidget::init() {
 	_type = kScrollContainerWidget;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	_verticalScroll = new ScrollBarWidget(this, _w-16, 0, 16, _h);
 	_verticalScroll->setTarget(this);
 	_scrolledX = 0;
@@ -62,10 +63,21 @@ void ScrollContainerWidget::init() {
 >>>>>>> 75117ff... GUI: Add ScrollContainer
 =======
 >>>>>>> 2ef853d... GUI: Remove _clippingArea from ScrollContainer
+=======
+	_verticalScroll = nullptr;
+	_verticalScroll = new ScrollBarWidget(this, _w-16, 0, 16, _h);
+	_verticalScroll->setTarget(this);
+	//_navRight = new ButtonWidget(this, x + _butW + 2, y, _butW, _butH, ">", 0, kCmdRight);
+	_scrolledX = 0;
+	_scrolledY = 0;
+	_limitH = 140;
+	_clippingArea = Common::Rect(0, 0, _w, _h);
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 	recalc();
 }
 
 void ScrollContainerWidget::recalc() {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -154,6 +166,32 @@ uint16 ScrollContainerWidget::getWidth() const {
 =======
 	return _w - (_verticalScroll->isVisible() ? _verticalScroll->getWidth() : 0);
 >>>>>>> cf05c6a... GUI: Hide scrollbar in ScrollContainerWidget when needed
+=======
+	_verticalScroll->_numEntries = _h;
+	_verticalScroll->_currentPos = _scrolledY;
+	_verticalScroll->_entriesPerPage = _limitH;
+	_verticalScroll->setPos(_w - 16, _scrolledY);
+	_verticalScroll->setSize(16, _limitH);
+	debug("%d %d", _boss->getHeight(), _h);
+}
+
+
+ScrollContainerWidget::~ScrollContainerWidget() {
+	_firstWidget = 0;
+	//delete _navRight;
+}
+
+int16 ScrollContainerWidget::getChildX() const {
+	return getAbsX() - _scrolledX;// +_tabHeight;
+}
+
+int16 ScrollContainerWidget::getChildY() const {
+	return getAbsY() - _scrolledY;// +_tabHeight;
+}
+
+uint16 ScrollContainerWidget::getWidth() const {
+	return (_boss ? _boss->getWidth() : _w);
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 }
 
 uint16 ScrollContainerWidget::getHeight() const {
@@ -165,6 +203,7 @@ void ScrollContainerWidget::handleCommand(CommandSender *sender, uint32 cmd, uin
 	switch (cmd) {
 	case kSetPositionCmd:
 		_scrolledY = _verticalScroll->_currentPos;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 		reflowLayout();
@@ -260,6 +299,132 @@ Widget *ScrollContainerWidget::findWidget(int x, int y) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+		recalc();
+		draw();
+		break;
+		/*
+	case kCmdLeft:
+		if (_firstVisibleTab) {
+			_firstVisibleTab--;
+			draw();
+		}
+		break;
+
+	case kCmdRight:
+		if (_firstVisibleTab + _w / _tabWidth < (int)_tabs.size()) {
+			_firstVisibleTab++;
+			draw();
+		}
+		break;
+		*/
+	}	
+}
+
+void ScrollContainerWidget::handleMouseDown(int x, int y, int button, int clickCount) {
+	/*
+	assert(y < _tabHeight);
+
+	// Determine which tab was clicked
+	int tabID = -1;
+	if (x >= 0 && (x % _tabWidth) < _tabWidth) {
+		tabID = x / _tabWidth;
+		if (tabID >= (int)_tabs.size())
+			tabID = -1;
+	}
+
+	// If a tab was clicked, switch to that pane
+	if (tabID >= 0 && tabID + _firstVisibleTab < (int)_tabs.size()) {
+		setActiveTab(tabID + _firstVisibleTab);
+	}
+	*/
+}
+
+bool ScrollContainerWidget::handleKeyDown(Common::KeyState state) {
+	/*
+	if (state.hasFlags(Common::KBD_SHIFT) && state.keycode == Common::KEYCODE_TAB)
+		adjustTabs(kTabBackwards);
+	else if (state.keycode == Common::KEYCODE_TAB)
+		adjustTabs(kTabForwards);
+		*/
+	return Widget::handleKeyDown(state);
+}
+
+void ScrollContainerWidget::reflowLayout() {
+	_clippingArea = Common::Rect(0, 0, _w, _h);
+	recalc();
+	Widget::reflowLayout();
+
+	/*
+	for (uint i = 0; i < _tabs.size(); ++i) {
+		Widget *w = _tabs[i].firstWidget;
+		while (w) {
+			w->reflowLayout();
+			w = w->next();
+		}
+	}
+
+	_tabHeight = g_gui.xmlEval()->getVar("Globals.TabWidget.Tab.Height");
+	_tabWidth = g_gui.xmlEval()->getVar("Globals.TabWidget.Tab.Width");
+	_titleVPad = g_gui.xmlEval()->getVar("Globals.TabWidget.Tab.Padding.Top");
+
+	if (_tabWidth == 0) {
+		_tabWidth = 40;
+#ifdef __DS__
+	}
+	if (true) {
+#endif
+		int maxWidth = _w / _tabs.size();
+
+		for (uint i = 0; i < _tabs.size(); ++i) {
+			// Determine the new tab width
+			int newWidth = g_gui.getStringWidth(_tabs[i].title) + 2 * 3;
+			if (_tabWidth < newWidth)
+				_tabWidth = newWidth;
+			if (_tabWidth > maxWidth)
+				_tabWidth = maxWidth;
+		}
+	}
+
+	_butRP = g_gui.xmlEval()->getVar("Globals.TabWidget.NavButton.PaddingRight", 0);
+	_butTP = g_gui.xmlEval()->getVar("Globals.TabWidget.NavButton.Padding.Top", 0);
+	_butW = g_gui.xmlEval()->getVar("GlobalsTabWidget.NavButton.Width", 10);
+	_butH = g_gui.xmlEval()->getVar("Globals.TabWidget.NavButton.Height", 10);
+
+	int x = _w - _butRP - _butW * 2 - 2;
+	int y = _butTP - _tabHeight;
+	_navLeft->resize(x, y, _butW, _butH);
+	_navRight->resize(x + _butW + 2, y, _butW, _butH);
+	*/
+}
+
+void ScrollContainerWidget::drawWidget() {
+	/*
+	Common::Array<Common::String> tabs;
+	for (int i = _firstVisibleTab; i < (int)_tabs.size(); ++i) {
+		tabs.push_back(_tabs[i].title);
+	}	
+	g_gui.theme()->drawDialogBackground(Common::Rect(_x + _bodyLP, _y + _bodyTP, _x+_w-_bodyRP, _y+_h-_bodyBP), _bodyBackgroundType);
+	*/
+	g_gui.theme()->drawDialogBackground(Common::Rect(_x, _y, _x + _w, _y + getHeight()), ThemeEngine::kDialogBackgroundDefault);
+	//g_gui.theme()->addDirtyRect(Common::Rect(_x, _y, _x + _w, _y + getHeight()));
+	/*
+	g_gui.theme()->drawTab(Common::Rect(_x, _y, _x+_w, _y+_h), _tabHeight, _tabWidth, tabs, _activeTab - _firstVisibleTab, 0, _titleVPad);
+	*/
+}
+
+void ScrollContainerWidget::draw() {
+	Widget::draw();
+	/*
+	if (_tabWidth * _tabs.size() > _w) {
+		_navLeft->draw();
+		_navRight->draw();
+	}
+	*/
+}
+
+Widget *ScrollContainerWidget::findWidget(int x, int y) {
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 	/*
 	if (y < _tabHeight) {
 		if (_tabWidth * _tabs.size() > _w) {
@@ -278,6 +443,7 @@ Widget *ScrollContainerWidget::findWidget(int x, int y) {
 		return Widget::findWidgetInChain(_firstWidget, x, y - _tabHeight);
 	}
 	*/
+<<<<<<< HEAD
 >>>>>>> 75117ff... GUI: Add ScrollContainer
 =======
 >>>>>>> baa5cc8... GUI: Cleanup in ScrollContainer
@@ -288,6 +454,8 @@ Widget *ScrollContainerWidget::findWidget(int x, int y) {
 >>>>>>> cf05c6a... GUI: Hide scrollbar in ScrollContainerWidget when needed
 		return _verticalScroll;
 >>>>>>> bc49259... GUI: Update ScrollContainerWidget
+=======
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 	return Widget::findWidgetInChain(_firstWidget, x + _scrolledX, y + _scrolledY);
 }
 

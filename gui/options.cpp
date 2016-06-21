@@ -45,7 +45,10 @@
 #include "widgets/scrollbar.h"
 #include "widgets/scrollcontainer.h"
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 75117ff... GUI: Add ScrollContainer
 
 #ifdef USE_CLOUD
 #include "backends/cloud/cloudmanager.h"
