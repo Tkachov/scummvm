@@ -65,13 +65,12 @@ protected:
 
 	int16		_x, _y;
 	uint16		_w, _h;
-	Common::Rect _clippingArea;
 	const Common::String _name;
 
 	Widget		*_firstWidget;
 
 public:
-	GuiObject(int x, int y, int w, int h) : _x(x), _y(y), _w(w), _h(h), _clippingArea(0, 0, w, h), _firstWidget(0), _textDrawableArea(Common::Rect(0, 0, 0, 0)) { }
+	GuiObject(int x, int y, int w, int h) : _x(x), _y(y), _w(w), _h(h), _firstWidget(0), _textDrawableArea(Common::Rect(0, 0, 0, 0)) { }
 	GuiObject(const Common::String &name);
 	~GuiObject();
 

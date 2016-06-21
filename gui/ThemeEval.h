@@ -85,7 +85,7 @@ public:
 	void closeLayout() { _curLayout.pop(); }
 	void closeDialog() { _curLayout.pop()->reflowLayout(); _curDialog.clear(); }
 
-	bool getWidgetData(const Common::String &widget, int16 &x, int16 &y, uint16 &w, uint16 &h, Common::Rect &clippingArea);
+	bool getWidgetData(const Common::String &widget, int16 &x, int16 &y, uint16 &w, uint16 &h);
 
 	Graphics::TextAlign getWidgetTextHAlign(const Common::String &widget);
 

@@ -45,13 +45,11 @@ public:
 		kLayoutMain,
 		kLayoutVertical,
 		kLayoutHorizontal,
-		kLayoutWidget,
-		kLayoutScrollbox
+		kLayoutWidget
 	};
 
 	ThemeLayout(ThemeLayout *p) :
 		_parent(p), _x(0), _y(0), _w(-1), _h(-1),
-		_clippingArea(0, 0, 0, 0),
 		_centered(false), _defaultW(-1), _defaultH(-1),
 		_textHAlign(Graphics::kTextAlignInvalid) {}
 
@@ -91,7 +89,6 @@ protected:
 
 	void setWidth(int16 width) { _w = width; }
 	void setHeight(int16 height) { _h = height; }
-	void setClippingArea(Common::Rect area) { _clippingArea = area; }
 	void setTextHAlign(Graphics::TextAlign align) { _textHAlign = align; }
 
 	virtual LayoutType getLayoutType() = 0;
@@ -99,7 +96,7 @@ protected:
 	virtual ThemeLayout *makeClone(ThemeLayout *newParent) = 0;
 
 public:
-	virtual bool getWidgetData(const Common::String &name, int16 &x, int16 &y, uint16 &w, uint16 &h, Common::Rect &clippingArea);
+	virtual bool getWidgetData(const Common::String &name, int16 &x, int16 &y, uint16 &w, uint16 &h);
 
 	virtual Graphics::TextAlign getWidgetTextHAlign(const Common::String &name);
 
@@ -116,7 +113,6 @@ public:
 protected:
 	ThemeLayout *_parent;
 	int16 _x, _y, _w, _h;
-	Common::Rect _clippingArea;	
 	Common::Rect _padding;
 	Common::Array<ThemeLayout *> _children;
 	bool _centered;
@@ -131,7 +127,6 @@ public:
 		_h = _defaultH = h;
 		_x = _defaultX = x;
 		_y = _defaultY = y;
-		_clippingArea = Common::Rect(0, 0, MAX((int)w, 0), MAX((int)h, 0));
 	}
 	void reflowLayout();
 
@@ -157,7 +152,7 @@ class ThemeLayoutStacked : public ThemeLayout {
 public:
 	ThemeLayoutStacked(ThemeLayout *p, LayoutType type, int spacing, bool center) :
 		ThemeLayout(p), _type(type) {
-		assert((type == kLayoutVertical) || (type == kLayoutHorizontal) || (type == kLayoutScrollbox));
+		assert((type == kLayoutVertical) || (type == kLayoutHorizontal));
 		_spacing = spacing;
 		_centered = center;
 	}
@@ -165,14 +160,11 @@ public:
 	void reflowLayout() {
 		if (_type == kLayoutVertical)
 			reflowLayoutVertical();
-		else if (_type == kLayoutScrollbox)
-			reflowLayoutScrollbox();
 		else
 			reflowLayoutHorizontal();
 	}
 	void reflowLayoutHorizontal();
 	void reflowLayoutVertical();
-	void reflowLayoutScrollbox();
 
 #ifdef LAYOUT_DEBUG_DIALOG
 	const char *getName() const {
@@ -206,12 +198,11 @@ public:
 	ThemeLayoutWidget(ThemeLayout *p, const Common::String &name, int16 w, int16 h, Graphics::TextAlign align) : ThemeLayout(p), _name(name) {
 		_w = _defaultW = w;
 		_h = _defaultH = h;
-		_clippingArea = Common::Rect(0, 0, MAX((int)w, 0), MAX((int)h, 0));
 
 		setTextHAlign(align);
 	}
 
-	bool getWidgetData(const Common::String &name, int16 &x, int16 &y, uint16 &w, uint16 &h, Common::Rect &clippingArea);
+	bool getWidgetData(const Common::String &name, int16 &x, int16 &y, uint16 &w, uint16 &h);
 	Graphics::TextAlign getWidgetTextHAlign(const Common::String &name);
 
 	void reflowLayout() {}
@@ -244,7 +235,7 @@ public:
 		}
 	}
 
-	bool getWidgetData(const Common::String &name, int16 &x, int16 &y, uint16 &w, uint16 &h, Common::Rect &clippingArea) { return false; }
+	bool getWidgetData(const Common::String &name, int16 &x, int16 &y, uint16 &w, uint16 &h) { return false; }
 	void reflowLayout() {}
 #ifdef LAYOUT_DEBUG_DIALOG
 	const char *getName() const { return "SPACE"; }
