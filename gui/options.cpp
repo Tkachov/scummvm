@@ -42,6 +42,8 @@
 #include "audio/musicplugin.h"
 #include "audio/mixer.h"
 #include "audio/fmopl.h"
+#include "widgets/scrollbar.h"
+#include "widgets/scrollcontainer.h"
 
 #ifdef USE_CLOUD
 #include "backends/cloud/cloudmanager.h"
@@ -1272,26 +1274,28 @@ GlobalOptionsDialog::GlobalOptionsDialog()
 	else
 		tab->addTab(_c("Cloud", "lowres"));
 
+	ScrollContainerWidget *container = new ScrollContainerWidget(tab, "GlobalOptions_Cloud.Container");
+
 	_selectedStorageIndex = CloudMan.getStorageIndex();
 
-	_storagePopUpDesc = new StaticTextWidget(tab, "GlobalOptions_Cloud.StoragePopupDesc", _("Storage:"), _("Active cloud storage"));
-	_storagePopUp = new PopUpWidget(tab, "GlobalOptions_Cloud.StoragePopup");
+	_storagePopUpDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StoragePopupDesc", _("Storage:"), _("Active cloud storage"));
+	_storagePopUp = new PopUpWidget(container, "GlobalOptions_Cloud_Container.StoragePopup");
 	Common::StringArray list = CloudMan.listStorages();
 	for (uint32 i = 0; i < list.size(); ++i)
 		_storagePopUp->appendEntry(list[i], i);
 	_storagePopUp->setSelected(_selectedStorageIndex);
 
-	_storageUsernameDesc = new StaticTextWidget(tab, "GlobalOptions_Cloud.StorageUsernameDesc", _("Username:"), _("Username used by this storage"));
-	_storageUsername = new StaticTextWidget(tab, "GlobalOptions_Cloud.StorageUsernameLabel", "<none>");
+	_storageUsernameDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsernameDesc", _("Username:"), _("Username used by this storage"));
+	_storageUsername = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsernameLabel", "<none>");
 
-	_storageUsedSpaceDesc = new StaticTextWidget(tab, "GlobalOptions_Cloud.StorageUsedSpaceDesc", _("Used space:"), _("Space used by ScummVM's saves on this storage"));
-	_storageUsedSpace = new StaticTextWidget(tab, "GlobalOptions_Cloud.StorageUsedSpaceLabel", "0 bytes");
+	_storageUsedSpaceDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsedSpaceDesc", _("Used space:"), _("Space used by ScummVM's saves on this storage"));
+	_storageUsedSpace = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsedSpaceLabel", "0 bytes");
 
-	_storageLastSyncDesc = new StaticTextWidget(tab, "GlobalOptions_Cloud.StorageLastSyncDesc", _("Last sync time:"), _("When this storage did saves sync last time"));
-	_storageLastSync = new StaticTextWidget(tab, "GlobalOptions_Cloud.StorageLastSyncLabel", "<never>");
+	_storageLastSyncDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageLastSyncDesc", _("Last sync time:"), _("When this storage did saves sync last time"));
+	_storageLastSync = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageLastSyncLabel", "<never>");
 
-	_storageConnectButton = new ButtonWidget(tab, "GlobalOptions_Cloud.ConnectButton", _("Connect"), _("Open wizard dialog to connect your cloud storage account"), kConfigureStorageCmd);
-	_storageRefreshButton = new ButtonWidget(tab, "GlobalOptions_Cloud.RefreshButton", _("Refresh"), _("Refresh current cloud storage information (username and usage)"), kRefreshStorageCmd);
+	_storageConnectButton = new ButtonWidget(container, "GlobalOptions_Cloud_Container.ConnectButton", _("Connect"), _("Open wizard dialog to connect your cloud storage account"), kConfigureStorageCmd);
+	_storageRefreshButton = new ButtonWidget(container, "GlobalOptions_Cloud_Container.RefreshButton", _("Refresh"), _("Refresh current cloud storage information (username and usage)"), kRefreshStorageCmd);
 
 	setupCloudTab();
 	_redrawCloudTab = false;
