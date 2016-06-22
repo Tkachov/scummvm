@@ -67,6 +67,7 @@ void ScrollContainerWidget::init() {
 
 void ScrollContainerWidget::recalc() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	int scrollbarWidth = g_gui.xmlEval()->getVar("Globals.Scrollbar.Width", 0);
 	_limitH = _h;
 	
@@ -107,6 +108,9 @@ uint16 ScrollContainerWidget::getWidth() const {
 	return _w - (_verticalScroll->isVisible() ? _verticalScroll->getWidth() : 0);
 =======
 	_verticalScroll->_numEntries = _h;
+=======
+	_verticalScroll->_numEntries = _h + 40;
+>>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 	_verticalScroll->_currentPos = _scrolledY;
 	_verticalScroll->_entriesPerPage = _limitH;
 	_verticalScroll->setPos(_w - 16, _scrolledY);

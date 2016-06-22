@@ -1606,16 +1606,23 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw,
 		return;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Common::Rect backup = _clippingArea;
 	_clippingArea = clipping;
 	bool useOriginal = (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h)));
 
 =======
 >>>>>>> ea6c017... GUI: clippingRect propogated deeper
+=======
+	Common::Rect backup = _clippingArea;
+	_clippingArea = Common::Rect(cx, cy, cx + cw, cy + ch);	
+
+>>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 	if (Base::_fillMode != kFillDisabled && Base::_shadowOffset
 		&& x + w + Base::_shadowOffset + 1 < Base::_activeSurface->w
 		&& y + h + Base::_shadowOffset + 1 < Base::_activeSurface->h
 		&& h > (Base::_shadowOffset + 1) * 2) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 		if (useOriginal) {
 			drawRoundedSquareShadow(x, y, r, w, h, Base::_shadowOffset);
@@ -1637,6 +1644,20 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw,
 
 	drawRoundedSquareAlg(x, y, r, w, h, _fgColor, Base::_fillMode);
 >>>>>>> ea6c017... GUI: clippingRect propogated deeper
+=======
+		debug("shadow");
+		drawRoundedSquareShadow(x, y, r, w, h, Base::_shadowOffset);
+	}
+
+	if (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h))) {
+		drawRoundedSquareAlg(x, y, r, w, h, _fgColor, Base::_fillMode);
+	} else {
+		debug("clipclipclip %d..%d %d..%d", cx, cw + cx, cy, cy + ch);
+		drawRoundedSquareAlgClip(x, y, r, w, h, _fgColor, Base::_fillMode);
+	}
+
+	_clippingArea = backup;
+>>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 }
 
 template<typename PixelType>
@@ -3122,6 +3143,7 @@ drawBorderRoundedSquareAlg(int x1, int y1, int r, int w, int h, PixelType color,
 	PixelType color1 = color;
 	PixelType color2 = color;
 
+	debug("from %d to %d (drawing from %d to %d or something)", _clippingArea.left, _clippingArea.right, x1, x1+w);
 	while (sw++ < Base::_strokeWidth) {
 		blendFill(ptr_fill + sp + r, ptr_fill + w + 1 + sp - r, color1, alpha_t); // top
 		blendFill(ptr_fill + hp - sp + r, ptr_fill + w + hp + 1 - sp - r, color2, alpha_b); // bottom
@@ -3409,6 +3431,7 @@ drawRoundedSquareAlg(int x1, int y1, int r, int w, int h, PixelType color, Vecto
 
 	// If only border is visible
 	if ((!(w <= 0 || h <= 0)) && (fill_m != Base::kFillDisabled)) {
+		debug("interior");
 		if (fill_m == Base::kFillBackground)
 			drawInteriorRoundedSquareAlg(x1, y1, r, w, h, _bgColor, fill_m);
 		else
@@ -3416,6 +3439,7 @@ drawRoundedSquareAlg(int x1, int y1, int r, int w, int h, PixelType color, Vecto
 	}
 
 	if (Base::_strokeWidth) {
+		debug("stroke");
 		if (r != 0 && _bevel > 0) {
 			drawBorderRoundedSquareAlg(x1, y1, r, w, h, color, fill_m, borderAlpha_t, borderAlpha_r, borderAlpha_b, borderAlpha_l);
 			drawBorderRoundedSquareAlg(x1, y1, r, w, h, _bevelColor, fill_m, bevelAlpha_t, bevelAlpha_r, bevelAlpha_b, bevelAlpha_l);
@@ -3438,6 +3462,11 @@ drawRoundedSquareAlgClip(int x1, int y1, int r, int w, int h, PixelType color, V
 	const uint8 bevelAlpha_b = 0;
 	const uint8 bevelAlpha_l = 127;
 
+<<<<<<< HEAD
+=======
+	debug("clip version");
+
+>>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 	// If only border is visible	
 	if ((!(w <= 0 || h <= 0)) && (fill_m != Base::kFillDisabled)) {		
 		if (fill_m == Base::kFillBackground)
@@ -3653,6 +3682,8 @@ drawRoundedSquareShadow(int x1, int y1, int r, int w, int h, int offset) {
 	int width = w + offset + 2;
 	int height = h + offset + 1;
 
+	debug("from %d to %d (drawing from %d to %d or something)", _clippingArea.left, _clippingArea.right, xstart, xstart + width);
+
 	for (int i = offset; i >= 0; i--) {
 		int f, ddF_x, ddF_y;
 		int x, y, px, py;
@@ -3677,27 +3708,42 @@ drawRoundedSquareShadow(int x1, int y1, int r, int w, int h, int offset) {
 		while (x++ < y) {
 			BE_ALGORITHM();
 
+<<<<<<< HEAD
+=======
+			if (x + xstart < _clippingArea.left || x + xstart > _clippingArea.right) continue;
+			if (y + ystart  < _clippingArea.top || y + ystart  > _clippingArea.bottom) continue;
+
+>>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 			if (((1 << x) & hb) == 0) {
-				blendFill(ptr_tl - y - px, ptr_tr + y - px, color, (uint8)alpha);
+				blendFillClip(xstart + r + x, ptr_tl - y - px, ptr_tr + y - px, color, (uint8)alpha);
 
 				// Will create a dark line of pixles if left out
 				if (hb > 0) {
-					blendFill(ptr_bl - y + px, ptr_br + y + px, color, (uint8)alpha);
+					blendFillClip(x, ptr_bl - y + px, ptr_br + y + px, color, (uint8)alpha);
 				}
 				hb |= (1 << x);
 			}
 
 			if (((1 << y) & hb) == 0) {
-				blendFill(ptr_tl - x - py, ptr_tr + x - py, color, (uint8)alpha);
-				blendFill(ptr_bl - x + py, ptr_br + x + py, color, (uint8)alpha);
+				blendFillClip(x, ptr_tl - x - py, ptr_tr + x - py, color, (uint8)alpha);
+				blendFillClip(x, ptr_bl - x + py, ptr_br + x + py, color, (uint8)alpha);
 				hb |= (1 << y);
 			}
 		}
 
 		ptr_fill += pitch * r;
+<<<<<<< HEAD
 		while (short_h--) {			
 			blendFill(ptr_fill, ptr_fill + width + 1, color, (uint8)alpha);
 			ptr_fill += pitch;			
+=======
+		int realy = ystart;
+		while (short_h--) {			
+			if (realy >= _clippingArea.top && realy <= _clippingArea.bottom)
+				blendFillClip(xstart+x, ptr_fill, ptr_fill + width + 1, color, (uint8)alpha);
+			ptr_fill += pitch;
+			++realy;
+>>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 		}
 
 		// Make shadow smaller each iteration, and move it one pixel inward
