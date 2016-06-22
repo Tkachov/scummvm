@@ -356,7 +356,12 @@ void ThemeItemDrawDataClip::drawSelf(bool draw, bool restore) {
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 	}
 
+<<<<<<< HEAD
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+	extendedRect.clip(_clip);
+
+>>>>>>> 1f9b907... GUI: Make PopUpWidget clip
 	_engine->addDirtyRect(extendedRect);
 }
 
@@ -1596,6 +1601,7 @@ void ThemeEngine::drawPopUpWidgetClip(const Common::Rect &r, const Common::Rect 
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	queueDDClip(dd, r, clip);	
 =======
 	queueDDClip(dd, r, clip);
@@ -1603,6 +1609,9 @@ void ThemeEngine::drawPopUpWidgetClip(const Common::Rect &r, const Common::Rect 
 =======
 	queueDDClip(dd, r, clip);	
 >>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
+=======
+	queueDDClip(dd, r, clip);
+>>>>>>> 1f9b907... GUI: Make PopUpWidget clip
 
 	if (!sel.empty()) {
 		Common::Rect text(r.left + 3, r.top + 1, r.right - 10, r.bottom);
