@@ -1703,6 +1703,7 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (useOriginal) {
 =======
 		if (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h))) {
@@ -1710,10 +1711,14 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw,
 =======
 		if (useOriginal) {
 >>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
+=======
+		if (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h))) {
+>>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 			drawRoundedSquareShadow(x, y, r, w, h, Base::_shadowOffset);
 		} else {
 			drawRoundedSquareShadowClip(x, y, r, w, h, Base::_shadowOffset);
 		}
+<<<<<<< HEAD
 <<<<<<< HEAD
 	}
 
@@ -1750,6 +1755,8 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw,
 =======
 >>>>>>> 2837db4... GUI: Remove unnecessary debug() output
 		drawRoundedSquareShadow(x, y, r, w, h, Base::_shadowOffset);
+=======
+>>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 	}
 
 	if (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h))) {
@@ -3851,6 +3858,7 @@ drawRoundedSquareShadow(int x1, int y1, int r, int w, int h, int offset) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
@@ -3858,6 +3866,8 @@ drawRoundedSquareShadow(int x1, int y1, int r, int w, int h, int offset) {
 			if (y + ystart  < _clippingArea.top || y + ystart  > _clippingArea.bottom) continue;
 
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
+=======
+>>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 =======
 >>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 			if (((1 << x) & hb) == 0) {
@@ -3881,6 +3891,7 @@ drawRoundedSquareShadow(int x1, int y1, int r, int w, int h, int offset) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		while (short_h--) {			
 			blendFill(ptr_fill, ptr_fill + width + 1, color, (uint8)alpha);
 			ptr_fill += pitch;			
@@ -3905,6 +3916,11 @@ drawRoundedSquareShadow(int x1, int y1, int r, int w, int h, int offset) {
 			ptr_fill += pitch;
 			++realy;
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
+=======
+		while (short_h--) {			
+			blendFill(ptr_fill, ptr_fill + width + 1, color, (uint8)alpha);
+			ptr_fill += pitch;			
+>>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 		}
 
 		// Make shadow smaller each iteration, and move it one pixel inward
