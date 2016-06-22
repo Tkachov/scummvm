@@ -192,6 +192,7 @@ Widget *ScrollContainerWidget::findWidget(int x, int y) {
 		reflowLayout();
 >>>>>>> f651de2... GUI: Make ScrollContainerWidget hide children
 		draw();
+		g_gui.doFullRedraw();
 		break;
 	}	
 }
