@@ -179,8 +179,8 @@ uint16 ScrollContainerWidget::getWidth() const {
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 	_verticalScroll->_currentPos = _scrolledY;
 	_verticalScroll->_entriesPerPage = _limitH;
-	_verticalScroll->setPos(_w - 16, _scrolledY);
-	_verticalScroll->setSize(16, _limitH);
+	_verticalScroll->setPos(_w - 16, _scrolledY+1);
+	_verticalScroll->setSize(16, _limitH -2);
 }
 
 
@@ -334,7 +334,7 @@ void ScrollContainerWidget::reflowLayout() {
 }
 
 void ScrollContainerWidget::drawWidget() {
-	g_gui.theme()->drawDialogBackground(Common::Rect(_x, _y, _x + _w, _y + getHeight()), ThemeEngine::kDialogBackgroundDefault);
+	g_gui.theme()->drawDialogBackground(Common::Rect(_x, _y, _x + _w, _y + getHeight() - 1), ThemeEngine::kDialogBackgroundDefault);
 }
 
 Widget *ScrollContainerWidget::findWidget(int x, int y) {
