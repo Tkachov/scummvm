@@ -143,6 +143,7 @@ void ScrollContainerWidget::handleCommand(CommandSender *sender, uint32 cmd, uin
 	case kSetPositionCmd:
 		_scrolledY = _verticalScroll->_currentPos;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		reflowLayout();
 		draw();
 		g_gui.doFullRedraw();
@@ -187,6 +188,9 @@ Widget *ScrollContainerWidget::findWidget(int x, int y) {
 		return _verticalScroll;
 =======
 		recalc();
+=======
+		reflowLayout();
+>>>>>>> f651de2... GUI: Make ScrollContainerWidget hide children
 		draw();
 		break;
 	}	
@@ -195,6 +199,16 @@ Widget *ScrollContainerWidget::findWidget(int x, int y) {
 void ScrollContainerWidget::reflowLayout() {
 	recalc();
 	Widget::reflowLayout();
+	Widget *ptr = _firstWidget;
+	while (ptr) {
+		int y = ptr->getAbsY() - getChildY();
+		int h = ptr->getHeight();
+		bool visible = true;
+		if (y + h - _scrolledY < 0) visible = false;
+		if (y - _scrolledY > _limitH) visible = false;
+		ptr->setVisible(visible);
+		ptr = ptr->next();
+	}
 }
 
 void ScrollContainerWidget::drawWidget() {
