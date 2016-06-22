@@ -373,7 +373,10 @@ protected:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 	inline void blendFillClip(int x, PixelType *first, PixelType *last, PixelType color, uint8 alpha) {
 		while (first != last) {
 			if (x >= _clippingArea.left && x <= _clippingArea.right)
@@ -384,9 +387,12 @@ protected:
 		}
 	}
 
+<<<<<<< HEAD
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 =======
 >>>>>>> 7e11918... GUI: Fix ThemeItemTextData's dirty rectangle
+=======
+>>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 	void darkenFill(PixelType *first, PixelType *last);
 	void darkenFillClip(PixelType *first, PixelType *last, int x, int y);
 

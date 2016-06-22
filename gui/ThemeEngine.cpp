@@ -324,6 +324,7 @@ void ThemeItemDrawDataClip::drawSelf(bool draw, bool restore) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step) {
 			_engine->renderer()->drawStepClip(_area, _clip, *step, _dynamicData);
 		}
@@ -348,6 +349,11 @@ void ThemeItemDrawDataClip::drawSelf(bool draw, bool restore) {
 =======
 		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step)
 			_engine->renderer()->drawStep(_area, *step, _dynamicData);
+=======
+		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step) {
+			_engine->renderer()->drawStepClip(_area, _clip, *step, _dynamicData);
+		}
+>>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 	}
 
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped

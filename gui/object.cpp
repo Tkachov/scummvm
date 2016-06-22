@@ -48,6 +48,7 @@ void GuiObject::reflowLayout() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		/*
 =======
 >>>>>>> e2cc59f... GUI: Revert _clippingArea
@@ -56,6 +57,9 @@ void GuiObject::reflowLayout() {
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 =======
 >>>>>>> e2cc59f... GUI: Revert _clippingArea
+=======
+		/*
+>>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 		if (_x < 0)
 			error("Widget <%s> has x < 0 (%d)", _name.c_str(), _x);
 		if (_x >= g_gui.getWidth())
@@ -68,6 +72,7 @@ void GuiObject::reflowLayout() {
 			error("Widget <%s> has y > %d (%d)", _name.c_str(), g_gui.getHeight(), _y);
 		if (_y + _h > g_gui.getHeight())
 			error("Widget <%s> has y + h > %d (%d)", _name.c_str(), g_gui.getHeight(), _y + _h);
+			*/
 	}
 }
 
