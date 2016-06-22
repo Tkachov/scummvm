@@ -321,6 +321,7 @@ protected:
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	inline void blendFillClip(int x, PixelType *first, PixelType *last, PixelType color, uint8 alpha) {
 		while (first != last) {
@@ -333,6 +334,8 @@ protected:
 	}
 
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
+=======
+>>>>>>> 7e11918... GUI: Fix ThemeItemTextData's dirty rectangle
 	void darkenFill(PixelType *first, PixelType *last);
 	void darkenFillClip(PixelType *first, PixelType *last, int x, int y);
 
