@@ -273,10 +273,13 @@ void StaticTextWidget::setAlign(Graphics::TextAlign align) {
 
 void StaticTextWidget::drawWidget() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	int px = _boss->getAbsX();
 	int py = _boss->getAbsY();
 >>>>>>> 75117ff... GUI: Add ScrollContainer
+=======
+>>>>>>> 1f9b907... GUI: Make PopUpWidget clip
 	g_gui.theme()->drawTextClip(
 		Common::Rect(_x, _y, _x+_w, _y+_h),	getBossClipRect(),
 		_label, _state, _align, ThemeEngine::kTextInversionNone, 0, true, _font
@@ -319,6 +322,7 @@ void ButtonWidget::handleMouseDown(int x, int y, int button, int clickCount) {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 void ButtonWidget::drawWidget() {
 	g_gui.theme()->drawButtonClip(
 		Common::Rect(_x, _y, _x + _w, _y + _h), getBossClipRect(),
@@ -330,6 +334,11 @@ void ButtonWidget::drawWidget() {
 		Common::Rect(_x, _y, _x + _w, _y + _h),
 		Common::Rect(px, py, px + _boss->getWidth(), py + _boss->getHeight()),
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+void ButtonWidget::drawWidget() {
+	g_gui.theme()->drawButtonClip(
+		Common::Rect(_x, _y, _x + _w, _y + _h), getBossClipRect(),
+>>>>>>> 1f9b907... GUI: Make PopUpWidget clip
 		_label, _state, getFlags()
 	);
 }

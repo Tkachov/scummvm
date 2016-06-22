@@ -343,6 +343,9 @@ public:
 	void drawWidgetBackgroundClip(const Common::Rect &r, const Common::Rect &clippingArea, uint16 hints,
 								WidgetBackground background = kWidgetBackgroundPlain, WidgetStateInfo state = kStateEnabled);
 
+	void drawWidgetBackgroundClip(const Common::Rect &r, const Common::Rect &clippingArea, uint16 hints,
+								WidgetBackground background = kWidgetBackgroundPlain, WidgetStateInfo state = kStateEnabled);
+
 	void drawButton(const Common::Rect &r, const Common::String &str,
 	                WidgetStateInfo state = kStateEnabled, uint16 hints = 0);
 	void drawButtonClip(const Common::Rect &r, const Common::Rect &clippingRect, const Common::String &str,

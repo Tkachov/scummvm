@@ -318,6 +318,7 @@ void ThemeItemDrawDataClip::drawSelf(bool draw, bool restore) {
 
 	extendedRect.clip(_clip);
 
+<<<<<<< HEAD
 =======
 		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step)
 			_engine->renderer()->drawStep(_area, *step, _dynamicData);
@@ -329,6 +330,8 @@ void ThemeItemDrawDataClip::drawSelf(bool draw, bool restore) {
 	}
 
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+>>>>>>> 1f9b907... GUI: Make PopUpWidget clip
 	_engine->addDirtyRect(extendedRect);
 }
 
@@ -1502,7 +1505,11 @@ void ThemeEngine::drawPopUpWidgetClip(const Common::Rect &r, const Common::Rect 
 	else if (state == kStateDisabled)
 		dd = kDDPopUpDisabled;
 
+<<<<<<< HEAD
 	queueDDClip(dd, r, clip);	
+=======
+	queueDDClip(dd, r, clip);
+>>>>>>> 1f9b907... GUI: Make PopUpWidget clip
 
 	if (!sel.empty()) {
 		Common::Rect text(r.left + 3, r.top + 1, r.right - 10, r.bottom);
