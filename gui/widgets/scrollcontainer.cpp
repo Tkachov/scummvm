@@ -215,6 +215,7 @@ void ScrollContainerWidget::handleCommand(CommandSender *sender, uint32 cmd, uin
 		reflowLayout();
 		draw();
 		g_gui.doFullRedraw();
+<<<<<<< HEAD
 		break;
 	}	
 }
@@ -311,6 +312,8 @@ Widget *ScrollContainerWidget::findWidget(int x, int y) {
 		reflowLayout();
 >>>>>>> f651de2... GUI: Make ScrollContainerWidget hide children
 		draw();
+=======
+>>>>>>> 72024b4... GUI: Make ScrollContainerWidget do full redraw
 		break;
 	}	
 }
