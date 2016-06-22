@@ -538,53 +538,6 @@
 		</layout>
 	</dialog>
 
-	<!--
-	<dialog name = 'GlobalOptions_Cloud' overlays = 'Dialog.GlobalOptions.TabWidget'>
-		<layout type = 'vertical' padding = '16, 16, 16, 16' spacing = '8'>
-			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
-				<widget name = 'StoragePopupDesc'
-						type = 'OptionsLabel'
-				/>
-				<widget name = 'StoragePopup'
-						type = 'PopUp'
-				/>
-			</layout>
-			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
-				<widget name = 'StorageUsernameDesc'
-						type = 'OptionsLabel'
-				/>
-				<widget name = 'StorageUsernameLabel'
-						height = 'Globals.Line.Height'
-				/>
-			</layout>
-			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
-				<widget name = 'StorageUsedSpaceDesc'
-						type = 'OptionsLabel'
-				/>
-				<widget name = 'StorageUsedSpaceLabel'
-						height = 'Globals.Line.Height'
-				/>
-			</layout>
-			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
-				<widget name = 'StorageLastSyncDesc'
-						type = 'OptionsLabel'
-				/>
-				<widget name = 'StorageLastSyncLabel'
-						height = 'Globals.Line.Height'
-				/>
-			</layout>
-			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
-				<widget name = 'ConnectButton'
-						type = 'Button'
-				/>
-				<widget name = 'RefreshButton'
-						type = 'Button'
-				/>
-			</layout>
-		</layout>
-	</dialog>
-	-->
-
 	<dialog name = 'GlobalOptions_Cloud' overlays = 'Dialog.GlobalOptions.TabWidget'>
 		<layout type = 'vertical' padding = '0, 0, 0, 0'>
 			<widget name = 'Container'/>
@@ -601,7 +554,7 @@
 						type = 'PopUp'
 				/>
 			</layout>
-			<space size='10'/>
+			<!-- <space size='100'/> -->
 			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
 				<widget name = 'StorageUsernameDesc'
 						type = 'OptionsLabel'
@@ -610,7 +563,7 @@
 						height = 'Globals.Line.Height'
 				/>
 			</layout>
-			<space size='10'/>
+			<!-- <space size='100'/> -->
 			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
 				<widget name = 'StorageUsedSpaceDesc'
 						type = 'OptionsLabel'
@@ -619,7 +572,7 @@
 						height = 'Globals.Line.Height'
 				/>
 			</layout>
-			<space size='10'/>
+			<!-- <space size='100'/> -->
 			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
 				<widget name = 'StorageLastSyncDesc'
 						type = 'OptionsLabel'
@@ -628,7 +581,7 @@
 						height = 'Globals.Line.Height'
 				/>
 			</layout>
-			<space size='10'/>
+			<!-- <space size='100'/> -->
 			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
 				<widget name = 'ConnectButton'
 						type = 'Button'
