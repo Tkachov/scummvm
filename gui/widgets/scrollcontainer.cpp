@@ -68,8 +68,16 @@ void ScrollContainerWidget::init() {
 void ScrollContainerWidget::recalc() {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	int scrollbarWidth = g_gui.xmlEval()->getVar("Globals.Scrollbar.Width", 0);
 	_limitH = _h;
+=======
+	int scrollbarWidth = g_gui.xmlEval()->getVar("Globals.Scrollbar.Width", 0);
+
+	//calculate _limitH - available height (boss's height - boss's "offset")
+	int d = _boss->getChildY() - _boss->getAbsY();	
+	_limitH = _boss->getHeight() - d;
+>>>>>>> bc49259... GUI: Update ScrollContainerWidget
 	
 	//calculate virtual height
 	const int spacing = g_gui.xmlEval()->getVar("Global.Font.Height", 16); //on the bottom
@@ -87,6 +95,7 @@ void ScrollContainerWidget::recalc() {
 	h = max - min;
 
 	_verticalScroll->_numEntries = h;
+<<<<<<< HEAD
 	_verticalScroll->_currentPos = _scrolledY;
 	_verticalScroll->_entriesPerPage = _limitH;
 	_verticalScroll->setPos(_w - scrollbarWidth, _scrolledY+1);
@@ -111,10 +120,12 @@ uint16 ScrollContainerWidget::getWidth() const {
 =======
 	_verticalScroll->_numEntries = _h + 40;
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
+=======
+>>>>>>> bc49259... GUI: Update ScrollContainerWidget
 	_verticalScroll->_currentPos = _scrolledY;
 	_verticalScroll->_entriesPerPage = _limitH;
-	_verticalScroll->setPos(_w - 16, _scrolledY+1);
-	_verticalScroll->setSize(16, _limitH -2);
+	_verticalScroll->setPos(_w - scrollbarWidth, _scrolledY+1);
+	_verticalScroll->setSize(scrollbarWidth, _limitH -2);
 }
 
 
@@ -129,8 +140,12 @@ int16 ScrollContainerWidget::getChildY() const {
 }
 
 uint16 ScrollContainerWidget::getWidth() const {
+<<<<<<< HEAD
 	return (_boss ? _boss->getWidth() : _w);
 >>>>>>> 75117ff... GUI: Add ScrollContainer
+=======
+	return _w - _verticalScroll->getWidth();
+>>>>>>> bc49259... GUI: Update ScrollContainerWidget
 }
 
 uint16 ScrollContainerWidget::getHeight() const {
@@ -152,6 +167,7 @@ void ScrollContainerWidget::handleCommand(CommandSender *sender, uint32 cmd, uin
 }
 
 void ScrollContainerWidget::reflowLayout() {
+<<<<<<< HEAD
 	Widget::reflowLayout();
 
 	//reflow layout of inner widgets
@@ -199,7 +215,10 @@ Widget *ScrollContainerWidget::findWidget(int x, int y) {
 
 void ScrollContainerWidget::reflowLayout() {
 	recalc();
+=======
+>>>>>>> bc49259... GUI: Update ScrollContainerWidget
 	Widget::reflowLayout();
+	recalc();
 	Widget *ptr = _firstWidget;
 	while (ptr) {
 		int y = ptr->getAbsY() - getChildY();
@@ -217,6 +236,7 @@ void ScrollContainerWidget::drawWidget() {
 }
 
 Widget *ScrollContainerWidget::findWidget(int x, int y) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 	/*
 	if (y < _tabHeight) {
@@ -239,6 +259,10 @@ Widget *ScrollContainerWidget::findWidget(int x, int y) {
 >>>>>>> 75117ff... GUI: Add ScrollContainer
 =======
 >>>>>>> baa5cc8... GUI: Cleanup in ScrollContainer
+=======
+	if (x >= _w - _verticalScroll->getWidth())
+		return _verticalScroll;
+>>>>>>> bc49259... GUI: Update ScrollContainerWidget
 	return Widget::findWidgetInChain(_firstWidget, x + _scrolledX, y + _scrolledY);
 }
 
