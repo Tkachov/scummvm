@@ -374,6 +374,7 @@ protected:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
@@ -393,6 +394,8 @@ protected:
 >>>>>>> 7e11918... GUI: Fix ThemeItemTextData's dirty rectangle
 =======
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
+=======
+>>>>>>> 7e11918... GUI: Fix ThemeItemTextData's dirty rectangle
 	void darkenFill(PixelType *first, PixelType *last);
 	void darkenFillClip(PixelType *first, PixelType *last, int x, int y);
 
