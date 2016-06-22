@@ -1625,11 +1625,16 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (useOriginal) {
+=======
+		if (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h))) {
+>>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 			drawRoundedSquareShadow(x, y, r, w, h, Base::_shadowOffset);
 		} else {
 			drawRoundedSquareShadowClip(x, y, r, w, h, Base::_shadowOffset);
 		}
+<<<<<<< HEAD
 	}
 
 	if (useOriginal) {
@@ -1650,6 +1655,8 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw,
 =======
 >>>>>>> 2837db4... GUI: Remove unnecessary debug() output
 		drawRoundedSquareShadow(x, y, r, w, h, Base::_shadowOffset);
+=======
+>>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 	}
 
 	if (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h))) {
@@ -3709,11 +3716,14 @@ drawRoundedSquareShadow(int x1, int y1, int r, int w, int h, int offset) {
 			BE_ALGORITHM();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 			if (x + xstart < _clippingArea.left || x + xstart > _clippingArea.right) continue;
 			if (y + ystart  < _clippingArea.top || y + ystart  > _clippingArea.bottom) continue;
 
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
+=======
+>>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 			if (((1 << x) & hb) == 0) {
 				blendFill(ptr_tl - y - px, ptr_tr + y - px, color, (uint8)alpha);
 
@@ -3733,6 +3743,7 @@ drawRoundedSquareShadow(int x1, int y1, int r, int w, int h, int offset) {
 
 		ptr_fill += pitch * r;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		while (short_h--) {			
 			blendFill(ptr_fill, ptr_fill + width + 1, color, (uint8)alpha);
 			ptr_fill += pitch;			
@@ -3744,6 +3755,11 @@ drawRoundedSquareShadow(int x1, int y1, int r, int w, int h, int offset) {
 			ptr_fill += pitch;
 			++realy;
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
+=======
+		while (short_h--) {			
+			blendFill(ptr_fill, ptr_fill + width + 1, color, (uint8)alpha);
+			ptr_fill += pitch;			
+>>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 		}
 
 		// Make shadow smaller each iteration, and move it one pixel inward
