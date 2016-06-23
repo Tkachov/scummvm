@@ -141,11 +141,15 @@ int16 ScrollContainerWidget::getChildY() const {
 
 uint16 ScrollContainerWidget::getWidth() const {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	return (_boss ? _boss->getWidth() : _w);
 >>>>>>> 75117ff... GUI: Add ScrollContainer
 =======
 	return _w - _verticalScroll->getWidth();
 >>>>>>> bc49259... GUI: Update ScrollContainerWidget
+=======
+	return _w - (_verticalScroll->isVisible() ? _verticalScroll->getWidth() : 0);
+>>>>>>> cf05c6a... GUI: Hide scrollbar in ScrollContainerWidget when needed
 }
 
 uint16 ScrollContainerWidget::getHeight() const {
@@ -240,6 +244,8 @@ void ScrollContainerWidget::reflowLayout() {
 		ptr->setVisible(visible);
 		ptr = ptr->next();
 	}
+
+	_verticalScroll->setVisible(_verticalScroll->_numEntries > _limitH); //show when there is something to scroll
 }
 
 void ScrollContainerWidget::drawWidget() {
@@ -247,6 +253,7 @@ void ScrollContainerWidget::drawWidget() {
 }
 
 Widget *ScrollContainerWidget::findWidget(int x, int y) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 	/*
@@ -272,6 +279,9 @@ Widget *ScrollContainerWidget::findWidget(int x, int y) {
 >>>>>>> baa5cc8... GUI: Cleanup in ScrollContainer
 =======
 	if (x >= _w - _verticalScroll->getWidth())
+=======
+	if (_verticalScroll->isVisible() && x >= _w - _verticalScroll->getWidth())
+>>>>>>> cf05c6a... GUI: Hide scrollbar in ScrollContainerWidget when needed
 		return _verticalScroll;
 >>>>>>> bc49259... GUI: Update ScrollContainerWidget
 	return Widget::findWidgetInChain(_firstWidget, x + _scrolledX, y + _scrolledY);
