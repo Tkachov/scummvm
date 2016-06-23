@@ -262,6 +262,7 @@ void TabWidget::reflowLayout() {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	// NOTE: if you change that, make sure to do the same
 	// changes in the ThemeLayoutTabWidget (gui/ThemeLayout.cpp)
 =======
@@ -270,6 +271,8 @@ void TabWidget::reflowLayout() {
 	// NOTE: if you change that, make sure to do the same
 	// changes in the ThemeLayoutTabWidget (gui/ThemeLayout.cpp)
 >>>>>>> cdea070... GUI: Add ThemeLayoutTabWidget
+=======
+>>>>>>> 8dbef59... GUI: Fix Dialog's and TabWidget's reflowLayout()
 	_tabHeight = g_gui.xmlEval()->getVar("Globals.TabWidget.Tab.Height");
 	_tabWidth = g_gui.xmlEval()->getVar("Globals.TabWidget.Tab.Width");
 	_titleVPad = g_gui.xmlEval()->getVar("Globals.TabWidget.Tab.Padding.Top");
