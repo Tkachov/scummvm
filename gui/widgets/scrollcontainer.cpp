@@ -338,8 +338,19 @@ void ScrollContainerWidget::reflowLayout() {
 =======
 >>>>>>> bc49259... GUI: Update ScrollContainerWidget
 	Widget::reflowLayout();
-	recalc();
+
+	//reflow layout of inner widgets
 	Widget *ptr = _firstWidget;
+	while (ptr) {
+		ptr->reflowLayout();
+		ptr = ptr->next();
+	}
+	
+	//recalculate height
+	recalc();
+
+	//hide those widgets which are out of visible area
+	ptr = _firstWidget;
 	while (ptr) {
 		int y = ptr->getAbsY() - getChildY();
 		int h = ptr->getHeight();
