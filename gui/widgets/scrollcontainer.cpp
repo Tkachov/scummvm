@@ -73,11 +73,15 @@ void ScrollContainerWidget::recalc() {
 	_limitH = _h;
 =======
 	int scrollbarWidth = g_gui.xmlEval()->getVar("Globals.Scrollbar.Width", 0);
+<<<<<<< HEAD
 
 	//calculate _limitH - available height (boss's height - boss's "offset")
 	int d = _boss->getChildY() - _boss->getAbsY();	
 	_limitH = _boss->getHeight() - d;
 >>>>>>> bc49259... GUI: Update ScrollContainerWidget
+=======
+	_limitH = _h;
+>>>>>>> cdea070... GUI: Add ThemeLayoutTabWidget
 	
 	//calculate virtual height
 	const int spacing = g_gui.xmlEval()->getVar("Global.Font.Height", 16); //on the bottom

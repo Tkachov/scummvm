@@ -46,11 +46,16 @@ public:
 		kLayoutVertical,
 		kLayoutHorizontal,
 <<<<<<< HEAD
+<<<<<<< HEAD
 		kLayoutWidget,
 		kLayoutTabWidget
 =======
 		kLayoutWidget
 >>>>>>> e2cc59f... GUI: Revert _clippingArea
+=======
+		kLayoutWidget,
+		kLayoutTabWidget
+>>>>>>> cdea070... GUI: Add ThemeLayoutTabWidget
 	};
 
 	ThemeLayout(ThemeLayout *p) :
