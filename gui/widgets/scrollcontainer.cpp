@@ -93,6 +93,7 @@ void ScrollContainerWidget::recalc() {
 =======
 	int scrollbarWidth = g_gui.xmlEval()->getVar("Globals.Scrollbar.Width", 0);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	int scrollbarWidth = g_gui.xmlEval()->getVar("Globals.Scrollbar.Width", 0);
 >>>>>>> bc49259... GUI: Update ScrollContainerWidget
@@ -107,6 +108,9 @@ void ScrollContainerWidget::recalc() {
 >>>>>>> cdea070... GUI: Add ThemeLayoutTabWidget
 =======
 >>>>>>> bc49259... GUI: Update ScrollContainerWidget
+=======
+	_limitH = _h;
+>>>>>>> cdea070... GUI: Add ThemeLayoutTabWidget
 	
 	//calculate virtual height
 	const int spacing = g_gui.xmlEval()->getVar("Global.Font.Height", 16); //on the bottom

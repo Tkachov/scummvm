@@ -263,6 +263,7 @@ void TabWidget::reflowLayout() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	// NOTE: if you change that, make sure to do the same
 	// changes in the ThemeLayoutTabWidget (gui/ThemeLayout.cpp)
 =======
@@ -273,6 +274,10 @@ void TabWidget::reflowLayout() {
 >>>>>>> cdea070... GUI: Add ThemeLayoutTabWidget
 =======
 >>>>>>> 8dbef59... GUI: Fix Dialog's and TabWidget's reflowLayout()
+=======
+	// NOTE: if you change that, make sure to do the same
+	// changes in the ThemeLayoutTabWidget (gui/ThemeLayout.cpp)
+>>>>>>> cdea070... GUI: Add ThemeLayoutTabWidget
 	_tabHeight = g_gui.xmlEval()->getVar("Globals.TabWidget.Tab.Height");
 	_tabWidth = g_gui.xmlEval()->getVar("Globals.TabWidget.Tab.Width");
 	_titleVPad = g_gui.xmlEval()->getVar("Globals.TabWidget.Tab.Padding.Top");
@@ -321,6 +326,7 @@ void TabWidget::drawWidget() {
 	}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	g_gui.theme()->drawDialogBackgroundClip(Common::Rect(_x + _bodyLP, _y + _bodyTP, _x+_w-_bodyRP, _y+_h-_bodyBP+_tabHeight), getBossClipRect(), _bodyBackgroundType);
 =======
 	g_gui.theme()->drawDialogBackground(Common::Rect(_x + _bodyLP, _y + _bodyTP, _x+_w-_bodyRP, _y+_h-_bodyBP+_tabHeight), _bodyBackgroundType);
@@ -330,6 +336,11 @@ void TabWidget::drawWidget() {
 >>>>>>> 2ab90e0... GUI: Add drawTabClip()
 
 	g_gui.theme()->drawTabClip(Common::Rect(_x, _y, _x+_w, _y+_h), getBossClipRect(), _tabHeight, _tabWidth, tabs, _activeTab - _firstVisibleTab, 0, _titleVPad);
+=======
+	g_gui.theme()->drawDialogBackground(Common::Rect(_x + _bodyLP, _y + _bodyTP, _x+_w-_bodyRP, _y+_h-_bodyBP+_tabHeight), _bodyBackgroundType);
+
+	g_gui.theme()->drawTab(Common::Rect(_x, _y, _x+_w, _y+_h), _tabHeight, _tabWidth, tabs, _activeTab - _firstVisibleTab, 0, _titleVPad);
+>>>>>>> cdea070... GUI: Add ThemeLayoutTabWidget
 }
 
 void TabWidget::draw() {
