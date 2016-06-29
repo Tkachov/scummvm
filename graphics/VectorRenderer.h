@@ -448,10 +448,15 @@ public:
 >>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
 	}
 
+<<<<<<< HEAD
 	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 =======
 	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
 		fillSurface();
+=======
+	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+		fillSurfaceClip(clip);
+>>>>>>> cf69831... GUI: Add fillSurfaceClip()
 	}
 
 <<<<<<< HEAD
