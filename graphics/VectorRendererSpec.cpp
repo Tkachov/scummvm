@@ -929,7 +929,52 @@ blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r, GUI
 
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
+<<<<<<< HEAD
 >>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
+=======
+blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r, const Common::Rect &clipping,
+	GUI::ThemeEngine::AutoScaleMode autoscale, Graphics::DrawStep::VectorAlignment xAlign,
+	Graphics::DrawStep::VectorAlignment yAlign, int alpha) {
+	if (clipping.isEmpty() || clipping.contains(r)) {
+		blitAlphaBitmap(source, r, autoscale, xAlign, yAlign, alpha);
+		return;
+	}
+
+	debug("blitAlphaBitmapClip: no clipping implemented");
+	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
+		source->blit(*_activeSurface, r.left, r.top, Graphics::FLIP_NONE,
+			nullptr, TS_ARGB(alpha, 255, 255, 255),
+			r.width(), r.height());
+	} else if (autoscale == GUI::ThemeEngine::kAutoScaleFit) {
+		double ratio = (double)r.width() / source->w;
+		double ratio2 = (double)r.height() / source->h;
+
+		if (ratio2 < ratio)
+			ratio = ratio2;
+
+		int offx = 0, offy = 0;
+		if (xAlign == Graphics::DrawStep::kVectorAlignCenter)
+			offx = (r.width() - (int)(source->w * ratio)) >> 1;
+
+		if (yAlign == Graphics::DrawStep::kVectorAlignCenter)
+			offy = (r.height() - (int)(source->h * ratio)) >> 1;
+
+		source->blit(*_activeSurface, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
+			nullptr, TS_ARGB(alpha, 255, 255, 255),
+			(int)(source->w * ratio), (int)(source->h * ratio));
+
+	} else if (autoscale == GUI::ThemeEngine::kAutoScaleNinePatch) {
+		Graphics::NinePatchBitmap nine(source, false);
+		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height());
+	} else {
+		source->blit(*_activeSurface, r.left, r.top);
+	}
+
+}
+
+template<typename PixelType>
+void VectorRendererSpec<PixelType>::
+>>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 applyScreenShading(GUI::ThemeEngine::ShadingStyle shadingStyle) {
 	int pixels = _activeSurface->w * _activeSurface->h;
 	PixelType *ptr = (PixelType *)_activeSurface->getPixels();
