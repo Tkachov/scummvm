@@ -520,6 +520,7 @@ public:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCallback_BEVELSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 =======
 	void drawCallback_BEVELSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
@@ -530,6 +531,9 @@ public:
 =======
 	void drawCallback_BEVELSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+	void drawCallback_BEVELSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+>>>>>>> e711120... GUI: Add drawBeveledSquareClip()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawBeveledSquareClip(x, y, w, h, _bevel, clip);
