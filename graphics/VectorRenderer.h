@@ -427,10 +427,10 @@ public:
 		blitKeyBitmapClip(step.blitSrc, Common::Rect(x, y, x + w, y + h), clip);
 	}
 
-	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
-		blitAlphaBitmap(step.blitAlphaSrc, Common::Rect(x, y, x + w, y + h), step.autoscale, step.xAlign, step.yAlign);
+		blitAlphaBitmapClip(step.blitAlphaSrc, Common::Rect(x, y, x + w, y + h), clip, step.autoscale, step.xAlign, step.yAlign);
 	}
 
 	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
@@ -500,6 +500,12 @@ public:
 			Graphics::DrawStep::VectorAlignment xAlign = Graphics::DrawStep::kVectorAlignManual,
 			Graphics::DrawStep::VectorAlignment yAlign = Graphics::DrawStep::kVectorAlignManual,
 			int alpha = 255) = 0;
+
+	virtual void blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r, const Common::Rect &clipping,
+		GUI::ThemeEngine::AutoScaleMode autoscale = GUI::ThemeEngine::kAutoScaleNone,
+		Graphics::DrawStep::VectorAlignment xAlign = Graphics::DrawStep::kVectorAlignManual,
+		Graphics::DrawStep::VectorAlignment yAlign = Graphics::DrawStep::kVectorAlignManual,
+		int alpha = 255) = 0;
 
 	/**
 	 * Draws a string into the screen. Wrapper for the Graphics::Font string drawing
