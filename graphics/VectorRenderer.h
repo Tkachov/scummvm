@@ -417,13 +417,17 @@ public:
 		drawTabClip(x, y, stepGetRadius(step, area), w, h, clip);
 	}
 
-	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
+<<<<<<< HEAD
 <<<<<<< HEAD
 		blitAlphaBitmap(step.blitSrc, Common::Rect(x, y, x + w, y + h));
 =======
 		blitKeyBitmap(step.blitSrc, Common::Rect(x, y, x + w, y + h));
+=======
+		blitKeyBitmapClip(step.blitSrc, Common::Rect(x, y, x + w, y + h), clip);
+>>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
 	}
 
 	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
@@ -491,7 +495,19 @@ public:
 	 */
 	virtual void blitSubSurface(const Graphics::Surface *source, const Common::Rect &r) = 0;
 
+<<<<<<< HEAD
 	virtual void blitAlphaBitmap(const Graphics::Surface *source, const Common::Rect &r) = 0;
+=======
+	virtual void blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r) = 0;
+
+	virtual void blitKeyBitmapClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping) = 0;
+
+	virtual void blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r,
+			GUI::ThemeEngine::AutoScaleMode autoscale = GUI::ThemeEngine::kAutoScaleNone,
+			Graphics::DrawStep::VectorAlignment xAlign = Graphics::DrawStep::kVectorAlignManual,
+			Graphics::DrawStep::VectorAlignment yAlign = Graphics::DrawStep::kVectorAlignManual,
+			int alpha = 255) = 0;
+>>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
 
 	/**
 	 * Draws a string into the screen. Wrapper for the Graphics::Font string drawing
