@@ -59,11 +59,16 @@ public:
 	void drawSquareClip(int x, int y, int w, int h, Common::Rect clipping);
 =======
 	void drawLine(int x1, int y1, int x2, int y2); //TODO
+<<<<<<< HEAD
 	void drawCircle(int x, int y, int r); //TODO
 <<<<<<< HEAD
 	void drawSquare(int x, int y, int w, int h); //TODO
 >>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
 =======
+=======
+	void drawCircle(int x, int y, int r);
+	void drawCircleClip(int x, int y, int r, Common::Rect clipping);
+>>>>>>> 168a81f... GUI: Add drawCircle()
 	void drawSquare(int x, int y, int w, int h);
 	void drawSquareClip(int x, int y, int w, int h, Common::Rect clipping);
 >>>>>>> a5f13df... GUI: Add drawSquareClip()
