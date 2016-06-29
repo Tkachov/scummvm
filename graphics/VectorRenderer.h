@@ -468,10 +468,14 @@ public:
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCallback_TAB(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 =======
 	void drawCallback_TAB(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+	void drawCallback_TAB(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+>>>>>>> 2ab90e0... GUI: Add drawTabClip()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawTabClip(x, y, stepGetRadius(step, area), w, h, clip);
