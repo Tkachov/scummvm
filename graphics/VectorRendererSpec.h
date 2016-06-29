@@ -79,12 +79,16 @@ public:
 >>>>>>> a5f13df... GUI: Add drawSquareClip()
 	void drawRoundedSquare(int x, int y, int r, int w, int h);
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping);
 =======
 	void drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch);
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> ea6c017... GUI: clippingRect propogated deeper
+=======
+	void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping);
+>>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
 	void drawTriangle(int x, int y, int base, int height, TriangleOrientation orient);
 	void drawTriangleClip(int x, int y, int base, int height, TriangleOrientation orient, Common::Rect clipping);
 	void drawTab(int x, int y, int r, int w, int h);

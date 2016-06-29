@@ -177,10 +177,14 @@ public:
 	 */
 	virtual void drawRoundedSquare(int x, int y, int r, int w, int h) = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	virtual void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) = 0;
 =======
 	virtual void drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch) = 0;
 >>>>>>> ea6c017... GUI: clippingRect propogated deeper
+=======
+	virtual void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) = 0;
+>>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
 
 	/**
 	 * Draws a triangle starting at (x,y) with the given base and height.
@@ -425,6 +429,7 @@ public:
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		drawRoundedSquareClip(x, y, stepGetRadius(step, area), w, h, clip);
 =======
 		drawRoundedSquareClip(x, y, stepGetRadius(step, area), w, h, clip.left, clip.top, clip.right-clip.left, clip.bottom-clip.top);
@@ -434,6 +439,9 @@ public:
 <<<<<<< HEAD
 	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 		fillSurfaceClip(clip);
+=======
+		drawRoundedSquareClip(x, y, stepGetRadius(step, area), w, h, clip);
+>>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
 	}
 
 	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
