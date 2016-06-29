@@ -51,6 +51,7 @@ public:
 	VectorRendererSpec(PixelFormat format);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawLine(int x1, int y1, int x2, int y2);
 	void drawLineClip(int x1, int y1, int x2, int y2, Common::Rect clipping);
 	void drawCircle(int x, int y, int r);
@@ -66,6 +67,10 @@ public:
 >>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
 =======
 =======
+=======
+	void drawLine(int x1, int y1, int x2, int y2);
+	void drawLineClip(int x1, int y1, int x2, int y2, Common::Rect clipping);
+>>>>>>> 330b379... GUI: Add drawLineClip()
 	void drawCircle(int x, int y, int r);
 	void drawCircleClip(int x, int y, int r, Common::Rect clipping);
 >>>>>>> 168a81f... GUI: Add drawCircle()
