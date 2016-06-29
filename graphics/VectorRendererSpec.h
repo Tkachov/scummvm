@@ -62,6 +62,7 @@ public:
 =======
 	void drawLine(int x1, int y1, int x2, int y2); //TODO
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCircle(int x, int y, int r); //TODO
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -73,6 +74,10 @@ public:
 	void drawLine(int x1, int y1, int x2, int y2);
 	void drawLineClip(int x1, int y1, int x2, int y2, Common::Rect clipping);
 >>>>>>> 330b379... GUI: Add drawLineClip()
+	void drawCircle(int x, int y, int r);
+	void drawCircleClip(int x, int y, int r, Common::Rect clipping);
+>>>>>>> 168a81f... GUI: Add drawCircle()
+=======
 	void drawCircle(int x, int y, int r);
 	void drawCircleClip(int x, int y, int r, Common::Rect clipping);
 >>>>>>> 168a81f... GUI: Add drawCircle()

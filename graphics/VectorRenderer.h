@@ -383,6 +383,7 @@ public:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 =======
 	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
@@ -393,6 +394,9 @@ public:
 =======
 	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+>>>>>>> 168a81f... GUI: Add drawCircle()
 		uint16 x, y, w, h, radius;
 
 		radius = stepGetRadius(step, area);
@@ -404,6 +408,7 @@ public:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 =======
 	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
@@ -414,6 +419,9 @@ public:
 =======
 	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+>>>>>>> 168a81f... GUI: Add drawCircle()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawSquareClip(x, y, w, h, clip);
@@ -488,6 +496,7 @@ public:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
 =======
@@ -496,6 +505,9 @@ public:
 =======
 	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+>>>>>>> 168a81f... GUI: Add drawCircle()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawTriangleClip(x, y, w, h, (TriangleOrientation)step.extraData, clip);
