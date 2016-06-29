@@ -499,6 +499,7 @@ public:
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 =======
 	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
@@ -511,6 +512,12 @@ public:
 =======
 		blitKeyBitmap(step.blitSrc, Common::Rect(x, y, x + w, y + h));
 =======
+		blitKeyBitmapClip(step.blitSrc, Common::Rect(x, y, x + w, y + h), clip);
+>>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
+=======
+	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+		uint16 x, y, w, h;
+		stepGetPositions(step, area, x, y, w, h);
 		blitKeyBitmapClip(step.blitSrc, Common::Rect(x, y, x + w, y + h), clip);
 >>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
 	}
