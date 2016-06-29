@@ -498,12 +498,17 @@ public:
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 =======
 =======
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
 	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
 		fillSurface();
+=======
+	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+		fillSurfaceClip(clip);
+>>>>>>> cf69831... GUI: Add fillSurfaceClip()
 =======
 	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 		fillSurfaceClip(clip);
