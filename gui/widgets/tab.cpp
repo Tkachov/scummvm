@@ -327,6 +327,7 @@ void TabWidget::drawWidget() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	g_gui.theme()->drawDialogBackgroundClip(Common::Rect(_x + _bodyLP, _y + _bodyTP, _x+_w-_bodyRP, _y+_h-_bodyBP+_tabHeight), getBossClipRect(), _bodyBackgroundType);
 =======
 	g_gui.theme()->drawDialogBackground(Common::Rect(_x + _bodyLP, _y + _bodyTP, _x+_w-_bodyRP, _y+_h-_bodyBP+_tabHeight), _bodyBackgroundType);
@@ -341,6 +342,11 @@ void TabWidget::drawWidget() {
 
 	g_gui.theme()->drawTab(Common::Rect(_x, _y, _x+_w, _y+_h), _tabHeight, _tabWidth, tabs, _activeTab - _firstVisibleTab, 0, _titleVPad);
 >>>>>>> cdea070... GUI: Add ThemeLayoutTabWidget
+=======
+	g_gui.theme()->drawDialogBackgroundClip(Common::Rect(_x + _bodyLP, _y + _bodyTP, _x+_w-_bodyRP, _y+_h-_bodyBP+_tabHeight), getBossClipRect(), _bodyBackgroundType);
+
+	g_gui.theme()->drawTabClip(Common::Rect(_x, _y, _x+_w, _y+_h), getBossClipRect(), _tabHeight, _tabWidth, tabs, _activeTab - _firstVisibleTab, 0, _titleVPad);
+>>>>>>> 2ab90e0... GUI: Add drawTabClip()
 }
 
 void TabWidget::draw() {
