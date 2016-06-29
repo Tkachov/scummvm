@@ -616,6 +616,7 @@ public:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 =======
 	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
@@ -629,6 +630,12 @@ public:
 		blitAlphaBitmap(step.blitAlphaSrc, Common::Rect(x, y, x + w, y + h), step.autoscale, step.xAlign, step.yAlign);
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
 =======
+		blitAlphaBitmapClip(step.blitAlphaSrc, Common::Rect(x, y, x + w, y + h), clip, step.autoscale, step.xAlign, step.yAlign);
+>>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
+=======
+	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+		uint16 x, y, w, h;
+		stepGetPositions(step, area, x, y, w, h);
 		blitAlphaBitmapClip(step.blitAlphaSrc, Common::Rect(x, y, x + w, y + h), clip, step.autoscale, step.xAlign, step.yAlign);
 >>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 =======
@@ -736,6 +743,12 @@ public:
 			Graphics::DrawStep::VectorAlignment yAlign = Graphics::DrawStep::kVectorAlignManual,
 			int alpha = 255) = 0;
 >>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
+
+	virtual void blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r, const Common::Rect &clipping,
+		GUI::ThemeEngine::AutoScaleMode autoscale = GUI::ThemeEngine::kAutoScaleNone,
+		Graphics::DrawStep::VectorAlignment xAlign = Graphics::DrawStep::kVectorAlignManual,
+		Graphics::DrawStep::VectorAlignment yAlign = Graphics::DrawStep::kVectorAlignManual,
+		int alpha = 255) = 0;
 
 	virtual void blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r, const Common::Rect &clipping,
 		GUI::ThemeEngine::AutoScaleMode autoscale = GUI::ThemeEngine::kAutoScaleNone,
