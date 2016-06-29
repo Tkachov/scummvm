@@ -97,8 +97,12 @@ public:
 >>>>>>> a5f13df... GUI: Add drawSquareClip()
 	void drawTriangleClip(int x, int y, int base, int height, TriangleOrientation orient, Common::Rect clipping);
 	void drawTab(int x, int y, int r, int w, int h); //TODO
+<<<<<<< HEAD
 	void drawBeveledSquare(int x, int y, int w, int h, int bevel) { //TODO
 >>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
+=======
+	void drawBeveledSquare(int x, int y, int w, int h, int bevel) {
+>>>>>>> e711120... GUI: Add drawBeveledSquareClip()
 		drawBevelSquareAlg(x, y, w, h, bevel, _bevelColor, _fgColor, Base::_fillMode != kFillDisabled);
 	}
 	void drawBeveledSquareClip(int x, int y, int w, int h, int bevel, Common::Rect clipping) {
