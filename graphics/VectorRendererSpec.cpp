@@ -1858,6 +1858,7 @@ drawTriangleClip(int x, int y, int w, int h, TriangleOrientation orient, Common:
 	Common::Rect backup = _clippingArea;
 	_clippingArea = clipping;
 	bool useClippingVersions = !(_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h)));
+<<<<<<< HEAD
 
 	if (w == h) {
 		int newW = w;
@@ -1877,6 +1878,27 @@ drawTriangleClip(int x, int y, int w, int h, TriangleOrientation orient, Common:
 			break;
 		}
 
+=======
+
+	if (w == h) {
+		int newW = w;
+
+		switch (orient) {
+		case kTriangleUp:
+		case kTriangleDown:
+			if (useClippingVersions)
+				drawTriangleVertAlgClip(x, y, newW, newW, (orient == kTriangleDown), color, Base::_fillMode);
+			else
+				drawTriangleVertAlg(x, y, newW, newW, (orient == kTriangleDown), color, Base::_fillMode);
+			break;
+
+		case kTriangleLeft:
+		case kTriangleRight:
+		case kTriangleAuto:
+			break;
+		}
+
+>>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
 		if (Base::_strokeWidth > 0)
 			if (Base::_fillMode == kFillBackground || Base::_fillMode == kFillGradient) {
 				if (useClippingVersions)
