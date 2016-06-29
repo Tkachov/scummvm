@@ -1306,6 +1306,35 @@ void ThemeEngine::drawDialogBackground(const Common::Rect &r, DialogBackground b
 	}
 }
 
+void ThemeEngine::drawDialogBackgroundClip(const Common::Rect &r, const Common::Rect &clip, DialogBackground bgtype, WidgetStateInfo state) {
+	if (!ready())
+		return;
+
+	switch (bgtype) {
+	case kDialogBackgroundMain:
+		queueDDClip(kDDMainDialogBackground, r, clip);
+		break;
+
+	case kDialogBackgroundSpecial:
+		queueDDClip(kDDSpecialColorBackground, r, clip);
+		break;
+
+	case kDialogBackgroundPlain:
+		queueDDClip(kDDPlainColorBackground, r, clip);
+		break;
+
+	case kDialogBackgroundTooltip:
+		queueDDClip(kDDTooltipBackground, r, clip);
+		break;
+
+	case kDialogBackgroundDefault:
+		queueDDClip(kDDDefaultBackground, r, clip);
+		break;
+	case kDialogBackgroundNone:
+		break;
+	}
+}
+
 void ThemeEngine::drawCaret(const Common::Rect &r, bool erase, WidgetStateInfo state) {
 	if (!ready())
 		return;
@@ -1315,6 +1344,17 @@ void ThemeEngine::drawCaret(const Common::Rect &r, bool erase, WidgetStateInfo s
 		addDirtyRect(r);
 	} else
 		queueDD(kDDCaret, r);
+}
+
+void ThemeEngine::drawCaretClip(const Common::Rect &r, const Common::Rect &clip, bool erase, WidgetStateInfo state) {
+	if (!ready())
+		return;
+
+	if (erase) {
+		restoreBackground(r);
+		addDirtyRect(r);
+	} else
+		queueDDClip(kDDCaret, r, clip);
 }
 
 void ThemeEngine::drawPopUpWidget(const Common::Rect &r, const Common::String &sel, int deltax, WidgetStateInfo state, Graphics::TextAlign align) {
