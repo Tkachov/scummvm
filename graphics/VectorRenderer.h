@@ -155,6 +155,7 @@ public:
 	 * @param r Radius of the circle.
 	 */
 	virtual void drawCircle(int x, int y, int r) = 0;
+	virtual void drawCircleClip(int x, int y, int r, Common::Rect clipping) = 0;
 
 	/**
 	 * Draws a square starting at (x,y) with the given width and height.
@@ -362,16 +363,16 @@ public:
 	/**
 	 * DrawStep callback functions for each drawing feature
 	 */
-	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 		uint16 x, y, w, h, radius;
 
 		radius = stepGetRadius(step, area);
 		stepGetPositions(step, area, x, y, w, h);
 
-		drawCircle(x + radius, y + radius, radius);
+		drawCircleClip(x + radius, y + radius, radius, clip);
 	}
 
-	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawSquareClip(x, y, w, h, clip);
@@ -393,7 +394,7 @@ public:
 		fillSurface();
 	}
 
-	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
+	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawTriangleClip(x, y, w, h, (TriangleOrientation)step.extraData, clip);
