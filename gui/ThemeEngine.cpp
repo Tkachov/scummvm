@@ -1543,6 +1543,35 @@ void ThemeEngine::drawDialogBackgroundClip(const Common::Rect &r, const Common::
 	}
 }
 
+void ThemeEngine::drawDialogBackgroundClip(const Common::Rect &r, const Common::Rect &clip, DialogBackground bgtype, WidgetStateInfo state) {
+	if (!ready())
+		return;
+
+	switch (bgtype) {
+	case kDialogBackgroundMain:
+		queueDDClip(kDDMainDialogBackground, r, clip);
+		break;
+
+	case kDialogBackgroundSpecial:
+		queueDDClip(kDDSpecialColorBackground, r, clip);
+		break;
+
+	case kDialogBackgroundPlain:
+		queueDDClip(kDDPlainColorBackground, r, clip);
+		break;
+
+	case kDialogBackgroundTooltip:
+		queueDDClip(kDDTooltipBackground, r, clip);
+		break;
+
+	case kDialogBackgroundDefault:
+		queueDDClip(kDDDefaultBackground, r, clip);
+		break;
+	case kDialogBackgroundNone:
+		break;
+	}
+}
+
 void ThemeEngine::drawCaret(const Common::Rect &r, bool erase, WidgetStateInfo state) {
 	if (!ready())
 		return;

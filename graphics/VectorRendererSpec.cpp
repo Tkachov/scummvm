@@ -1560,6 +1560,69 @@ drawSquare(int x, int y, int w, int h) {
 	}
 }
 
+<<<<<<< HEAD
+=======
+template<typename PixelType>
+void VectorRendererSpec<PixelType>::
+drawSquareClip(int x, int y, int w, int h, Common::Rect clipping) {
+	if (x + w > Base::_activeSurface->w || y + h > Base::_activeSurface->h ||
+		w <= 0 || h <= 0 || x < 0 || y < 0)
+		return;
+
+	Common::Rect backup = _clippingArea;
+	_clippingArea = clipping;
+	bool useClippingVersions = !(_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h)));
+
+	if (Base::_fillMode != kFillDisabled && Base::_shadowOffset
+		&& x + w + Base::_shadowOffset < Base::_activeSurface->w
+		&& y + h + Base::_shadowOffset < Base::_activeSurface->h) {
+		if (useClippingVersions)
+			drawSquareShadowClip(x, y, w, h, Base::_shadowOffset);
+		else
+			drawSquareShadow(x, y, w, h, Base::_shadowOffset);
+	}
+
+	switch (Base::_fillMode) {
+	case kFillDisabled:
+		if (Base::_strokeWidth)
+			if (useClippingVersions)
+				drawSquareAlgClip(x, y, w, h, _fgColor, kFillDisabled);
+			else
+				drawSquareAlg(x, y, w, h, _fgColor, kFillDisabled);
+		break;
+
+	case kFillForeground:
+		if (useClippingVersions)
+			drawSquareAlgClip(x, y, w, h, _fgColor, kFillForeground);
+		else 
+			drawSquareAlg(x, y, w, h, _fgColor, kFillForeground);
+		break;
+
+	case kFillBackground:
+		if (useClippingVersions) {
+			drawSquareAlgClip(x, y, w, h, _bgColor, kFillBackground);
+			drawSquareAlgClip(x, y, w, h, _fgColor, kFillDisabled);
+		} else {
+			drawSquareAlg(x, y, w, h, _bgColor, kFillBackground);
+			drawSquareAlg(x, y, w, h, _fgColor, kFillDisabled);
+		}
+		break;
+
+	case kFillGradient:
+		VectorRendererSpec::drawSquareAlg(x, y, w, h, 0, kFillGradient);
+		if (Base::_strokeWidth)
+			if (useClippingVersions)
+				drawSquareAlgClip(x, y, w, h, _fgColor, kFillDisabled);
+			else
+				drawSquareAlg(x, y, w, h, _fgColor, kFillDisabled);
+		break;
+	}
+
+	_clippingArea = backup;
+}
+
+/** ROUNDED SQUARES **/
+>>>>>>> a5f13df... GUI: Add drawSquareClip()
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
 drawSquareClip(int x, int y, int w, int h, Common::Rect clipping) {

@@ -64,6 +64,7 @@ public:
 <<<<<<< HEAD
 	void drawCircle(int x, int y, int r); //TODO
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawSquare(int x, int y, int w, int h); //TODO
 >>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
 =======
@@ -83,6 +84,10 @@ public:
 	void drawCircle(int x, int y, int r); //TODO
 	void drawSquare(int x, int y, int w, int h); //TODO
 >>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
+=======
+	void drawSquare(int x, int y, int w, int h);
+	void drawSquareClip(int x, int y, int w, int h, Common::Rect clipping);
+>>>>>>> a5f13df... GUI: Add drawSquareClip()
 	void drawRoundedSquare(int x, int y, int r, int w, int h);
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -90,6 +95,7 @@ public:
 	void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping);
 =======
 	void drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -123,6 +129,9 @@ public:
 >>>>>>> e711120... GUI: Add drawBeveledSquareClip()
 =======
 	void drawTriangle(int x, int y, int base, int height, TriangleOrientation orient); //TODO
+=======
+	void drawTriangle(int x, int y, int base, int height, TriangleOrientation orient);
+>>>>>>> a5f13df... GUI: Add drawSquareClip()
 	void drawTriangleClip(int x, int y, int base, int height, TriangleOrientation orient, Common::Rect clipping);
 	void drawTab(int x, int y, int r, int w, int h); //TODO
 	void drawBeveledSquare(int x, int y, int w, int h, int bevel) { //TODO
