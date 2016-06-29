@@ -456,6 +456,7 @@ public:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCallback_ROUNDSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 =======
 	void drawCallback_ROUNDSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
@@ -466,6 +467,9 @@ public:
 =======
 	void drawCallback_ROUNDSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+	void drawCallback_ROUNDSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+>>>>>>> 6b84511... GUI: Add drawCrossClip()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 <<<<<<< HEAD
@@ -626,6 +630,7 @@ public:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 =======
 	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
@@ -636,6 +641,9 @@ public:
 =======
 	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+>>>>>>> 6b84511... GUI: Add drawCrossClip()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawCrossClip(x, y, w, h, clip);
