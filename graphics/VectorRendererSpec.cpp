@@ -835,6 +835,65 @@ blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r) {
 
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
+blitKeyBitmapClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping) {
+	if (clipping.isEmpty() || clipping.contains(r)) {
+		blitKeyBitmap(source, r);
+		return;
+	}
+
+	int16 x = r.left;
+	int16 y = r.top;
+
+	if (r.width() > source->w)
+		x = x + (r.width() >> 1) - (source->w >> 1);
+
+	if (r.height() > source->h)
+		y = y + (r.height() >> 1) - (source->h >> 1);
+
+	int w = source->w, h = source->h;
+	int usedW = w, usedH = h;
+	int offsetX = 0, offsetY = 0;
+
+	if (x > clipping.right || x + w < clipping.left) return;
+	if (y > clipping.bottom || y + h < clipping.top) return;
+	if (x < clipping.left) {
+		offsetX = clipping.left - x;
+		usedW -= offsetX;
+		x = clipping.left;
+	}
+	if (y < clipping.top) {
+		offsetY = clipping.top - y;
+		usedH -= offsetY;
+		y = clipping.top;
+	}
+	if (usedW > clipping.width()) usedW = clipping.width();
+	if (usedH > clipping.width()) usedH = clipping.height();
+
+	PixelType *dst_ptr = (PixelType *)_activeSurface->getBasePtr(x, y);
+	const PixelType *src_ptr = (const PixelType *)source->getBasePtr(offsetX, offsetY);
+
+	int dst_pitch = _activeSurface->pitch / _activeSurface->format.bytesPerPixel;
+	int src_pitch = source->pitch / source->format.bytesPerPixel;
+
+	h = usedH;
+	while (h--) {
+		w = usedW;
+
+		while (w--) {
+			if (*src_ptr != _bitmapAlphaColor)
+				*dst_ptr = *src_ptr;
+
+			dst_ptr++;
+			src_ptr++;
+		}
+
+		dst_ptr = dst_ptr - usedW + dst_pitch;
+		src_ptr = src_ptr - usedH + src_pitch;
+	}
+}
+
+template<typename PixelType>
+void VectorRendererSpec<PixelType>::
 blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r, GUI::ThemeEngine::AutoScaleMode autoscale,
 			Graphics::DrawStep::VectorAlignment xAlign, Graphics::DrawStep::VectorAlignment yAlign, int alpha) {
 	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
