@@ -894,7 +894,10 @@ template<typename PixelType>
 void VectorRendererSpec<PixelType>::
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
 =======
 >>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
 blitKeyBitmapClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping) {
@@ -952,6 +955,7 @@ blitKeyBitmapClip(const Graphics::Surface *source, const Common::Rect &r, const 
 		dst_ptr = dst_ptr - usedW + dst_pitch;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		src_ptr = src_ptr - usedW + src_pitch;
 =======
 		src_ptr = src_ptr - usedH + src_pitch;
@@ -959,6 +963,9 @@ blitKeyBitmapClip(const Graphics::Surface *source, const Common::Rect &r, const 
 =======
 		src_ptr = src_ptr - usedW + src_pitch;
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
+=======
+		src_ptr = src_ptr - usedH + src_pitch;
+>>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
 	}
 }
 
