@@ -407,6 +407,9 @@ public:
 	void drawCaretClip(const Common::Rect &r, const Common::Rect &clip, bool erase,
 		WidgetStateInfo state = kStateEnabled);
 
+	void drawCaretClip(const Common::Rect &r, const Common::Rect &clip, bool erase,
+		WidgetStateInfo state = kStateEnabled);
+
 	void drawLineSeparator(const Common::Rect &r, WidgetStateInfo state = kStateEnabled);
 	void drawLineSeparatorClip(const Common::Rect &r, const Common::Rect &clippingArea, WidgetStateInfo state = kStateEnabled);
 
