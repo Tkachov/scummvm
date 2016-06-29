@@ -1711,6 +1711,7 @@ void VectorRendererSpec<PixelType>::
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) {
 =======
 drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch) {
@@ -1721,6 +1722,9 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) 
 =======
 drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch) {
 >>>>>>> ea6c017... GUI: clippingRect propogated deeper
+=======
+drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) {
+>>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
 	if (x + w > Base::_activeSurface->w || y + h > Base::_activeSurface->h ||
 		w <= 0 || h <= 0 || x < 0 || y < 0 || r <= 0)
 		return;
@@ -1751,13 +1755,15 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw,
 >>>>>>> ea6c017... GUI: clippingRect propogated deeper
 =======
 	Common::Rect backup = _clippingArea;
-	_clippingArea = Common::Rect(cx, cy, cx + cw, cy + ch);	
+	_clippingArea = clipping;
+	bool useOriginal = (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h)));
 
 >>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 	if (Base::_fillMode != kFillDisabled && Base::_shadowOffset
 		&& x + w + Base::_shadowOffset + 1 < Base::_activeSurface->w
 		&& y + h + Base::_shadowOffset + 1 < Base::_activeSurface->h
 		&& h > (Base::_shadowOffset + 1) * 2) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1777,6 +1783,9 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw,
 =======
 		if (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h))) {
 >>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
+=======
+		if (useOriginal) {
+>>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
 			drawRoundedSquareShadow(x, y, r, w, h, Base::_shadowOffset);
 		} else {
 			drawRoundedSquareShadowClip(x, y, r, w, h, Base::_shadowOffset);
@@ -1822,7 +1831,7 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw,
 >>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 	}
 
-	if (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h))) {
+	if (useOriginal) {
 		drawRoundedSquareAlg(x, y, r, w, h, _fgColor, Base::_fillMode);
 	} else {
 <<<<<<< HEAD
