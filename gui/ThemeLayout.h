@@ -206,7 +206,15 @@ public:
 	bool getWidgetData(const Common::String &name, int16 &x, int16 &y, uint16 &w, uint16 &h);
 	Graphics::TextAlign getWidgetTextHAlign(const Common::String &name);
 
-	void reflowLayout() {}
+	void reflowLayout() {
+		//container children
+		if (_children.size()) {
+			_children[0]->resetLayout();
+			_children[0]->setWidth(_w);
+			_children[0]->setHeight(_h);
+			_children[0]->reflowLayout();
+		}
+	}
 
 #ifdef LAYOUT_DEBUG_DIALOG
 	virtual const char *getName() const { return _name.c_str(); }

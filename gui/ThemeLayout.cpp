@@ -143,6 +143,12 @@ bool ThemeLayoutWidget::getWidgetData(const Common::String &name, int16 &x, int1
 		return true;
 	}
 
+	//container's children
+	for (uint i = 0; i < _children.size(); ++i) {
+		if (_children[i]->getWidgetData(name, x, y, w, h))
+			return true;
+	}
+
 	return false;
 }
 

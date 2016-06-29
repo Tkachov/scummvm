@@ -105,6 +105,10 @@ void ThemeEval::addWidget(const Common::String &name, int w, int h, const Common
 									typeAlign == Graphics::kTextAlignInvalid ? align : typeAlign);
 
 	_curLayout.top()->addChild(widget);
+	if (name == "Container" || type == "Container") {
+		_curLayout.push(widget);
+	}
+
 	setVar(_curDialog + "." + name + ".Enabled", enabled ? 1 : 0);
 }
 

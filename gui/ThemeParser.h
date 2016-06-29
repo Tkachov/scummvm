@@ -187,6 +187,7 @@ protected:
 				XML_PROP(resolution, false)
 				XML_PROP(inset, false)
 				XML_KEY(layout)
+					XML_PROP(name, false)
 					XML_PROP(type, true)
 					XML_PROP(center, false)
 					XML_PROP(padding, false)

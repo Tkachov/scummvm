@@ -1278,24 +1278,24 @@ GlobalOptionsDialog::GlobalOptionsDialog()
 
 	_selectedStorageIndex = CloudMan.getStorageIndex();
 
-	_storagePopUpDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StoragePopupDesc", _("Storage:"), _("Active cloud storage"));
-	_storagePopUp = new PopUpWidget(container, "GlobalOptions_Cloud_Container.StoragePopup");
+	_storagePopUpDesc = new StaticTextWidget(container, "GlobalOptions_Cloud.Container.StoragePopupDesc", _("Storage:"), _("Active cloud storage"));
+	_storagePopUp = new PopUpWidget(container, "GlobalOptions_Cloud.Container.StoragePopup");
 	Common::StringArray list = CloudMan.listStorages();
 	for (uint32 i = 0; i < list.size(); ++i)
 		_storagePopUp->appendEntry(list[i], i);
 	_storagePopUp->setSelected(_selectedStorageIndex);
 
-	_storageUsernameDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsernameDesc", _("Username:"), _("Username used by this storage"));
-	_storageUsername = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsernameLabel", "<none>");
+	_storageUsernameDesc = new StaticTextWidget(container, "GlobalOptions_Cloud.Container.StorageUsernameDesc", _("Username:"), _("Username used by this storage"));
+	_storageUsername = new StaticTextWidget(container, "GlobalOptions_Cloud.Container.StorageUsernameLabel", "<none>");
 
-	_storageUsedSpaceDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsedSpaceDesc", _("Used space:"), _("Space used by ScummVM's saves on this storage"));
-	_storageUsedSpace = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsedSpaceLabel", "0 bytes");
+	_storageUsedSpaceDesc = new StaticTextWidget(container, "GlobalOptions_Cloud.Container.StorageUsedSpaceDesc", _("Used space:"), _("Space used by ScummVM's saves on this storage"));
+	_storageUsedSpace = new StaticTextWidget(container, "GlobalOptions_Cloud.Container.StorageUsedSpaceLabel", "0 bytes");
 
-	_storageLastSyncDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageLastSyncDesc", _("Last sync time:"), _("When this storage did saves sync last time"));
-	_storageLastSync = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageLastSyncLabel", "<never>");
+	_storageLastSyncDesc = new StaticTextWidget(container, "GlobalOptions_Cloud.Container.StorageLastSyncDesc", _("Last sync time:"), _("When this storage did saves sync last time"));
+	_storageLastSync = new StaticTextWidget(container, "GlobalOptions_Cloud.Container.StorageLastSyncLabel", "<never>");
 
-	_storageConnectButton = new ButtonWidget(container, "GlobalOptions_Cloud_Container.ConnectButton", _("Connect"), _("Open wizard dialog to connect your cloud storage account"), kConfigureStorageCmd);
-	_storageRefreshButton = new ButtonWidget(container, "GlobalOptions_Cloud_Container.RefreshButton", _("Refresh"), _("Refresh current cloud storage information (username and usage)"), kRefreshStorageCmd);
+	_storageConnectButton = new ButtonWidget(container, "GlobalOptions_Cloud.Container.ConnectButton", _("Connect"), _("Open wizard dialog to connect your cloud storage account"), kConfigureStorageCmd);
+	_storageRefreshButton = new ButtonWidget(container, "GlobalOptions_Cloud.Container.RefreshButton", _("Refresh"), _("Refresh current cloud storage information (username and usage)"), kRefreshStorageCmd);
 
 	setupCloudTab();
 	_redrawCloudTab = false;

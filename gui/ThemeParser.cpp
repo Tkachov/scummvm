@@ -767,6 +767,10 @@ bool ThemeParser::parserCallback_layout(ParserNode *node) {
 		_theme->getEvaluator()->addLayout(GUI::ThemeLayout::kLayoutVertical, spacing, center);
 	else if (node->values["type"] == "horizontal")
 		_theme->getEvaluator()->addLayout(GUI::ThemeLayout::kLayoutHorizontal, spacing, center);
+	else if (node->values["type"] == "Container") {
+		parserCallback_widget(node);
+		return true;
+	}
 	else
 		return parserError("Invalid layout type. Only 'horizontal' and 'vertical' layouts allowed.");
 
