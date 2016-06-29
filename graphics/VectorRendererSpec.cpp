@@ -993,8 +993,11 @@ blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r, GUI
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
 =======
+=======
+>>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r, const Common::Rect &clipping,
 	GUI::ThemeEngine::AutoScaleMode autoscale, Graphics::DrawStep::VectorAlignment xAlign,
 	Graphics::DrawStep::VectorAlignment yAlign, int alpha) {
@@ -1003,8 +1006,14 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 		return;
 	}
 
+<<<<<<< HEAD
 	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
 		source->blitClip(*_activeSurface, clipping, r.left, r.top, Graphics::FLIP_NONE,
+=======
+	debug("blitAlphaBitmapClip: no clipping implemented");
+	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
+		source->blit(*_activeSurface, r.left, r.top, Graphics::FLIP_NONE,
+>>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 			nullptr, TS_ARGB(alpha, 255, 255, 255),
 			r.width(), r.height());
 	} else if (autoscale == GUI::ThemeEngine::kAutoScaleFit) {
@@ -1021,21 +1030,34 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 		if (yAlign == Graphics::DrawStep::kVectorAlignCenter)
 			offy = (r.height() - (int)(source->h * ratio)) >> 1;
 
+<<<<<<< HEAD
 		source->blitClip(*_activeSurface, clipping, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
+=======
+		source->blit(*_activeSurface, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
+>>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 			nullptr, TS_ARGB(alpha, 255, 255, 255),
 			(int)(source->w * ratio), (int)(source->h * ratio));
 
 	} else if (autoscale == GUI::ThemeEngine::kAutoScaleNinePatch) {
 		Graphics::NinePatchBitmap nine(source, false);
+<<<<<<< HEAD
 		nine.blitClip(*_activeSurface, clipping, r.left, r.top, r.width(), r.height());
 	} else {
 		source->blitClip(*_activeSurface, clipping, r.left, r.top);
+=======
+		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height());
+	} else {
+		source->blit(*_activeSurface, r.left, r.top);
+>>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 	}
 
 }
 
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
+<<<<<<< HEAD
+>>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
+=======
 >>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 applyScreenShading(GUI::ThemeEngine::ShadingStyle shadingStyle) {
 	int pixels = _activeSurface->w * _activeSurface->h;
