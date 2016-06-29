@@ -430,6 +430,7 @@ public:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawCallback_LINE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 =======
 	void drawCallback_LINE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
@@ -440,6 +441,9 @@ public:
 =======
 	void drawCallback_LINE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
 >>>>>>> 038b5e6... GUI: Prepare button to be clipped
+=======
+	void drawCallback_LINE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
+>>>>>>> 330b379... GUI: Add drawLineClip()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawLineClip(x, y, x + w, y + w, clip);

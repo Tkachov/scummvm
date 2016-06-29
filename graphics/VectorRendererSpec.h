@@ -53,6 +53,7 @@ public:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void drawLine(int x1, int y1, int x2, int y2);
 	void drawLineClip(int x1, int y1, int x2, int y2, Common::Rect clipping);
 	void drawCircle(int x, int y, int r);
@@ -70,6 +71,10 @@ public:
 >>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
 =======
 =======
+=======
+	void drawLine(int x1, int y1, int x2, int y2);
+	void drawLineClip(int x1, int y1, int x2, int y2, Common::Rect clipping);
+>>>>>>> 330b379... GUI: Add drawLineClip()
 =======
 	void drawLine(int x1, int y1, int x2, int y2);
 	void drawLineClip(int x1, int y1, int x2, int y2, Common::Rect clipping);
