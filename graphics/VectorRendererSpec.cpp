@@ -940,9 +940,8 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 		return;
 	}
 
-	debug("blitAlphaBitmapClip: no clipping implemented");
 	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
-		source->blit(*_activeSurface, r.left, r.top, Graphics::FLIP_NONE,
+		source->blitClip(*_activeSurface, clipping, r.left, r.top, Graphics::FLIP_NONE,
 			nullptr, TS_ARGB(alpha, 255, 255, 255),
 			r.width(), r.height());
 	} else if (autoscale == GUI::ThemeEngine::kAutoScaleFit) {
@@ -959,15 +958,15 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 		if (yAlign == Graphics::DrawStep::kVectorAlignCenter)
 			offy = (r.height() - (int)(source->h * ratio)) >> 1;
 
-		source->blit(*_activeSurface, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
+		source->blitClip(*_activeSurface, clipping, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
 			nullptr, TS_ARGB(alpha, 255, 255, 255),
 			(int)(source->w * ratio), (int)(source->h * ratio));
 
 	} else if (autoscale == GUI::ThemeEngine::kAutoScaleNinePatch) {
 		Graphics::NinePatchBitmap nine(source, false);
-		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height());
+		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height()); //TODO
 	} else {
-		source->blit(*_activeSurface, r.left, r.top);
+		source->blitClip(*_activeSurface, clipping, r.left, r.top);
 	}
 
 }
