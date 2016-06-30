@@ -1026,6 +1026,7 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
 		source->blitClip(*_activeSurface, clipping, r.left, r.top, Graphics::FLIP_NONE,
 =======
@@ -1042,6 +1043,10 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
 		source->blit(*_activeSurface, r.left, r.top, Graphics::FLIP_NONE,
 >>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
+=======
+	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
+		source->blitClip(*_activeSurface, clipping, r.left, r.top, Graphics::FLIP_NONE,
+>>>>>>> 1ed7481... GUI: Add blitClip()
 			nullptr, TS_ARGB(alpha, 255, 255, 255),
 			r.width(), r.height());
 	} else if (autoscale == GUI::ThemeEngine::kAutoScaleFit) {
@@ -1061,6 +1066,7 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		source->blitClip(*_activeSurface, clipping, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
 =======
 		source->blit(*_activeSurface, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
@@ -1071,11 +1077,15 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 =======
 		source->blit(*_activeSurface, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
 >>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
+=======
+		source->blitClip(*_activeSurface, clipping, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
+>>>>>>> 1ed7481... GUI: Add blitClip()
 			nullptr, TS_ARGB(alpha, 255, 255, 255),
 			(int)(source->w * ratio), (int)(source->h * ratio));
 
 	} else if (autoscale == GUI::ThemeEngine::kAutoScaleNinePatch) {
 		Graphics::NinePatchBitmap nine(source, false);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1101,6 +1111,11 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 	} else {
 		source->blit(*_activeSurface, r.left, r.top);
 >>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
+=======
+		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height()); //TODO
+	} else {
+		source->blitClip(*_activeSurface, clipping, r.left, r.top);
+>>>>>>> 1ed7481... GUI: Add blitClip()
 	}
 
 }
