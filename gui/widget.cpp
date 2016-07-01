@@ -496,6 +496,9 @@ void PicButtonWidget::drawWidget() {
 
 			g_gui.theme()->drawSurfaceClip(Common::Rect(x, y, x + gfx->w,  y + gfx->h), getBossClipRect(), *gfx, _state, _alpha, _transparency);
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 4b4260c... GUI: Use clipping everywhere
+=======
 >>>>>>> 4b4260c... GUI: Use clipping everywhere
 =======
 >>>>>>> 4b4260c... GUI: Use clipping everywhere
