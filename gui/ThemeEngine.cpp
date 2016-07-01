@@ -171,8 +171,11 @@ protected:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
+=======
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 =======
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 class ThemeItemBitmapClip : public ThemeItem {
@@ -189,6 +192,9 @@ protected:
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
+=======
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 =======
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
@@ -404,8 +410,11 @@ void ThemeItemBitmap::drawSelf(bool draw, bool restore) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
+=======
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 =======
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 void ThemeItemBitmapClip::drawSelf(bool draw, bool restore) {
@@ -425,6 +434,9 @@ void ThemeItemBitmapClip::drawSelf(bool draw, bool restore) {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
+=======
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 =======
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
@@ -1188,6 +1200,21 @@ void ThemeEngine::queueBitmapClip(const Graphics::Surface *bitmap, const Common:
 	}
 }
 
+void ThemeEngine::queueBitmapClip(const Graphics::Surface *bitmap, const Common::Rect &r, const Common::Rect &clip, bool alpha) {
+
+	Common::Rect area = r;
+	area.clip(_screen.w, _screen.h);
+
+	ThemeItemBitmapClip *q = new ThemeItemBitmapClip(this, area, clip, bitmap, alpha);
+
+	if (_buffering) {
+		_screenQueue.push_back(q);
+	} else {
+		q->drawSelf(true, false);
+		delete q;
+	}
+}
+
 void ThemeEngine::queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, AutoScaleMode autoscale, int alpha) {
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 
@@ -1671,8 +1698,11 @@ void ThemeEngine::drawSurface(const Common::Rect &r, const Graphics::Surface &su
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
+=======
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 =======
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 void ThemeEngine::drawSurfaceClip(const Common::Rect &r, const Common::Rect &clip, const Graphics::Surface &surface, WidgetStateInfo state, int alpha, bool themeTrans) {
@@ -1683,6 +1713,9 @@ void ThemeEngine::drawSurfaceClip(const Common::Rect &r, const Common::Rect &cli
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
+=======
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 =======
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
