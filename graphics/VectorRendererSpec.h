@@ -141,8 +141,12 @@ public:
 	void blitSubSurface(const Graphics::Surface *source, const Common::Rect &r);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void blitAlphaBitmap(const Graphics::Surface *source, const Common::Rect &r);
 =======
+=======
+	void blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping);
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 =======
 	void blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping);
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping

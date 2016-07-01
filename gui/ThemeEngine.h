@@ -362,6 +362,9 @@ public:
 	void drawSurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, const Graphics::Surface &surface,
 		WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
 
+	void drawSurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, const Graphics::Surface &surface,
+		WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
+
 	void drawASurface(const Common::Rect &r, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
 <<<<<<< HEAD
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
@@ -639,7 +642,11 @@ protected:
 	void queueBitmap(const Graphics::Surface *bitmap, const Common::Rect &r, bool alpha);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+	void queueBitmapClip(const Graphics::Surface *bitmap, const Common::Rect &clippingRect, const Common::Rect &r, bool alpha);
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 =======
 	void queueBitmapClip(const Graphics::Surface *bitmap, const Common::Rect &clippingRect, const Common::Rect &r, bool alpha);
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping

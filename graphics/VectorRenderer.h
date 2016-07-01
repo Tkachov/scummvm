@@ -612,8 +612,13 @@ public:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	virtual void blitAlphaBitmap(const Graphics::Surface *source, const Common::Rect &r) = 0;
 =======
+=======
+	virtual void blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping) = 0;
+
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 =======
 	virtual void blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping) = 0;
 

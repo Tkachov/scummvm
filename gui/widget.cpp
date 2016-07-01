@@ -745,9 +745,13 @@ void GraphicsWidget::drawWidget() {
 		const int y = _y + (_h - _gfx.h) / 2;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		g_gui.theme()->drawSurface(Common::Rect(x, y, x + _gfx.w,  y + _gfx.h), _gfx, _state, _alpha, _transparency);
 <<<<<<< HEAD
 =======
+=======
+		g_gui.theme()->drawSurfaceClip(Common::Rect(x, y, x + _gfx.w,  y + _gfx.h), getBossClipRect(), _gfx, _state, _alpha, _transparency);
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 =======
 		g_gui.theme()->drawSurfaceClip(Common::Rect(x, y, x + _gfx.w,  y + _gfx.h), getBossClipRect(), _gfx, _state, _alpha, _transparency);
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
