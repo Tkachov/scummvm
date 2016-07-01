@@ -44,6 +44,7 @@
 #include "audio/fmopl.h"
 #include "widgets/scrollbar.h"
 #include "widgets/scrollcontainer.h"
+#include "widgets/edittext.h"
 
 #ifdef USE_CLOUD
 #include "backends/cloud/cloudmanager.h"
@@ -1284,6 +1285,34 @@ GlobalOptionsDialog::GlobalOptionsDialog()
 	for (uint32 i = 0; i < list.size(); ++i)
 		_storagePopUp->appendEntry(list[i], i);
 	_storagePopUp->setSelected(_selectedStorageIndex);
+
+	////
+	if (g_system->getOverlayWidth() > 320)
+		/*_musicVolumeDesc = */new StaticTextWidget(container, "GlobalOptions_Cloud_Container.vcMusicText", _("Music volume:"));
+	else
+		/*_musicVolumeDesc = */new StaticTextWidget(container, "GlobalOptions_Cloud_Container.vcMusicText", _c("Music volume:", "lowres"));
+	/*_musicVolumeSlider = */new SliderWidget(container, "GlobalOptions_Cloud_Container.vcMusicSlider", 0, kMusicVolumeChanged);
+	/*_musicVolumeLabel = */new StaticTextWidget(container, "GlobalOptions_Cloud_Container.vcMusicLabel", "100%");
+	/*_musicVolumeSlider->setMinValue(0);
+	_musicVolumeSlider->setMaxValue(Audio::Mixer::kMaxMixerVolume);
+	_musicVolumeLabel->setFlags(WIDGET_CLEARBG);*/
+
+	/*_muteCheckbox = */new CheckboxWidget(container, "GlobalOptions_Cloud_Container.vcMuteCheckbox", _("Mute All"), 0, kMuteAllChanged);
+
+	/*_subToggleDesc = */new StaticTextWidget(container, "GlobalOptions_Cloud_Container.subToggleDesc", _("Text and Speech:"));
+
+	RadiobuttonGroup *_subToggleGroupCCC = new RadiobuttonGroup(container, kSubtitleToggle);
+
+	/*_subToggleSpeechOnly = */new RadiobuttonWidget(container, "GlobalOptions_Cloud_Container.subToggleSpeechOnly", _subToggleGroupCCC, kSubtitlesSpeech, _("Speech"));
+	/*_subToggleSubOnly = */new RadiobuttonWidget(container, "GlobalOptions_Cloud_Container.subToggleSubOnly", _subToggleGroupCCC, kSubtitlesSubs, _("Subtitles"));
+	/*_subToggleSubBoth = */new RadiobuttonWidget(container, "GlobalOptions_Cloud_Container.subToggleSubBoth", _subToggleGroupCCC, kSubtitlesBoth, _("Both"));
+
+	GraphicsWidget *_logo = new GUI::GraphicsWidget(container, "GlobalOptions_Cloud_Container.Logo");
+	_logo->useThemeTransparency(true);
+	_logo->setGfx(g_gui.theme()->getImageSurface(GUI::ThemeEngine::kImageLogoSmall));
+
+	new EditTextWidget(container, "GlobalOptions_Cloud_Container.CodeBox7", "", 0, 0);
+	////
 
 	_storageUsernameDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsernameDesc", _("Username:"), _("Username used by this storage"));
 	_storageUsername = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsernameLabel", "<none>");

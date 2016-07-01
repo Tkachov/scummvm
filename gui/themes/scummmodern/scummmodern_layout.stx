@@ -555,6 +555,52 @@
 				/>
 			</layout>
 			<!-- <space size='100'/> -->
+
+<!-- -->
+			<layout type = 'vertical' padding = '0, 0, 0, 0' spacing = '8'>
+				<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
+					<widget name = 'vcMusicText'
+							type = 'OptionsLabel'
+					/>
+					<widget name = 'vcMusicSlider'
+							type = 'Slider'
+					/>
+					<widget name = 'vcMusicLabel'
+							type = 'SmallLabel'
+					/>
+				</layout>
+			</layout>
+			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10'>
+				<widget name = 'vcMuteCheckbox'
+						type = 'Checkbox'
+				/>
+			</layout>
+			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10'>
+				<widget name = 'subToggleDesc'
+						type = 'OptionsLabel'
+				/>
+				<widget name = 'subToggleSpeechOnly'
+						type = 'Radiobutton'
+				/>
+				<widget name = 'subToggleSubOnly'
+						type = 'Radiobutton'
+				/>
+				<widget name = 'subToggleSubBoth'
+						type = 'Radiobutton'
+				/>
+			</layout>
+			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10'>
+				<widget name = 'Logo'
+						width = '287'
+						height = '80'
+				/>
+				<widget name = 'CodeBox7'
+						width = '60'
+						height = '16'
+					/>
+			</layout>
+<!-- -->
+
 			<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '10' center = 'true'>
 				<widget name = 'StorageUsernameDesc'
 						type = 'OptionsLabel'
