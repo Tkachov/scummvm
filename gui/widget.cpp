@@ -679,6 +679,26 @@ void GraphicsWidget::drawWidget() {
 		const int y = _y + (_h - _gfx.h) / 2;
 
 		g_gui.theme()->drawSurface(Common::Rect(x, y, x + _gfx.w,  y + _gfx.h), _gfx, _state, _alpha, _transparency);
+<<<<<<< HEAD
+=======
+	} else if (_agfx.getPixels()) {
+		// Check whether the set up surface needs to be converted to the GUI
+		// color format.
+		const Graphics::PixelFormat &requiredFormat = g_gui.theme()->getPixelFormat();
+		if (_agfx.format != requiredFormat) {
+			_agfx.convertToInPlace(requiredFormat);
+		}
+
+		if (_mode == GUI::ThemeEngine::kAutoScaleNone) {
+			const int x = _x + (_w - _agfx.w) / 2;
+			const int y = _y + (_h - _agfx.h) / 2;
+
+			g_gui.theme()->drawASurfaceClip(Common::Rect(x, y, x + _agfx.w,  y + _agfx.h), getBossClipRect(), _agfx, _mode, _alpha);
+
+		} else {
+			g_gui.theme()->drawASurfaceClip(Common::Rect(_x, _y, _x + _w,  _y + _h), getBossClipRect(), _agfx, _mode, _alpha);
+		}
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 	}
 }
 

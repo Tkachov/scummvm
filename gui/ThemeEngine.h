@@ -353,6 +353,8 @@ public:
 	void drawSurface(const Common::Rect &r, const Graphics::Surface &surface,
 	                 WidgetStateInfo state = kStateEnabled, int alpha = 256, bool themeTrans = false);
 
+	void drawASurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
+
 	void drawSlider(const Common::Rect &r, int width,
 	                WidgetStateInfo state = kStateEnabled);
 
@@ -609,6 +611,11 @@ protected:
 	void queueDDTextClip(TextData type, TextColor color, const Common::Rect &r, const Common::Rect &clippingRect, const Common::String &text, bool restoreBg,
 					 bool elipsis, Graphics::TextAlign alignH = Graphics::kTextAlignLeft, TextAlignVertical alignV = kTextAlignVTop, int deltax = 0, const Common::Rect &drawableTextArea = Common::Rect(0, 0, 0, 0));
 	void queueBitmap(const Graphics::Surface *bitmap, const Common::Rect &r, bool alpha);
+<<<<<<< HEAD
+=======
+	void queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, AutoScaleMode autoscale, int alpha);
+	void queueABitmapClip(Graphics::TransparentSurface *bitmap, const Common::Rect &r, const Common::Rect &clippingRect, AutoScaleMode autoscale, int alpha);
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 
 	/**
 	 * DEBUG: Draws a white square and writes some text next to it.
