@@ -364,6 +364,9 @@ public:
 	void drawSurface(const Common::Rect &r, const Graphics::Surface &surface,
 	                 WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
 
+	void drawSurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, const Graphics::Surface &surface,
+		WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
+
 	void drawASurface(const Common::Rect &r, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
 
 	void drawASurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
@@ -640,6 +643,7 @@ protected:
 	void queueDDTextClip(TextData type, TextColor color, const Common::Rect &r, const Common::Rect &clippingRect, const Common::String &text, bool restoreBg,
 					 bool elipsis, Graphics::TextAlign alignH = Graphics::kTextAlignLeft, TextAlignVertical alignV = kTextAlignVTop, int deltax = 0, const Common::Rect &drawableTextArea = Common::Rect(0, 0, 0, 0));
 	void queueBitmap(const Graphics::Surface *bitmap, const Common::Rect &r, bool alpha);
+	void queueBitmapClip(const Graphics::Surface *bitmap, const Common::Rect &clippingRect, const Common::Rect &r, bool alpha);
 	void queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, AutoScaleMode autoscale, int alpha);
 	void queueABitmapClip(Graphics::TransparentSurface *bitmap, const Common::Rect &r, const Common::Rect &clippingRect, AutoScaleMode autoscale, int alpha);
 
