@@ -393,6 +393,8 @@ public:
 >>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawASurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
 
+	void drawASurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
+
 	void drawSlider(const Common::Rect &r, int width,
 	                WidgetStateInfo state = kStateEnabled);
 	void drawSliderClip(const Common::Rect &r, const Common::Rect &clippingRect, int width,
@@ -677,6 +679,9 @@ protected:
 	void queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, AutoScaleMode autoscale, int alpha);
 	void queueABitmapClip(Graphics::TransparentSurface *bitmap, const Common::Rect &r, const Common::Rect &clippingRect, AutoScaleMode autoscale, int alpha);
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
+=======
 >>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 =======
 >>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()

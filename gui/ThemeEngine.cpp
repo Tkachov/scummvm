@@ -210,10 +210,16 @@ public:
 	ThemeItemABitmapClip(ThemeEngine *engine, const Common::Rect &area, const Common::Rect &clip, Graphics::TransparentSurface *bitmap, ThemeEngine::AutoScaleMode autoscale, int alpha) :
 		ThemeItem(engine, area), _bitmap(bitmap), _autoscale(autoscale), _alpha(alpha), _clip(clip) {}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	void drawSelf(bool draw, bool restore);
 >>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 
+=======
+
+	void drawSelf(bool draw, bool restore);
+
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 =======
 
 	void drawSelf(bool draw, bool restore);
@@ -444,6 +450,9 @@ void ThemeItemABitmapClip::drawSelf(bool draw, bool restore) {
 	_engine->addDirtyRect(dirtyRect);
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
+=======
 >>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 =======
 >>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
@@ -1692,6 +1701,9 @@ void ThemeEngine::drawASurfaceClip(const Common::Rect &r, const Common::Rect &cl
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
+=======
 >>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 =======
 >>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
