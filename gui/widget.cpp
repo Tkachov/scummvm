@@ -99,7 +99,7 @@ void Widget::draw() {
 
 	// Draw border
 	if (_flags & WIDGET_BORDER) {
-		g_gui.theme()->drawWidgetBackground(Common::Rect(_x, _y, _x+_w, _y+_h), 0, ThemeEngine::kWidgetBackgroundBorder);
+		g_gui.theme()->drawWidgetBackgroundClip(Common::Rect(_x, _y, _x+_w, _y+_h), getBossClipRect(), 0, ThemeEngine::kWidgetBackgroundBorder);
 		_x += 4;
 		_y += 4;
 		_w -= 8;
@@ -416,18 +416,61 @@ void PicButtonWidget::setGfx(int w, int h, int r, int g, int b) {
 }
 
 void PicButtonWidget::drawWidget() {
+<<<<<<< HEAD
 	g_gui.theme()->drawButton(Common::Rect(_x, _y, _x+_w, _y+_h), "", _state, getFlags());
+=======
+	if (_showButton)
+		g_gui.theme()->drawButtonClip(Common::Rect(_x, _y, _x+_w, _y+_h), getBossClipRect(), "", _state, getFlags());
+
+	if (!_isAlpha) {
+		Graphics::Surface *gfx;
+
+		if (_state == ThemeEngine::kStateHighlight)
+			gfx = &_gfx[kPicButtonHighlight];
+		else if (_state == ThemeEngine::kStateDisabled)
+			gfx = &_gfx[kPicButtonStateDisabled];
+		else if (_state == ThemeEngine::kStatePressed)
+			gfx = &_gfx[kPicButtonStatePressed];
+		else
+			gfx = &_gfx[kPicButtonStateEnabled];
+>>>>>>> 4b4260c... GUI: Use clipping everywhere
 
 	if (_gfx.getPixels()) {
 		// Check whether the set up surface needs to be converted to the GUI
 		// color format.
+<<<<<<< HEAD
 		const Graphics::PixelFormat &requiredFormat = g_gui.theme()->getPixelFormat();
 		if (_gfx.format != requiredFormat) {
 			_gfx.convertToInPlace(requiredFormat);
+=======
+			const Graphics::PixelFormat &requiredFormat = g_gui.theme()->getPixelFormat();
+			if (gfx->format != requiredFormat) {
+				gfx->convertToInPlace(requiredFormat);
+			}
+
+			const int x = _x + (_w - gfx->w) / 2;
+			const int y = _y + (_h - gfx->h) / 2;
+
+			g_gui.theme()->drawSurfaceClip(Common::Rect(x, y, x + gfx->w,  y + gfx->h), getBossClipRect(), *gfx, _state, _alpha, _transparency);
+>>>>>>> 4b4260c... GUI: Use clipping everywhere
 		}
 
+<<<<<<< HEAD
 		const int x = _x + (_w - _gfx.w) / 2;
 		const int y = _y + (_h - _gfx.h) / 2;
+=======
+		if (gfx->getPixels()) {
+			if (_mode == GUI::ThemeEngine::kAutoScaleNone) {
+				const int x = _x + (_w - gfx->w) / 2;
+				const int y = _y + (_h - gfx->h) / 2;
+
+				g_gui.theme()->drawASurfaceClip(Common::Rect(x, y, x + gfx->w,  y + gfx->h), getBossClipRect(), *gfx, _mode, _alpha);
+
+			} else {
+				g_gui.theme()->drawASurfaceClip(Common::Rect(_x, _y, _x + _w,  _y + _h), getBossClipRect(), *gfx, _mode, _alpha);
+			}
+		}
+>>>>>>> 4b4260c... GUI: Use clipping everywhere
 
 		g_gui.theme()->drawSurface(Common::Rect(x, y, x + _gfx.w,  y + _gfx.h), _gfx, _state, _alpha, _transparency);
 	}
@@ -464,7 +507,7 @@ void CheckboxWidget::setState(bool state) {
 }
 
 void CheckboxWidget::drawWidget() {
-	g_gui.theme()->drawCheckbox(Common::Rect(_x, _y, _x+_w, _y+_h), _label, _state, Widget::_state);
+	g_gui.theme()->drawCheckboxClip(Common::Rect(_x, _y, _x+_w, _y+_h), getBossClipRect(), _label, _state, Widget::_state);
 }
 
 #pragma mark -
@@ -533,7 +576,7 @@ void RadiobuttonWidget::setState(bool state, bool setGroup) {
 }
 
 void RadiobuttonWidget::drawWidget() {
-	g_gui.theme()->drawRadiobutton(Common::Rect(_x, _y, _x+_w, _y+_h), _label, _state, Widget::_state);
+	g_gui.theme()->drawRadiobuttonClip(Common::Rect(_x, _y, _x+_w, _y+_h), getBossClipRect(), _label, _state, Widget::_state);
 }
 
 #pragma mark -
@@ -601,7 +644,7 @@ void SliderWidget::handleMouseWheel(int x, int y, int direction) {
 }
 
 void SliderWidget::drawWidget() {
-	g_gui.theme()->drawSlider(Common::Rect(_x, _y, _x + _w, _y + _h), valueToBarWidth(_value), _state);
+	g_gui.theme()->drawSliderClip(Common::Rect(_x, _y, _x + _w, _y + _h), getBossClipRect(), valueToBarWidth(_value), _state);
 }
 
 int SliderWidget::valueToBarWidth(int value) {
@@ -739,7 +782,7 @@ void ContainerWidget::removeWidget(Widget *widget) {
 }
 
 void ContainerWidget::drawWidget() {
-	g_gui.theme()->drawWidgetBackground(Common::Rect(_x, _y, _x + _w, _y + _h), 0, ThemeEngine::kWidgetBackgroundBorder);
+	g_gui.theme()->drawWidgetBackgroundClip(Common::Rect(_x, _y, _x + _w, _y + _h), getBossClipRect(), 0, ThemeEngine::kWidgetBackgroundBorder);
 }
 
 } // End of namespace GUI
