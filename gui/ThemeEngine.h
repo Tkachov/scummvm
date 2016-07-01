@@ -351,7 +351,16 @@ public:
 		WidgetStateInfo state = kStateEnabled, uint16 hints = 0);
 
 	void drawSurface(const Common::Rect &r, const Graphics::Surface &surface,
+<<<<<<< HEAD
 	                 WidgetStateInfo state = kStateEnabled, int alpha = 256, bool themeTrans = false);
+=======
+	                 WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
+
+	void drawSurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, const Graphics::Surface &surface,
+		WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
+
+	void drawASurface(const Common::Rect &r, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 
 	void drawASurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
 
@@ -612,7 +621,11 @@ protected:
 					 bool elipsis, Graphics::TextAlign alignH = Graphics::kTextAlignLeft, TextAlignVertical alignV = kTextAlignVTop, int deltax = 0, const Common::Rect &drawableTextArea = Common::Rect(0, 0, 0, 0));
 	void queueBitmap(const Graphics::Surface *bitmap, const Common::Rect &r, bool alpha);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+	void queueBitmapClip(const Graphics::Surface *bitmap, const Common::Rect &clippingRect, const Common::Rect &r, bool alpha);
+>>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 	void queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, AutoScaleMode autoscale, int alpha);
 	void queueABitmapClip(Graphics::TransparentSurface *bitmap, const Common::Rect &r, const Common::Rect &clippingRect, AutoScaleMode autoscale, int alpha);
 >>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
