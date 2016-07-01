@@ -340,17 +340,23 @@ public:
 
 	void drawWidgetBackground(const Common::Rect &r, uint16 hints,
 	                          WidgetBackground background = kWidgetBackgroundPlain, WidgetStateInfo state = kStateEnabled);
+<<<<<<< HEAD
 	void drawWidgetBackgroundClip(const Common::Rect &r, const Common::Rect &clippingArea, uint16 hints,
 								WidgetBackground background = kWidgetBackgroundPlain, WidgetStateInfo state = kStateEnabled);
 
+=======
+>>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawWidgetBackgroundClip(const Common::Rect &r, const Common::Rect &clippingArea, uint16 hints,
 								WidgetBackground background = kWidgetBackgroundPlain, WidgetStateInfo state = kStateEnabled);
 
 	void drawButton(const Common::Rect &r, const Common::String &str,
 	                WidgetStateInfo state = kStateEnabled, uint16 hints = 0);
+<<<<<<< HEAD
 	void drawButtonClip(const Common::Rect &r, const Common::Rect &clippingRect, const Common::String &str,
 		WidgetStateInfo state = kStateEnabled, uint16 hints = 0);
 
+=======
+>>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawButtonClip(const Common::Rect &r, const Common::Rect &clippingRect, const Common::String &str,
 		WidgetStateInfo state = kStateEnabled, uint16 hints = 0);
 
@@ -359,13 +365,17 @@ public:
 	                 WidgetStateInfo state = kStateEnabled, int alpha = 256, bool themeTrans = false);
 =======
 	                 WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
+<<<<<<< HEAD
 	void drawSurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, const Graphics::Surface &surface,
 		WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
 
+=======
+>>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawSurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, const Graphics::Surface &surface,
 		WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
 
 	void drawASurface(const Common::Rect &r, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 
@@ -373,6 +383,8 @@ public:
 >>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawASurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
 
+=======
+>>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawASurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
 
 	void drawSlider(const Common::Rect &r, int width,
@@ -409,9 +421,12 @@ public:
 
 	void drawCaret(const Common::Rect &r, bool erase,
 	               WidgetStateInfo state = kStateEnabled);
+<<<<<<< HEAD
 	void drawCaretClip(const Common::Rect &r, const Common::Rect &clip, bool erase,
 		WidgetStateInfo state = kStateEnabled);
 
+=======
+>>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawCaretClip(const Common::Rect &r, const Common::Rect &clip, bool erase,
 		WidgetStateInfo state = kStateEnabled);
 
