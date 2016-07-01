@@ -534,16 +534,22 @@ Common::Rect TransparentSurface::blitClip(Graphics::Surface &target, Common::Rec
 
 	// Handle off-screen clipping
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 	if (posY < clippingArea.top) {
 		img->h = MAX(0, (int)img->h - (clippingArea.top - posY));
 		img->setPixels((byte *)img->getBasePtr(0, clippingArea.top - posY));
 		posY = clippingArea.top;
+<<<<<<< HEAD
 =======
 	if (posY < clippingArea.bottom) {
 		img->h = MAX(0, (int)img->h - (clippingArea.bottom - posY));
 		img->setPixels((byte *)img->getBasePtr(0, clippingArea.bottom - posY));
 		posY = clippingArea.bottom;
 >>>>>>> 1ed7481... GUI: Add blitClip()
+=======
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 	}
 
 	if (posX < clippingArea.left) {
@@ -553,12 +559,17 @@ Common::Rect TransparentSurface::blitClip(Graphics::Surface &target, Common::Rec
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	img->w = CLIP((int)img->w, 0, (int)MAX((int)clippingArea.right - posX, 0));
 	img->h = CLIP((int)img->h, 0, (int)MAX((int)clippingArea.bottom - posY, 0));
 =======
 	img->w = CLIP((int)img->w, 0, (int)MAX((int)clippingArea.width() - posX, 0));
 	img->h = CLIP((int)img->h, 0, (int)MAX((int)clippingArea.height() - posY, 0));
 >>>>>>> 1ed7481... GUI: Add blitClip()
+=======
+	img->w = CLIP((int)img->w, 0, (int)MAX((int)clippingArea.right - posX, 0));
+	img->h = CLIP((int)img->h, 0, (int)MAX((int)clippingArea.bottom - posY, 0));
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 
 	if ((img->w > 0) && (img->h > 0)) {
 		int xp = 0, yp = 0;

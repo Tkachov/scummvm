@@ -203,10 +203,16 @@ class ThemeItemABitmapClip : public ThemeItem {
 public:
 	ThemeItemABitmapClip(ThemeEngine *engine, const Common::Rect &area, const Common::Rect &clip, Graphics::TransparentSurface *bitmap, ThemeEngine::AutoScaleMode autoscale, int alpha) :
 		ThemeItem(engine, area), _bitmap(bitmap), _autoscale(autoscale), _alpha(alpha), _clip(clip) {}
+<<<<<<< HEAD
 
 	void drawSelf(bool draw, bool restore);
 >>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 
+=======
+
+	void drawSelf(bool draw, bool restore);
+
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 protected:
 	Graphics::TransparentSurface *_bitmap;
 	ThemeEngine::AutoScaleMode _autoscale;
@@ -407,6 +413,9 @@ void ThemeItemABitmapClip::drawSelf(bool draw, bool restore) {
 	dirtyRect.clip(_clip);
 	_engine->addDirtyRect(dirtyRect);
 }
+<<<<<<< HEAD
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
+=======
 >>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 
 
@@ -1583,6 +1592,9 @@ void ThemeEngine::drawASurfaceClip(const Common::Rect &r, const Common::Rect &cl
 	queueABitmapClip(&surface, r, clip, autoscale, alpha);
 }
 
+<<<<<<< HEAD
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
+=======
 >>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 void ThemeEngine::drawWidgetBackground(const Common::Rect &r, uint16 hints, WidgetBackground background, WidgetStateInfo state) {
 	if (!ready())

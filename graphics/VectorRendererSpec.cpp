@@ -1051,6 +1051,7 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 		Graphics::NinePatchBitmap nine(source, false);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		nine.blitClip(*_activeSurface, clipping, r.left, r.top, r.width(), r.height());
 	} else {
 		source->blitClip(*_activeSurface, clipping, r.left, r.top);
@@ -1061,6 +1062,9 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 >>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 =======
 		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height()); //TODO
+=======
+		nine.blitClip(*_activeSurface, clipping, r.left, r.top, r.width(), r.height());
+>>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 	} else {
 		source->blitClip(*_activeSurface, clipping, r.left, r.top);
 >>>>>>> 1ed7481... GUI: Add blitClip()
