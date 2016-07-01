@@ -183,7 +183,19 @@ protected:
 	int _alpha;
 };
 
+class ThemeItemABitmapClip : public ThemeItem {
+public:
+	ThemeItemABitmapClip(ThemeEngine *engine, const Common::Rect &area, const Common::Rect &clip, Graphics::TransparentSurface *bitmap, ThemeEngine::AutoScaleMode autoscale, int alpha) :
+		ThemeItem(engine, area), _bitmap(bitmap), _autoscale(autoscale), _alpha(alpha), _clip(clip) {}
 
+	void drawSelf(bool draw, bool restore);
+
+protected:
+	Graphics::TransparentSurface *_bitmap;
+	ThemeEngine::AutoScaleMode _autoscale;
+	int _alpha;
+	const Common::Rect _clip;
+};
 
 /**********************************************************
  *  Data definitions for theme engine elements
@@ -330,6 +342,17 @@ void ThemeItemABitmap::drawSelf(bool draw, bool restore) {
 	_engine->addDirtyRect(_area);
 }
 
+void ThemeItemABitmapClip::drawSelf(bool draw, bool restore) {
+	if (restore)
+		_engine->restoreBackground(_area);
+
+	if (draw)
+		_engine->renderer()->blitAlphaBitmapClip(_bitmap, _area, _clip, _autoscale, Graphics::DrawStep::kVectorAlignManual, Graphics::DrawStep::kVectorAlignManual, _alpha);
+
+	Common::Rect dirtyRect = _area;
+	dirtyRect.clip(_clip);
+	_engine->addDirtyRect(dirtyRect);
+}
 
 
 /**********************************************************
@@ -1106,7 +1129,20 @@ void ThemeEngine::queueABitmap(Graphics::TransparentSurface *bitmap, const Commo
 	}
 }
 
+void ThemeEngine::queueABitmapClip(Graphics::TransparentSurface *bitmap, const Common::Rect &r, const Common::Rect &clip, AutoScaleMode autoscale, int alpha) {
 
+	Common::Rect area = r;
+	area.clip(_screen.w, _screen.h);
+
+	ThemeItemABitmapClip *q = new ThemeItemABitmapClip(this, area, clip, bitmap, autoscale, alpha);
+
+	if (_buffering) {
+		_screenQueue.push_back(q);
+	} else {
+		q->drawSelf(true, false);
+		delete q;
+	}
+}
 
 /**********************************************************
  * Widget drawing functions
@@ -1411,6 +1447,13 @@ void ThemeEngine::drawASurface(const Common::Rect &r, Graphics::TransparentSurfa
 		return;
 
 	queueABitmap(&surface, r, autoscale, alpha);
+}
+
+void ThemeEngine::drawASurfaceClip(const Common::Rect &r, const Common::Rect &clip, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha) {
+	if (!ready())
+		return;
+
+	queueABitmapClip(&surface, r, clip, autoscale, alpha);
 }
 
 void ThemeEngine::drawWidgetBackground(const Common::Rect &r, uint16 hints, WidgetBackground background, WidgetStateInfo state) {

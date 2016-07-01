@@ -961,7 +961,7 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 
 	} else if (autoscale == GUI::ThemeEngine::kAutoScaleNinePatch) {
 		Graphics::NinePatchBitmap nine(source, false);
-		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height()); //TODO
+		nine.blitClip(*_activeSurface, clipping, r.left, r.top, r.width(), r.height());
 	} else {
 		source->blitClip(*_activeSurface, clipping, r.left, r.top);
 	}

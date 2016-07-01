@@ -783,10 +783,10 @@ void GraphicsWidget::drawWidget() {
 			const int x = _x + (_w - _agfx.w) / 2;
 			const int y = _y + (_h - _agfx.h) / 2;
 
-			g_gui.theme()->drawASurface(Common::Rect(x, y, x + _agfx.w,  y + _agfx.h), _agfx, _mode, _alpha);
+			g_gui.theme()->drawASurfaceClip(Common::Rect(x, y, x + _agfx.w,  y + _agfx.h), getBossClipRect(), _agfx, _mode, _alpha);
 
 		} else {
-			g_gui.theme()->drawASurface(Common::Rect(_x, _y, _x + _w,  _y + _h), _agfx, _mode, _alpha);
+			g_gui.theme()->drawASurfaceClip(Common::Rect(_x, _y, _x + _w,  _y + _h), getBossClipRect(), _agfx, _mode, _alpha);
 		}
 	}
 }
