@@ -44,17 +44,6 @@
 #include "audio/fmopl.h"
 #include "widgets/scrollbar.h"
 #include "widgets/scrollcontainer.h"
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 75117ff... GUI: Add ScrollContainer
-
-#ifdef USE_CLOUD
-#include "backends/cloud/cloudmanager.h"
-#include "gui/storagewizarddialog.h"
-#endif
->>>>>>> 75117ff... GUI: Add ScrollContainer
 
 namespace GUI {
 
@@ -97,6 +86,13 @@ enum {
 };
 #endif
 
+#ifdef USE_CLOUD
+enum {
+	kConfigureStorageCmd = 'cfst',
+	kRefreshStorageCmd = 'rfst'
+};
+#endif
+
 static const char *savePeriodLabels[] = { _s("Never"), _s("every 5 mins"), _s("every 10 mins"), _s("every 15 mins"), _s("every 30 mins"), 0 };
 static const int savePeriodValues[] = { 0, 5 * 60, 10 * 60, 15 * 60, 30 * 60, -1 };
 static const char *outputRateLabels[] = { _s("<default>"), _s("8 kHz"), _s("11 kHz"), _s("22 kHz"), _s("44 kHz"), _s("48 kHz"), 0 };
@@ -125,6 +121,7 @@ void OptionsDialog::init() {
 	_fullscreenCheckbox = 0;
 	_aspectCheckbox = 0;
 	_enableAudioSettings = false;
+	_midiTabId = 0;
 	_midiPopUp = 0;
 	_midiPopUpDesc = 0;
 	_oplPopUp = 0;
@@ -157,6 +154,7 @@ void OptionsDialog::init() {
 	_speechVolumeSlider = 0;
 	_speechVolumeLabel = 0;
 	_muteCheckbox = 0;
+	_enableSubtitleSettings = false;
 	_subToggleDesc = 0;
 	_subToggleGroup = 0;
 	_subToggleSubOnly = 0;
@@ -165,6 +163,8 @@ void OptionsDialog::init() {
 	_subSpeedDesc = 0;
 	_subSpeedSlider = 0;
 	_subSpeedLabel = 0;
+
+	_pathsTabId = 0;
 	_oldTheme = g_gui.theme()->getThemeId();
 
 	// Retrieve game GUI options
@@ -1260,45 +1260,6 @@ GlobalOptionsDialog::GlobalOptionsDialog()
 	new ButtonWidget(tab, "GlobalOptions_Misc.UpdatesCheckManuallyButton", _("Check now"), 0, kUpdatesCheckCmd);
 #endif
 
-<<<<<<< HEAD
-=======
-#ifdef USE_CLOUD
-	//
-	// 7) The cloud tab
-	//
-	if (g_system->getOverlayWidth() > 320)
-		tab->addTab(_("Cloud"));
-	else
-		tab->addTab(_c("Cloud", "lowres"));
-
-	ScrollContainerWidget *container = new ScrollContainerWidget(tab, "GlobalOptions_Cloud.Container");
-
-	_selectedStorageIndex = CloudMan.getStorageIndex();
-
-	_storagePopUpDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StoragePopupDesc", _("Storage:"), _("Active cloud storage"));
-	_storagePopUp = new PopUpWidget(container, "GlobalOptions_Cloud_Container.StoragePopup");
-	Common::StringArray list = CloudMan.listStorages();
-	for (uint32 i = 0; i < list.size(); ++i)
-		_storagePopUp->appendEntry(list[i], i);
-	_storagePopUp->setSelected(_selectedStorageIndex);
-
-	_storageUsernameDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsernameDesc", _("Username:"), _("Username used by this storage"));
-	_storageUsername = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsernameLabel", "<none>");
-
-	_storageUsedSpaceDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsedSpaceDesc", _("Used space:"), _("Space used by ScummVM's saves on this storage"));
-	_storageUsedSpace = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageUsedSpaceLabel", "0 bytes");
-
-	_storageLastSyncDesc = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageLastSyncDesc", _("Last sync time:"), _("When this storage did saves sync last time"));
-	_storageLastSync = new StaticTextWidget(container, "GlobalOptions_Cloud_Container.StorageLastSyncLabel", "<never>");
-
-	_storageConnectButton = new ButtonWidget(container, "GlobalOptions_Cloud_Container.ConnectButton", _("Connect"), _("Open wizard dialog to connect your cloud storage account"), kConfigureStorageCmd);
-	_storageRefreshButton = new ButtonWidget(container, "GlobalOptions_Cloud_Container.RefreshButton", _("Refresh"), _("Refresh current cloud storage information (username and usage)"), kRefreshStorageCmd);
-
-	setupCloudTab();
-	_redrawCloudTab = false;
-#endif
-
->>>>>>> 75117ff... GUI: Add ScrollContainer
 	// Activate the first tab
 	tab->setActiveTab(0);
 	_tabWidget = tab;
@@ -1529,7 +1490,8 @@ void GlobalOptionsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint3
 		}
 		break;
 	}
-	case kChooseThemeCmd: {
+	case kChooseThemeCmd:
+	{
 		ThemeBrowser browser;
 		if (browser.runModal() > 0) {
 			// User made his choice...
@@ -1580,6 +1542,10 @@ void GlobalOptionsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint3
 	default:
 		OptionsDialog::handleCommand(sender, cmd, data);
 	}
+}
+
+void GlobalOptionsDialog::handleTickle() {
+	OptionsDialog::handleTickle();
 }
 
 void GlobalOptionsDialog::reflowLayout() {

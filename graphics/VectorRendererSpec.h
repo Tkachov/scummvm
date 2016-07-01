@@ -50,113 +50,19 @@ class VectorRendererSpec : public VectorRenderer {
 public:
 	VectorRendererSpec(PixelFormat format);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawLine(int x1, int y1, int x2, int y2);
 	void drawLineClip(int x1, int y1, int x2, int y2, Common::Rect clipping);
 	void drawCircle(int x, int y, int r);
 	void drawCircleClip(int x, int y, int r, Common::Rect clipping);
 	void drawSquare(int x, int y, int w, int h);
 	void drawSquareClip(int x, int y, int w, int h, Common::Rect clipping);
-=======
-	void drawLine(int x1, int y1, int x2, int y2); //TODO
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void drawCircle(int x, int y, int r); //TODO
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void drawSquare(int x, int y, int w, int h); //TODO
->>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
-=======
-=======
-=======
-	void drawLine(int x1, int y1, int x2, int y2);
-	void drawLineClip(int x1, int y1, int x2, int y2, Common::Rect clipping);
->>>>>>> 330b379... GUI: Add drawLineClip()
-=======
-	void drawLine(int x1, int y1, int x2, int y2);
-	void drawLineClip(int x1, int y1, int x2, int y2, Common::Rect clipping);
->>>>>>> 330b379... GUI: Add drawLineClip()
-	void drawCircle(int x, int y, int r);
-	void drawCircleClip(int x, int y, int r, Common::Rect clipping);
->>>>>>> 168a81f... GUI: Add drawCircle()
-=======
-	void drawCircle(int x, int y, int r);
-	void drawCircleClip(int x, int y, int r, Common::Rect clipping);
->>>>>>> 168a81f... GUI: Add drawCircle()
-	void drawSquare(int x, int y, int w, int h);
-	void drawSquareClip(int x, int y, int w, int h, Common::Rect clipping);
->>>>>>> a5f13df... GUI: Add drawSquareClip()
-=======
-	void drawLine(int x1, int y1, int x2, int y2); //TODO
-	void drawCircle(int x, int y, int r); //TODO
-	void drawSquare(int x, int y, int w, int h); //TODO
->>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
-=======
-	void drawSquare(int x, int y, int w, int h);
-	void drawSquareClip(int x, int y, int w, int h, Common::Rect clipping);
->>>>>>> a5f13df... GUI: Add drawSquareClip()
 	void drawRoundedSquare(int x, int y, int r, int w, int h);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping);
-=======
-	void drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
-	void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping);
->>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
-=======
-	void drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch);
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
-	void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping);
->>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
 	void drawTriangle(int x, int y, int base, int height, TriangleOrientation orient);
 	void drawTriangleClip(int x, int y, int base, int height, TriangleOrientation orient, Common::Rect clipping);
 	void drawTab(int x, int y, int r, int w, int h);
 	void drawTabClip(int x, int y, int r, int w, int h, Common::Rect clipping);
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawBeveledSquare(int x, int y, int w, int h, int bevel) {
-=======
-	void drawTriangle(int x, int y, int base, int height, TriangleOrientation orient); //TODO
-=======
-	void drawTriangle(int x, int y, int base, int height, TriangleOrientation orient);
->>>>>>> a5f13df... GUI: Add drawSquareClip()
-	void drawTriangleClip(int x, int y, int base, int height, TriangleOrientation orient, Common::Rect clipping);
-	void drawTab(int x, int y, int r, int w, int h); //TODO
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void drawBeveledSquare(int x, int y, int w, int h, int bevel) { //TODO
->>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
-=======
-=======
->>>>>>> 2ab90e0... GUI: Add drawTabClip()
-	void drawBeveledSquare(int x, int y, int w, int h, int bevel) {
->>>>>>> e711120... GUI: Add drawBeveledSquareClip()
-=======
-	void drawTriangle(int x, int y, int base, int height, TriangleOrientation orient); //TODO
-=======
-	void drawTriangle(int x, int y, int base, int height, TriangleOrientation orient);
->>>>>>> a5f13df... GUI: Add drawSquareClip()
-	void drawTriangleClip(int x, int y, int base, int height, TriangleOrientation orient, Common::Rect clipping);
-	void drawTab(int x, int y, int r, int w, int h); //TODO
-	void drawBeveledSquare(int x, int y, int w, int h, int bevel) { //TODO
->>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
-=======
-=======
->>>>>>> 2ab90e0... GUI: Add drawTabClip()
-	void drawBeveledSquare(int x, int y, int w, int h, int bevel) {
->>>>>>> e711120... GUI: Add drawBeveledSquareClip()
 		drawBevelSquareAlg(x, y, w, h, bevel, _bevelColor, _fgColor, Base::_fillMode != kFillDisabled);
 	}
 	void drawBeveledSquareClip(int x, int y, int w, int h, int bevel, Common::Rect clipping) {
@@ -186,21 +92,7 @@ public:
 	void fillSurfaceClip(Common::Rect clipping);
 	void blitSurface(const Graphics::Surface *source, const Common::Rect &r);
 	void blitSubSurface(const Graphics::Surface *source, const Common::Rect &r);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void blitAlphaBitmap(const Graphics::Surface *source, const Common::Rect &r);
-=======
-=======
 	void blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping);
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
-	void blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping);
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
-	void blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping);
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 	void blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r);
 	void blitKeyBitmapClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping);
 	void blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r,
@@ -213,7 +105,6 @@ public:
 			Graphics::DrawStep::VectorAlignment xAlign = Graphics::DrawStep::kVectorAlignManual,
 			Graphics::DrawStep::VectorAlignment yAlign = Graphics::DrawStep::kVectorAlignManual,
 			int alpha = 255);
->>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
 
 	void applyScreenShading(GUI::ThemeEngine::ShadingStyle shadingStyle);
 
@@ -418,31 +309,6 @@ protected:
 		}
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-	inline void blendFillClip(int x, PixelType *first, PixelType *last, PixelType color, uint8 alpha) {
-		while (first != last) {
-			if (x >= _clippingArea.left && x <= _clippingArea.right)
-				blendPixelPtr(first++, color, alpha);
-			else
-				++first;
-			++x;
-		}
-	}
-
-<<<<<<< HEAD
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-=======
->>>>>>> 7e11918... GUI: Fix ThemeItemTextData's dirty rectangle
-=======
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-=======
->>>>>>> 7e11918... GUI: Fix ThemeItemTextData's dirty rectangle
 	void darkenFill(PixelType *first, PixelType *last);
 	void darkenFillClip(PixelType *first, PixelType *last, int x, int y);
 

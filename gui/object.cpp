@@ -45,21 +45,7 @@ void GuiObject::reflowLayout() {
 			error("Could not load widget position for '%s'", _name.c_str());
 		}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		/*
-=======
->>>>>>> e2cc59f... GUI: Revert _clippingArea
-=======
-		/*
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-=======
->>>>>>> e2cc59f... GUI: Revert _clippingArea
-=======
-		/*
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 		if (_x < 0)
 			error("Widget <%s> has x < 0 (%d)", _name.c_str(), _x);
 		if (_x >= g_gui.getWidth())

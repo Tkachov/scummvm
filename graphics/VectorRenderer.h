@@ -28,6 +28,7 @@
 #include "common/str.h"
 
 #include "graphics/surface.h"
+#include "graphics/transparent_surface.h"
 
 #include "gui/ThemeEngine.h"
 
@@ -79,8 +80,11 @@ struct DrawStep {
 
 	uint32 scale; /**< scale of all the coordinates in FIXED POINT with 16 bits mantissa */
 
+	GUI::ThemeEngine::AutoScaleMode autoscale; /**< scale alphaimage if present */
+
 	DrawingFunctionCallback drawingCall; /**< Pointer to drawing function */
 	Graphics::Surface *blitSrc;
+	Graphics::TransparentSurface *blitAlphaSrc;
 };
 
 VectorRenderer *createRenderer(int mode);
@@ -176,23 +180,7 @@ public:
 	 * @param r Radius of the corners.
 	 */
 	virtual void drawRoundedSquare(int x, int y, int r, int w, int h) = 0;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	virtual void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) = 0;
-=======
-	virtual void drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch) = 0;
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
-	virtual void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) = 0;
->>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
-=======
-	virtual void drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch) = 0;
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
-	virtual void drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) = 0;
->>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
 
 	/**
 	 * Draws a triangle starting at (x,y) with the given base and height.
@@ -297,7 +285,7 @@ public:
 	 *
 	 * @param surface Pointer to a Surface object.
 	 */
-	virtual void setSurface(Surface *surface) {
+	virtual void setSurface(TransparentSurface *surface) {
 		_activeSurface = surface;
 	}
 
@@ -384,23 +372,7 @@ public:
 	/**
 	 * DrawStep callback functions for each drawing feature
 	 */
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-=======
-	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 168a81f... GUI: Add drawCircle()
-=======
-	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_CIRCLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 168a81f... GUI: Add drawCircle()
 		uint16 x, y, w, h, radius;
 
 		radius = stepGetRadius(step, area);
@@ -409,260 +381,59 @@ public:
 		drawCircleClip(x + radius, y + radius, radius, clip);
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-=======
-	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 168a81f... GUI: Add drawCircle()
-=======
-	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_SQUARE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 168a81f... GUI: Add drawCircle()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawSquareClip(x, y, w, h, clip);
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawCallback_LINE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-=======
-	void drawCallback_LINE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_LINE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 330b379... GUI: Add drawLineClip()
-=======
-	void drawCallback_LINE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_LINE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 330b379... GUI: Add drawLineClip()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawLineClip(x, y, x + w, y + w, clip);
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawCallback_ROUNDSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-=======
-	void drawCallback_ROUNDSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_ROUNDSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 6b84511... GUI: Add drawCrossClip()
-=======
-	void drawCallback_ROUNDSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_ROUNDSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 6b84511... GUI: Add drawCrossClip()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		drawRoundedSquareClip(x, y, stepGetRadius(step, area), w, h, clip);
-=======
-		drawRoundedSquareClip(x, y, stepGetRadius(step, area), w, h, clip.left, clip.top, clip.right-clip.left, clip.bottom-clip.top);
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 		fillSurfaceClip(clip);
-=======
-		drawRoundedSquareClip(x, y, stepGetRadius(step, area), w, h, clip);
->>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
-=======
-		drawRoundedSquareClip(x, y, stepGetRadius(step, area), w, h, clip.left, clip.top, clip.right-clip.left, clip.bottom-clip.top);
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
-		drawRoundedSquareClip(x, y, stepGetRadius(step, area), w, h, clip);
->>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-=======
-=======
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
-		fillSurface();
-=======
-	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-		fillSurfaceClip(clip);
->>>>>>> cf69831... GUI: Add fillSurfaceClip()
-=======
-	void drawCallback_FILLSURFACE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-		fillSurfaceClip(clip);
->>>>>>> cf69831... GUI: Add fillSurfaceClip()
-	}
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 168a81f... GUI: Add drawCircle()
-=======
-	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_TRIANGLE(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 168a81f... GUI: Add drawCircle()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawTriangleClip(x, y, w, h, (TriangleOrientation)step.extraData, clip);
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawCallback_BEVELSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-=======
-	void drawCallback_BEVELSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_BEVELSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> e711120... GUI: Add drawBeveledSquareClip()
-=======
-	void drawCallback_BEVELSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_BEVELSQ(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> e711120... GUI: Add drawBeveledSquareClip()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawBeveledSquareClip(x, y, w, h, _bevel, clip);
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawCallback_TAB(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-=======
-	void drawCallback_TAB(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_TAB(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 2ab90e0... GUI: Add drawTabClip()
-=======
-	void drawCallback_TAB(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_TAB(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 2ab90e0... GUI: Add drawTabClip()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawTabClip(x, y, stepGetRadius(step, area), w, h, clip);
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-=======
-	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-		uint16 x, y, w, h;
-		stepGetPositions(step, area, x, y, w, h);
-<<<<<<< HEAD
-<<<<<<< HEAD
-		blitAlphaBitmap(step.blitSrc, Common::Rect(x, y, x + w, y + h));
-=======
-		blitKeyBitmap(step.blitSrc, Common::Rect(x, y, x + w, y + h));
-=======
-		blitKeyBitmapClip(step.blitSrc, Common::Rect(x, y, x + w, y + h), clip);
->>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
-=======
 	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		blitKeyBitmapClip(step.blitSrc, Common::Rect(x, y, x + w, y + h), clip);
->>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
-=======
-	void drawCallback_BITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-		uint16 x, y, w, h;
-		stepGetPositions(step, area, x, y, w, h);
-		blitKeyBitmapClip(step.blitSrc, Common::Rect(x, y, x + w, y + h), clip);
->>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-=======
-	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-		uint16 x, y, w, h;
-		stepGetPositions(step, area, x, y, w, h);
-<<<<<<< HEAD
-		blitAlphaBitmap(step.blitAlphaSrc, Common::Rect(x, y, x + w, y + h), step.autoscale, step.xAlign, step.yAlign);
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-		blitAlphaBitmapClip(step.blitAlphaSrc, Common::Rect(x, y, x + w, y + h), clip, step.autoscale, step.xAlign, step.yAlign);
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
-=======
 	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		blitAlphaBitmapClip(step.blitAlphaSrc, Common::Rect(x, y, x + w, y + h), clip, step.autoscale, step.xAlign, step.yAlign);
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
-=======
-	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-		uint16 x, y, w, h;
-		stepGetPositions(step, area, x, y, w, h);
-		blitAlphaBitmapClip(step.blitAlphaSrc, Common::Rect(x, y, x + w, y + h), clip, step.autoscale, step.xAlign, step.yAlign);
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
-=======
-	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 6b84511... GUI: Add drawCrossClip()
-=======
-	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) { //TODO
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step, const Common::Rect &clip) {
->>>>>>> 6b84511... GUI: Add drawCrossClip()
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
 		drawCrossClip(x, y, w, h, clip);
@@ -720,24 +491,8 @@ public:
 	 */
 	virtual void blitSubSurface(const Graphics::Surface *source, const Common::Rect &r) = 0;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	virtual void blitAlphaBitmap(const Graphics::Surface *source, const Common::Rect &r) = 0;
-=======
-=======
 	virtual void blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping) = 0;
 
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
-	virtual void blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping) = 0;
-
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
-	virtual void blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping) = 0;
-
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 	virtual void blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r) = 0;
 
 	virtual void blitKeyBitmapClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping) = 0;
@@ -747,19 +502,6 @@ public:
 			Graphics::DrawStep::VectorAlignment xAlign = Graphics::DrawStep::kVectorAlignManual,
 			Graphics::DrawStep::VectorAlignment yAlign = Graphics::DrawStep::kVectorAlignManual,
 			int alpha = 255) = 0;
->>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
-
-	virtual void blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r, const Common::Rect &clipping,
-		GUI::ThemeEngine::AutoScaleMode autoscale = GUI::ThemeEngine::kAutoScaleNone,
-		Graphics::DrawStep::VectorAlignment xAlign = Graphics::DrawStep::kVectorAlignManual,
-		Graphics::DrawStep::VectorAlignment yAlign = Graphics::DrawStep::kVectorAlignManual,
-		int alpha = 255) = 0;
-
-	virtual void blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r, const Common::Rect &clipping,
-		GUI::ThemeEngine::AutoScaleMode autoscale = GUI::ThemeEngine::kAutoScaleNone,
-		Graphics::DrawStep::VectorAlignment xAlign = Graphics::DrawStep::kVectorAlignManual,
-		Graphics::DrawStep::VectorAlignment yAlign = Graphics::DrawStep::kVectorAlignManual,
-		int alpha = 255) = 0;
 
 	virtual void blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r, const Common::Rect &clipping,
 		GUI::ThemeEngine::AutoScaleMode autoscale = GUI::ThemeEngine::kAutoScaleNone,
@@ -789,7 +531,7 @@ public:
 	virtual void applyScreenShading(GUI::ThemeEngine::ShadingStyle) = 0;
 
 protected:
-	Surface *_activeSurface; /**< Pointer to the surface currently being drawn */
+	TransparentSurface *_activeSurface; /**< Pointer to the surface currently being drawn */
 
 	FillMode _fillMode; /**< Defines in which way (if any) are filled the drawn shapes */
 	ShadowFillMode _shadowFillMode;

@@ -206,6 +206,7 @@ public:
 	void open();
 	void close();
 	void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
+	void handleTickle();
 
 	virtual void reflowLayout();
 

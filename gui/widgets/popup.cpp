@@ -144,6 +144,8 @@ PopUpDialog::PopUpDialog(PopUpWidget *boss, int clickX, int clickY)
 	_clickY = clickY - _y;
 
 	_openTime = 0;
+	_buffer = nullptr;
+	_entriesPerColumn = 1;
 }
 
 void PopUpDialog::drawDialog() {
@@ -362,28 +364,8 @@ void PopUpDialog::drawMenuEntry(int entry, bool hilite) {
 		// Draw a separator
 		g_gui.theme()->drawLineSeparator(Common::Rect(x, y, x+w, y+kLineHeight));
 	} else {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		g_gui.theme()->drawText(
 			Common::Rect(x+1, y+2, x+w, y+2+kLineHeight),
-=======
-		g_gui.theme()->drawTextClip(
-			Common::Rect(x+1, y+2, x+w, y+2+kLineHeight), _popUpBoss->getBossClipRect(),
->>>>>>> 1f9b907... GUI: Make PopUpWidget clip
-=======
-		g_gui.theme()->drawText(
-			Common::Rect(x+1, y+2, x+w, y+2+kLineHeight),
->>>>>>> ef1dcb0... GUI: Fix PopUpDialog
-=======
-		g_gui.theme()->drawTextClip(
-			Common::Rect(x+1, y+2, x+w, y+2+kLineHeight), _popUpBoss->getBossClipRect(),
->>>>>>> 1f9b907... GUI: Make PopUpWidget clip
-=======
-		g_gui.theme()->drawText(
-			Common::Rect(x+1, y+2, x+w, y+2+kLineHeight),
->>>>>>> ef1dcb0... GUI: Fix PopUpDialog
 			name, hilite ? ThemeEngine::kStateHighlight : ThemeEngine::kStateEnabled,
 			Graphics::kTextAlignLeft, ThemeEngine::kTextInversionNone, _leftPadding
 		);
@@ -403,6 +385,7 @@ PopUpWidget::PopUpWidget(GuiObject *boss, const String &name, const char *toolti
 	_type = kPopUpWidget;
 
 	_selectedItem = -1;
+	_leftPadding = _rightPadding = 0;
 }
 
 PopUpWidget::PopUpWidget(GuiObject *boss, int x, int y, int w, int h, const char *tooltip)

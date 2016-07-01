@@ -265,29 +265,21 @@ void StaticTextWidget::setLabel(const Common::String &label) {
 }
 
 void StaticTextWidget::setAlign(Graphics::TextAlign align) {
-	_align = align;
-	// TODO: We should automatically redraw when the alignment is changed.
-	// See setLabel() for more insights.
+	if (_align != align){
+		_align = align;
+
+		// same as setLabel() actually, the text
+		// would be redrawn on top of the old one so
+		// we add the CLEARBG flag
+		setFlags(WIDGET_CLEARBG);
+		draw();
+		clearFlags(WIDGET_CLEARBG);
+	}
+
 }
 
 
 void StaticTextWidget::drawWidget() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	int px = _boss->getAbsX();
-	int py = _boss->getAbsY();
->>>>>>> 75117ff... GUI: Add ScrollContainer
-=======
->>>>>>> 1f9b907... GUI: Make PopUpWidget clip
-=======
-	int px = _boss->getAbsX();
-	int py = _boss->getAbsY();
->>>>>>> 75117ff... GUI: Add ScrollContainer
-=======
->>>>>>> 1f9b907... GUI: Make PopUpWidget clip
 	g_gui.theme()->drawTextClip(
 		Common::Rect(_x, _y, _x+_w, _y+_h),	getBossClipRect(),
 		_label, _state, _align, ThemeEngine::kTextInversionNone, 0, true, _font
@@ -329,36 +321,9 @@ void ButtonWidget::handleMouseDown(int x, int y, int button, int clickCount) {
 	setPressedState();
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 void ButtonWidget::drawWidget() {
 	g_gui.theme()->drawButtonClip(
 		Common::Rect(_x, _y, _x + _w, _y + _h), getBossClipRect(),
-=======
-=======
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-void ButtonWidget::drawWidget() {	
-	int px = _boss->getAbsX();
-	int py = _boss->getAbsY();
-	g_gui.theme()->drawButtonClip(
-		Common::Rect(_x, _y, _x + _w, _y + _h),
-		Common::Rect(px, py, px + _boss->getWidth(), py + _boss->getHeight()),
-<<<<<<< HEAD
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-void ButtonWidget::drawWidget() {
-	g_gui.theme()->drawButtonClip(
-		Common::Rect(_x, _y, _x + _w, _y + _h), getBossClipRect(),
->>>>>>> 1f9b907... GUI: Make PopUpWidget clip
-=======
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-void ButtonWidget::drawWidget() {
-	g_gui.theme()->drawButtonClip(
-		Common::Rect(_x, _y, _x + _w, _y + _h), getBossClipRect(),
->>>>>>> 1f9b907... GUI: Make PopUpWidget clip
 		_label, _state, getFlags()
 	);
 }
@@ -408,25 +373,28 @@ void ButtonWidget::setUnpressedState() {
 
 PicButtonWidget::PicButtonWidget(GuiObject *boss, int x, int y, int w, int h, const char *tooltip, uint32 cmd, uint8 hotkey)
 	: ButtonWidget(boss, x, y, w, h, "", tooltip, cmd, hotkey),
-	  _gfx(), _alpha(256), _transparency(false) {
+	  _alpha(255), _transparency(false), _showButton(true) {
 
 	setFlags(WIDGET_ENABLED/* | WIDGET_BORDER*/ | WIDGET_CLEARBG);
 	_type = kButtonWidget;
+	_mode = ThemeEngine::kAutoScaleNone;
 }
 
 PicButtonWidget::PicButtonWidget(GuiObject *boss, const Common::String &name, const char *tooltip, uint32 cmd, uint8 hotkey)
 	: ButtonWidget(boss, name, "", tooltip, cmd, hotkey),
-	  _gfx(), _alpha(256), _transparency(false) {
+	  _alpha(255), _transparency(false), _showButton(true), _isAlpha(false) {
 	setFlags(WIDGET_ENABLED/* | WIDGET_BORDER*/ | WIDGET_CLEARBG);
 	_type = kButtonWidget;
+	_mode = ThemeEngine::kAutoScaleNone;
 }
 
 PicButtonWidget::~PicButtonWidget() {
-	_gfx.free();
+	for (int i = 0; i < kPicButtonStateMax + 1; i++)
+		_gfx[i].free();
 }
 
-void PicButtonWidget::setGfx(const Graphics::Surface *gfx) {
-	_gfx.free();
+void PicButtonWidget::setGfx(const Graphics::Surface *gfx, int statenum) {
+	_gfx[statenum].free();
 
 	if (!gfx || !gfx->getPixels())
 		return;
@@ -442,10 +410,27 @@ void PicButtonWidget::setGfx(const Graphics::Surface *gfx) {
 		return;
 	}
 
-	_gfx.copyFrom(*gfx);
+	_gfx[statenum].copyFrom(*gfx);
 }
 
-void PicButtonWidget::setGfx(int w, int h, int r, int g, int b) {
+void PicButtonWidget::setAGfx(const Graphics::TransparentSurface *gfx, int statenum, ThemeEngine::AutoScaleMode mode) {
+	_agfx[statenum].free();
+
+	if (!gfx || !gfx->getPixels())
+		return;
+
+	if (gfx->format.bytesPerPixel == 1) {
+		warning("PicButtonWidget::setGfx got paletted surface passed");
+		return;
+	}
+
+	_agfx[statenum].copyFrom(*gfx);
+
+	_isAlpha = true;
+	_mode = mode;
+}
+
+void PicButtonWidget::setGfx(int w, int h, int r, int g, int b, int statenum) {
 	if (w == -1)
 		w = _w;
 	if (h == -1)
@@ -453,15 +438,12 @@ void PicButtonWidget::setGfx(int w, int h, int r, int g, int b) {
 
 	const Graphics::PixelFormat &requiredFormat = g_gui.theme()->getPixelFormat();
 
-	_gfx.free();
-	_gfx.create(w, h, requiredFormat);
-	_gfx.fillRect(Common::Rect(0, 0, w, h), _gfx.format.RGBToColor(r, g, b));
+	_gfx[statenum].free();
+	_gfx[statenum].create(w, h, requiredFormat);
+	_gfx[statenum].fillRect(Common::Rect(0, 0, w, h), _gfx[statenum].format.RGBToColor(r, g, b));
 }
 
 void PicButtonWidget::drawWidget() {
-<<<<<<< HEAD
-	g_gui.theme()->drawButton(Common::Rect(_x, _y, _x+_w, _y+_h), "", _state, getFlags());
-=======
 	if (_showButton)
 		g_gui.theme()->drawButtonClip(Common::Rect(_x, _y, _x+_w, _y+_h), getBossClipRect(), "", _state, getFlags());
 
@@ -476,16 +458,13 @@ void PicButtonWidget::drawWidget() {
 			gfx = &_gfx[kPicButtonStatePressed];
 		else
 			gfx = &_gfx[kPicButtonStateEnabled];
->>>>>>> 4b4260c... GUI: Use clipping everywhere
 
-	if (_gfx.getPixels()) {
+		if (!gfx->getPixels())
+			gfx = &_gfx[kPicButtonStateEnabled];
+
+		if (gfx->getPixels()) {
 		// Check whether the set up surface needs to be converted to the GUI
 		// color format.
-<<<<<<< HEAD
-		const Graphics::PixelFormat &requiredFormat = g_gui.theme()->getPixelFormat();
-		if (_gfx.format != requiredFormat) {
-			_gfx.convertToInPlace(requiredFormat);
-=======
 			const Graphics::PixelFormat &requiredFormat = g_gui.theme()->getPixelFormat();
 			if (gfx->format != requiredFormat) {
 				gfx->convertToInPlace(requiredFormat);
@@ -495,19 +474,22 @@ void PicButtonWidget::drawWidget() {
 			const int y = _y + (_h - gfx->h) / 2;
 
 			g_gui.theme()->drawSurfaceClip(Common::Rect(x, y, x + gfx->w,  y + gfx->h), getBossClipRect(), *gfx, _state, _alpha, _transparency);
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 4b4260c... GUI: Use clipping everywhere
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
 		}
+	} else {
+		Graphics::TransparentSurface *gfx;
 
-<<<<<<< HEAD
-		const int x = _x + (_w - _gfx.w) / 2;
-		const int y = _y + (_h - _gfx.h) / 2;
-=======
+		if (_state == ThemeEngine::kStateHighlight)
+			gfx = &_agfx[kPicButtonHighlight];
+		else if (_state == ThemeEngine::kStateDisabled)
+			gfx = &_agfx[kPicButtonStateDisabled];
+		else if (_state == ThemeEngine::kStatePressed)
+			gfx = &_agfx[kPicButtonStatePressed];
+		else
+			gfx = &_agfx[kPicButtonStateEnabled];
+
+		if (!gfx->getPixels())
+			gfx = &_agfx[kPicButtonStateEnabled];
+
 		if (gfx->getPixels()) {
 			if (_mode == GUI::ThemeEngine::kAutoScaleNone) {
 				const int x = _x + (_w - gfx->w) / 2;
@@ -519,9 +501,7 @@ void PicButtonWidget::drawWidget() {
 				g_gui.theme()->drawASurfaceClip(Common::Rect(_x, _y, _x + _w,  _y + _h), getBossClipRect(), *gfx, _mode, _alpha);
 			}
 		}
->>>>>>> 4b4260c... GUI: Use clipping everywhere
 
-		g_gui.theme()->drawSurface(Common::Rect(x, y, x + _gfx.w,  y + _gfx.h), _gfx, _state, _alpha, _transparency);
 	}
 }
 
@@ -632,14 +612,14 @@ void RadiobuttonWidget::drawWidget() {
 
 SliderWidget::SliderWidget(GuiObject *boss, int x, int y, int w, int h, const char *tooltip, uint32 cmd)
 	: Widget(boss, x, y, w, h, tooltip), CommandSender(boss),
-	  _cmd(cmd), _value(0), _oldValue(0), _valueMin(0), _valueMax(100), _isDragging(false) {
+	  _cmd(cmd), _value(0), _oldValue(0), _valueMin(0), _valueMax(100), _isDragging(false), _labelWidth(0) {
 	setFlags(WIDGET_ENABLED | WIDGET_TRACK_MOUSE | WIDGET_CLEARBG);
 	_type = kSliderWidget;
 }
 
 SliderWidget::SliderWidget(GuiObject *boss, const Common::String &name, const char *tooltip, uint32 cmd)
 	: Widget(boss, name, tooltip), CommandSender(boss),
-	  _cmd(cmd), _value(0), _oldValue(0), _valueMin(0), _valueMax(100), _isDragging(false) {
+	  _cmd(cmd), _value(0), _oldValue(0), _valueMin(0), _valueMax(100), _isDragging(false), _labelWidth(0) {
 	setFlags(WIDGET_ENABLED | WIDGET_TRACK_MOUSE | WIDGET_CLEARBG);
 	_type = kSliderWidget;
 }
@@ -711,13 +691,13 @@ int SliderWidget::posToValue(int pos) {
 #pragma mark -
 
 GraphicsWidget::GraphicsWidget(GuiObject *boss, int x, int y, int w, int h, const char *tooltip)
-	: Widget(boss, x, y, w, h, tooltip), _gfx(), _alpha(256), _transparency(false) {
+	: Widget(boss, x, y, w, h, tooltip), _gfx(), _alpha(255), _transparency(false) {
 	setFlags(WIDGET_ENABLED | WIDGET_CLEARBG);
 	_type = kGraphicsWidget;
 }
 
 GraphicsWidget::GraphicsWidget(GuiObject *boss, const Common::String &name, const char *tooltip)
-	: Widget(boss, name, tooltip), _gfx(), _alpha(256), _transparency(false) {
+	: Widget(boss, name, tooltip), _gfx(), _alpha(255), _transparency(false) {
 	setFlags(WIDGET_ENABLED | WIDGET_CLEARBG);
 	_type = kGraphicsWidget;
 }
@@ -745,6 +725,26 @@ void GraphicsWidget::setGfx(const Graphics::Surface *gfx) {
 	_gfx.copyFrom(*gfx);
 }
 
+void GraphicsWidget::setAGfx(const Graphics::TransparentSurface *gfx, ThemeEngine::AutoScaleMode mode) {
+	_agfx.free();
+
+	if (!gfx || !gfx->getPixels())
+		return;
+
+	if (gfx->format.bytesPerPixel == 1) {
+		warning("GraphicsWidget::setGfx got paletted surface passed");
+		return;
+	}
+
+	if ((gfx->w > _w || gfx->h > _h) && mode == ThemeEngine::kAutoScaleNone) {
+		warning("GraphicsWidget has size %dx%d, but a surface with %dx%d is to be set", _w, _h, gfx->w, gfx->h);
+		return;
+	}
+
+	_agfx.copyFrom(*gfx);
+	_mode = mode;
+}
+
 void GraphicsWidget::setGfx(int w, int h, int r, int g, int b) {
 	if (w == -1)
 		w = _w;
@@ -770,21 +770,7 @@ void GraphicsWidget::drawWidget() {
 		const int x = _x + (_w - _gfx.w) / 2;
 		const int y = _y + (_h - _gfx.h) / 2;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-		g_gui.theme()->drawSurface(Common::Rect(x, y, x + _gfx.w,  y + _gfx.h), _gfx, _state, _alpha, _transparency);
-<<<<<<< HEAD
-=======
-=======
 		g_gui.theme()->drawSurfaceClip(Common::Rect(x, y, x + _gfx.w,  y + _gfx.h), getBossClipRect(), _gfx, _state, _alpha, _transparency);
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
-		g_gui.theme()->drawSurfaceClip(Common::Rect(x, y, x + _gfx.w,  y + _gfx.h), getBossClipRect(), _gfx, _state, _alpha, _transparency);
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
-		g_gui.theme()->drawSurfaceClip(Common::Rect(x, y, x + _gfx.w,  y + _gfx.h), getBossClipRect(), _gfx, _state, _alpha, _transparency);
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 	} else if (_agfx.getPixels()) {
 		// Check whether the set up surface needs to be converted to the GUI
 		// color format.
@@ -802,7 +788,6 @@ void GraphicsWidget::drawWidget() {
 		} else {
 			g_gui.theme()->drawASurfaceClip(Common::Rect(_x, _y, _x + _w,  _y + _h), getBossClipRect(), _agfx, _mode, _alpha);
 		}
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 	}
 }
 

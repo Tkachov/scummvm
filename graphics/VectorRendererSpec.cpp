@@ -25,6 +25,8 @@
 #include "common/frac.h"
 
 #include "graphics/surface.h"
+#include "graphics/transparent_surface.h"
+#include "graphics/nine_patch.h"
 #include "graphics/colormasks.h"
 
 #include "gui/ThemeEngine.h"
@@ -797,15 +799,6 @@ blitSubSurface(const Graphics::Surface *source, const Common::Rect &r) {
 
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-blitAlphaBitmap(const Graphics::Surface *source, const Common::Rect &r) {
-=======
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping) {
 	if (clipping.isEmpty() || clipping.contains(r)) {
 		blitSubSurface(source, r);
@@ -859,7 +852,6 @@ blitSubSurfaceClip(const Graphics::Surface *source, const Common::Rect &r, const
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
 blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r) {
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 	int16 x = r.left;
 	int16 y = r.top;
 
@@ -895,14 +887,6 @@ blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r) {
 
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
-=======
->>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
 blitKeyBitmapClip(const Graphics::Surface *source, const Common::Rect &r, const Common::Rect &clipping) {
 	if (clipping.isEmpty() || clipping.contains(r)) {
 		blitKeyBitmap(source, r);
@@ -956,23 +940,7 @@ blitKeyBitmapClip(const Graphics::Surface *source, const Common::Rect &r, const 
 		}
 
 		dst_ptr = dst_ptr - usedW + dst_pitch;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		src_ptr = src_ptr - usedW + src_pitch;
-=======
-		src_ptr = src_ptr - usedH + src_pitch;
->>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
-=======
-		src_ptr = src_ptr - usedW + src_pitch;
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
-		src_ptr = src_ptr - usedH + src_pitch;
->>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
-=======
-		src_ptr = src_ptr - usedW + src_pitch;
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 	}
 }
 
@@ -1013,15 +981,6 @@ blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r, GUI
 
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 54cd2cc... GUI: Add blitKeyBitmapClip()
-=======
-=======
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
-=======
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r, const Common::Rect &clipping,
 	GUI::ThemeEngine::AutoScaleMode autoscale, Graphics::DrawStep::VectorAlignment xAlign,
 	Graphics::DrawStep::VectorAlignment yAlign, int alpha) {
@@ -1030,30 +989,8 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 		return;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
 		source->blitClip(*_activeSurface, clipping, r.left, r.top, Graphics::FLIP_NONE,
-=======
-	debug("blitAlphaBitmapClip: no clipping implemented");
-	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
-		source->blit(*_activeSurface, r.left, r.top, Graphics::FLIP_NONE,
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
-=======
-	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
-		source->blitClip(*_activeSurface, clipping, r.left, r.top, Graphics::FLIP_NONE,
->>>>>>> 1ed7481... GUI: Add blitClip()
-=======
-	debug("blitAlphaBitmapClip: no clipping implemented");
-	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
-		source->blit(*_activeSurface, r.left, r.top, Graphics::FLIP_NONE,
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
-=======
-	if (autoscale == GUI::ThemeEngine::kAutoScaleStretch) {
-		source->blitClip(*_activeSurface, clipping, r.left, r.top, Graphics::FLIP_NONE,
->>>>>>> 1ed7481... GUI: Add blitClip()
 			nullptr, TS_ARGB(alpha, 255, 255, 255),
 			r.width(), r.height());
 	} else if (autoscale == GUI::ThemeEngine::kAutoScaleFit) {
@@ -1070,76 +1007,21 @@ blitAlphaBitmapClip(Graphics::TransparentSurface *source, const Common::Rect &r,
 		if (yAlign == Graphics::DrawStep::kVectorAlignCenter)
 			offy = (r.height() - (int)(source->h * ratio)) >> 1;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		source->blitClip(*_activeSurface, clipping, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
-=======
-		source->blit(*_activeSurface, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
-=======
-		source->blitClip(*_activeSurface, clipping, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
->>>>>>> 1ed7481... GUI: Add blitClip()
-=======
-		source->blit(*_activeSurface, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
-=======
-		source->blitClip(*_activeSurface, clipping, r.left + offx, r.top + offy, Graphics::FLIP_NONE,
->>>>>>> 1ed7481... GUI: Add blitClip()
 			nullptr, TS_ARGB(alpha, 255, 255, 255),
 			(int)(source->w * ratio), (int)(source->h * ratio));
 
 	} else if (autoscale == GUI::ThemeEngine::kAutoScaleNinePatch) {
 		Graphics::NinePatchBitmap nine(source, false);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		nine.blitClip(*_activeSurface, clipping, r.left, r.top, r.width(), r.height());
 	} else {
 		source->blitClip(*_activeSurface, clipping, r.left, r.top);
-=======
-		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height());
-	} else {
-		source->blit(*_activeSurface, r.left, r.top);
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
-=======
-		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height()); //TODO
-=======
-		nine.blitClip(*_activeSurface, clipping, r.left, r.top, r.width(), r.height());
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-=======
-		nine.blitClip(*_activeSurface, clipping, r.left, r.top, r.width(), r.height());
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-	} else {
-		source->blitClip(*_activeSurface, clipping, r.left, r.top);
->>>>>>> 1ed7481... GUI: Add blitClip()
-=======
-		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height());
-	} else {
-		source->blit(*_activeSurface, r.left, r.top);
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
-=======
-		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height()); //TODO
-	} else {
-		source->blitClip(*_activeSurface, clipping, r.left, r.top);
->>>>>>> 1ed7481... GUI: Add blitClip()
 	}
 
 }
 
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
-=======
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
-=======
->>>>>>> 7865ce8... GUI: Add blitAlphaBitmapClip() sketch
 applyScreenShading(GUI::ThemeEngine::ShadingStyle shadingStyle) {
 	int pixels = _activeSurface->w * _activeSurface->h;
 	PixelType *ptr = (PixelType *)_activeSurface->getPixels();
@@ -1615,69 +1497,6 @@ drawSquare(int x, int y, int w, int h) {
 	}
 }
 
-<<<<<<< HEAD
-=======
-template<typename PixelType>
-void VectorRendererSpec<PixelType>::
-drawSquareClip(int x, int y, int w, int h, Common::Rect clipping) {
-	if (x + w > Base::_activeSurface->w || y + h > Base::_activeSurface->h ||
-		w <= 0 || h <= 0 || x < 0 || y < 0)
-		return;
-
-	Common::Rect backup = _clippingArea;
-	_clippingArea = clipping;
-	bool useClippingVersions = !(_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h)));
-
-	if (Base::_fillMode != kFillDisabled && Base::_shadowOffset
-		&& x + w + Base::_shadowOffset < Base::_activeSurface->w
-		&& y + h + Base::_shadowOffset < Base::_activeSurface->h) {
-		if (useClippingVersions)
-			drawSquareShadowClip(x, y, w, h, Base::_shadowOffset);
-		else
-			drawSquareShadow(x, y, w, h, Base::_shadowOffset);
-	}
-
-	switch (Base::_fillMode) {
-	case kFillDisabled:
-		if (Base::_strokeWidth)
-			if (useClippingVersions)
-				drawSquareAlgClip(x, y, w, h, _fgColor, kFillDisabled);
-			else
-				drawSquareAlg(x, y, w, h, _fgColor, kFillDisabled);
-		break;
-
-	case kFillForeground:
-		if (useClippingVersions)
-			drawSquareAlgClip(x, y, w, h, _fgColor, kFillForeground);
-		else 
-			drawSquareAlg(x, y, w, h, _fgColor, kFillForeground);
-		break;
-
-	case kFillBackground:
-		if (useClippingVersions) {
-			drawSquareAlgClip(x, y, w, h, _bgColor, kFillBackground);
-			drawSquareAlgClip(x, y, w, h, _fgColor, kFillDisabled);
-		} else {
-			drawSquareAlg(x, y, w, h, _bgColor, kFillBackground);
-			drawSquareAlg(x, y, w, h, _fgColor, kFillDisabled);
-		}
-		break;
-
-	case kFillGradient:
-		VectorRendererSpec::drawSquareAlg(x, y, w, h, 0, kFillGradient);
-		if (Base::_strokeWidth)
-			if (useClippingVersions)
-				drawSquareAlgClip(x, y, w, h, _fgColor, kFillDisabled);
-			else
-				drawSquareAlg(x, y, w, h, _fgColor, kFillDisabled);
-		break;
-	}
-
-	_clippingArea = backup;
-}
-
-/** ROUNDED SQUARES **/
->>>>>>> a5f13df... GUI: Add drawSquareClip()
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
 drawSquareClip(int x, int y, int w, int h, Common::Rect clipping) {
@@ -1763,23 +1582,7 @@ drawRoundedSquare(int x, int y, int r, int w, int h) {
 
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) {
-=======
-drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch) {
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
-drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) {
->>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
-=======
-drawRoundedSquareClip(int x, int y, int r, int w, int h, int cx, int cy, int cw, int ch) {
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
-drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) {
->>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
 	if (x + w > Base::_activeSurface->w || y + h > Base::_activeSurface->h ||
 		w <= 0 || h <= 0 || x < 0 || y < 0 || r <= 0)
 		return;
@@ -1790,63 +1593,19 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) 
 	if (r <= 0)
 		return;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	Common::Rect backup = _clippingArea;
 	_clippingArea = clipping;
 	bool useOriginal = (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h)));
 
-=======
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
-	Common::Rect backup = _clippingArea;
-	_clippingArea = clipping;
-	bool useOriginal = (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h)));
-
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-=======
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
-	Common::Rect backup = _clippingArea;
-	_clippingArea = clipping;
-	bool useOriginal = (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h)));
-
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 	if (Base::_fillMode != kFillDisabled && Base::_shadowOffset
 		&& x + w + Base::_shadowOffset + 1 < Base::_activeSurface->w
 		&& y + h + Base::_shadowOffset + 1 < Base::_activeSurface->h
 		&& h > (Base::_shadowOffset + 1) * 2) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		if (useOriginal) {
-=======
-		if (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h))) {
->>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
-=======
-		if (useOriginal) {
->>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
-=======
-		if (_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h))) {
->>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
-=======
-		if (useOriginal) {
->>>>>>> d373d49... GUI: Fix drawRoundedSquareClip()
 			drawRoundedSquareShadow(x, y, r, w, h, Base::_shadowOffset);
 		} else {
 			drawRoundedSquareShadowClip(x, y, r, w, h, Base::_shadowOffset);
 		}
-<<<<<<< HEAD
-<<<<<<< HEAD
 	}
 
 	if (useOriginal) {
@@ -1856,54 +1615,6 @@ drawRoundedSquareClip(int x, int y, int r, int w, int h, Common::Rect clipping) 
 	}
 
 	_clippingArea = backup;
-=======
-=======
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-		drawRoundedSquareShadow(x, y, r, w, h, Base::_shadowOffset);
-	}
-
-	drawRoundedSquareAlg(x, y, r, w, h, _fgColor, Base::_fillMode);
-<<<<<<< HEAD
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
-		debug("shadow");
-=======
->>>>>>> 2837db4... GUI: Remove unnecessary debug() output
-		drawRoundedSquareShadow(x, y, r, w, h, Base::_shadowOffset);
-=======
->>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
-	}
-
-	if (useOriginal) {
-		drawRoundedSquareAlg(x, y, r, w, h, _fgColor, Base::_fillMode);
-	} else {
-=======
-		debug("shadow");
-=======
->>>>>>> 2837db4... GUI: Remove unnecessary debug() output
-		drawRoundedSquareShadow(x, y, r, w, h, Base::_shadowOffset);
-=======
->>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
-	}
-
-	if (useOriginal) {
-		drawRoundedSquareAlg(x, y, r, w, h, _fgColor, Base::_fillMode);
-	} else {
-<<<<<<< HEAD
-		debug("clipclipclip %d..%d %d..%d", cx, cw + cx, cy, cy + ch);
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-=======
->>>>>>> 2837db4... GUI: Remove unnecessary debug() output
-		drawRoundedSquareAlgClip(x, y, r, w, h, _fgColor, Base::_fillMode);
-	}
-
-	_clippingArea = backup;
-<<<<<<< HEAD
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-=======
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
 }
 
 template<typename PixelType>
@@ -2095,8 +1806,6 @@ drawTriangleClip(int x, int y, int w, int h, TriangleOrientation orient, Common:
 	Common::Rect backup = _clippingArea;
 	_clippingArea = clipping;
 	bool useClippingVersions = !(_clippingArea.isEmpty() || _clippingArea.contains(Common::Rect(x, y, x + w, y + h)));
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 	if (w == h) {
 		int newW = w;
@@ -2116,30 +1825,6 @@ drawTriangleClip(int x, int y, int w, int h, TriangleOrientation orient, Common:
 			break;
 		}
 
-=======
-=======
->>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
-
-	if (w == h) {
-		int newW = w;
-
-		switch (orient) {
-		case kTriangleUp:
-		case kTriangleDown:
-			if (useClippingVersions)
-				drawTriangleVertAlgClip(x, y, newW, newW, (orient == kTriangleDown), color, Base::_fillMode);
-			else
-				drawTriangleVertAlg(x, y, newW, newW, (orient == kTriangleDown), color, Base::_fillMode);
-			break;
-
-		case kTriangleLeft:
-		case kTriangleRight:
-		case kTriangleAuto:
-			break;
-		}
-<<<<<<< HEAD
-
->>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
 		if (Base::_strokeWidth > 0)
 			if (Base::_fillMode == kFillBackground || Base::_fillMode == kFillGradient) {
 				if (useClippingVersions)
@@ -2151,20 +1836,6 @@ drawTriangleClip(int x, int y, int w, int h, TriangleOrientation orient, Common:
 		int newW = w;
 		int newH = h;
 
-=======
-
-		if (Base::_strokeWidth > 0)
-			if (Base::_fillMode == kFillBackground || Base::_fillMode == kFillGradient) {
-				if (useClippingVersions)
-					drawTriangleVertAlgClip(x, y, newW, newW, (orient == kTriangleDown), color, Base::_fillMode);
-				else
-					drawTriangleVertAlg(x, y, newW, newW, (orient == kTriangleDown), color, Base::_fillMode);
-			}
-	} else {
-		int newW = w;
-		int newH = h;
-
->>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
 		switch (orient) {
 		case kTriangleUp:
 		case kTriangleDown:
@@ -3745,22 +3416,6 @@ drawRoundedSquareAlgClip(int x1, int y1, int r, int w, int h, PixelType color, V
 	const uint8 bevelAlpha_b = 0;
 	const uint8 bevelAlpha_l = 127;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	debug("clip version");
-
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-=======
->>>>>>> 2837db4... GUI: Remove unnecessary debug() output
-=======
-	debug("clip version");
-
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-=======
->>>>>>> 2837db4... GUI: Remove unnecessary debug() output
 	// If only border is visible	
 	if ((!(w <= 0 || h <= 0)) && (fill_m != Base::kFillDisabled)) {		
 		if (fill_m == Base::kFillBackground)
@@ -4000,21 +3655,6 @@ drawRoundedSquareShadow(int x1, int y1, int r, int w, int h, int offset) {
 		while (x++ < y) {
 			BE_ALGORITHM();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-			if (x + xstart < _clippingArea.left || x + xstart > _clippingArea.right) continue;
-			if (y + ystart  < _clippingArea.top || y + ystart  > _clippingArea.bottom) continue;
-
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-=======
->>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
-=======
->>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 			if (((1 << x) & hb) == 0) {
 				blendFill(ptr_tl - y - px, ptr_tr + y - px, color, (uint8)alpha);
 
@@ -4033,39 +3673,9 @@ drawRoundedSquareShadow(int x1, int y1, int r, int w, int h, int offset) {
 		}
 
 		ptr_fill += pitch * r;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		while (short_h--) {			
 			blendFill(ptr_fill, ptr_fill + width + 1, color, (uint8)alpha);
 			ptr_fill += pitch;			
-=======
-		int realy = ystart;
-		while (short_h--) {			
-			if (realy >= _clippingArea.top && realy <= _clippingArea.bottom)
-				blendFill(ptr_fill, ptr_fill + width + 1, color, (uint8)alpha);
-			ptr_fill += pitch;
-			++realy;
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-=======
-		while (short_h--) {			
-			blendFill(ptr_fill, ptr_fill + width + 1, color, (uint8)alpha);
-			ptr_fill += pitch;			
->>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
-=======
-		int realy = ystart;
-		while (short_h--) {			
-			if (realy >= _clippingArea.top && realy <= _clippingArea.bottom)
-				blendFill(ptr_fill, ptr_fill + width + 1, color, (uint8)alpha);
-			ptr_fill += pitch;
-			++realy;
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-=======
-		while (short_h--) {			
-			blendFill(ptr_fill, ptr_fill + width + 1, color, (uint8)alpha);
-			ptr_fill += pitch;			
->>>>>>> cd5d382... GUI: Add drawRoundedSquareShadowClip()
 		}
 
 		// Make shadow smaller each iteration, and move it one pixel inward

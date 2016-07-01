@@ -32,6 +32,7 @@
 #include "common/rect.h"
 
 #include "graphics/surface.h"
+#include "graphics/transparent_surface.h"
 #include "graphics/font.h"
 #include "graphics/pixelformat.h"
 
@@ -140,6 +141,7 @@ enum TextColor {
 class ThemeEngine {
 protected:
 	typedef Common::HashMap<Common::String, Graphics::Surface *> ImagesMap;
+	typedef Common::HashMap<Common::String, Graphics::TransparentSurface *> AImagesMap;
 
 	friend class GUI::Dialog;
 	friend class GUI::GuiObject;
@@ -169,7 +171,8 @@ public:
 		kDialogBackgroundSpecial,
 		kDialogBackgroundPlain,
 		kDialogBackgroundTooltip,
-		kDialogBackgroundDefault
+		kDialogBackgroundDefault,
+		kDialogBackgroundNone
 	};
 
 	/// State of the widget to be drawn
@@ -221,6 +224,14 @@ public:
 		kShadingNone,       ///< No special post processing
 		kShadingDim,        ///< Dimming unused areas
 		kShadingLuminance   ///< Converting colors to luminance for unused areas
+	};
+
+	/// AlphaBitmap scale mode selector
+	enum AutoScaleMode {
+		kAutoScaleNone = 0,		///< Use image dimensions
+		kAutoScaleStretch = 1,	///< Stretch image to full widget size
+		kAutoScaleFit = 2,		///< Scale image to widget size but keep aspect ratio
+		kAutoScaleNinePatch = 3 ///< 9-patch image
 	};
 
 	// Special image ids for images used in the GUI
@@ -340,74 +351,20 @@ public:
 
 	void drawWidgetBackground(const Common::Rect &r, uint16 hints,
 	                          WidgetBackground background = kWidgetBackgroundPlain, WidgetStateInfo state = kStateEnabled);
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void drawWidgetBackgroundClip(const Common::Rect &r, const Common::Rect &clippingArea, uint16 hints,
-								WidgetBackground background = kWidgetBackgroundPlain, WidgetStateInfo state = kStateEnabled);
-
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
-	void drawWidgetBackgroundClip(const Common::Rect &r, const Common::Rect &clippingArea, uint16 hints,
-								WidgetBackground background = kWidgetBackgroundPlain, WidgetStateInfo state = kStateEnabled);
-
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawWidgetBackgroundClip(const Common::Rect &r, const Common::Rect &clippingArea, uint16 hints,
 								WidgetBackground background = kWidgetBackgroundPlain, WidgetStateInfo state = kStateEnabled);
 
 	void drawButton(const Common::Rect &r, const Common::String &str,
 	                WidgetStateInfo state = kStateEnabled, uint16 hints = 0);
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void drawButtonClip(const Common::Rect &r, const Common::Rect &clippingRect, const Common::String &str,
-		WidgetStateInfo state = kStateEnabled, uint16 hints = 0);
-
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
-	void drawButtonClip(const Common::Rect &r, const Common::Rect &clippingRect, const Common::String &str,
-		WidgetStateInfo state = kStateEnabled, uint16 hints = 0);
-
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawButtonClip(const Common::Rect &r, const Common::Rect &clippingRect, const Common::String &str,
 		WidgetStateInfo state = kStateEnabled, uint16 hints = 0);
 
 	void drawSurface(const Common::Rect &r, const Graphics::Surface &surface,
-<<<<<<< HEAD
-	                 WidgetStateInfo state = kStateEnabled, int alpha = 256, bool themeTrans = false);
-=======
 	                 WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void drawSurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, const Graphics::Surface &surface,
-		WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
-
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
-	void drawSurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, const Graphics::Surface &surface,
-		WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
-
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawSurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, const Graphics::Surface &surface,
 		WidgetStateInfo state = kStateEnabled, int alpha = 255, bool themeTrans = false);
 
 	void drawASurface(const Common::Rect &r, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
-	void drawASurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
-
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
-	void drawASurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
-
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawASurfaceClip(const Common::Rect &r, const Common::Rect &clippingRect, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha);
 
 	void drawSlider(const Common::Rect &r, int width,
@@ -444,18 +401,6 @@ public:
 
 	void drawCaret(const Common::Rect &r, bool erase,
 	               WidgetStateInfo state = kStateEnabled);
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void drawCaretClip(const Common::Rect &r, const Common::Rect &clip, bool erase,
-		WidgetStateInfo state = kStateEnabled);
-
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
-	void drawCaretClip(const Common::Rect &r, const Common::Rect &clip, bool erase,
-		WidgetStateInfo state = kStateEnabled);
-
-=======
->>>>>>> 4b4260c... GUI: Use clipping everywhere
 	void drawCaretClip(const Common::Rect &r, const Common::Rect &clip, bool erase,
 		WidgetStateInfo state = kStateEnabled);
 
@@ -552,6 +497,14 @@ public:
 	bool addBitmap(const Common::String &filename);
 
 	/**
+	 * Interface for the ThemeParser class: Loads a bitmap with transparency file to use on the GUI.
+	 * The filename is also used as its identifier.
+	 *
+	 * @param filename Name of the bitmap file.
+	 */
+	bool addAlphaBitmap(const Common::String &filename);
+
+	/**
 	 * Adds a new TextStep from the ThemeParser. This will be deprecated/removed once the
 	 * new Font API is in place. FIXME: Is that so ???
 	 */
@@ -595,8 +548,16 @@ public:
 		return _bitmaps.contains(name) ? _bitmaps[name] : 0;
 	}
 
+	Graphics::TransparentSurface *getAlphaBitmap(const Common::String &name) {
+		return _abitmaps.contains(name) ? _abitmaps[name] : 0;
+	}
+
 	const Graphics::Surface *getImageSurface(const Common::String &name) const {
 		return _bitmaps.contains(name) ? _bitmaps[name] : 0;
+	}
+
+	const Graphics::TransparentSurface *getAImageSurface(const Common::String &name) const {
+		return _abitmaps.contains(name) ? _abitmaps[name] : 0;
 	}
 
 	/**
@@ -684,29 +645,9 @@ protected:
 	void queueDDTextClip(TextData type, TextColor color, const Common::Rect &r, const Common::Rect &clippingRect, const Common::String &text, bool restoreBg,
 					 bool elipsis, Graphics::TextAlign alignH = Graphics::kTextAlignLeft, TextAlignVertical alignV = kTextAlignVTop, int deltax = 0, const Common::Rect &drawableTextArea = Common::Rect(0, 0, 0, 0));
 	void queueBitmap(const Graphics::Surface *bitmap, const Common::Rect &r, bool alpha);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 	void queueBitmapClip(const Graphics::Surface *bitmap, const Common::Rect &clippingRect, const Common::Rect &r, bool alpha);
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
-	void queueBitmapClip(const Graphics::Surface *bitmap, const Common::Rect &clippingRect, const Common::Rect &r, bool alpha);
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
-	void queueBitmapClip(const Graphics::Surface *bitmap, const Common::Rect &clippingRect, const Common::Rect &r, bool alpha);
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 	void queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, AutoScaleMode autoscale, int alpha);
 	void queueABitmapClip(Graphics::TransparentSurface *bitmap, const Common::Rect &r, const Common::Rect &clippingRect, AutoScaleMode autoscale, int alpha);
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-=======
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-=======
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 
 	/**
 	 * DEBUG: Draws a white square and writes some text next to it.
@@ -747,10 +688,10 @@ protected:
 	GUI::ThemeEval *_themeEval;
 
 	/** Main screen surface. This is blitted straight into the overlay. */
-	Graphics::Surface _screen;
+	Graphics::TransparentSurface _screen;
 
 	/** Backbuffer surface. Stores previous states of the screen to blit back */
-	Graphics::Surface _backBuffer;
+	Graphics::TransparentSurface _backBuffer;
 
 	/** Sets whether the current drawing is being buffered (stored for later
 	    processing) or drawn directly to the screen. */
@@ -779,6 +720,7 @@ protected:
 	TextColorData *_textColors[kTextColorMAX];
 
 	ImagesMap _bitmaps;
+	AImagesMap _abitmaps;
 	Graphics::PixelFormat _overlayFormat;
 #ifdef USE_RGB_COLOR
 	Graphics::PixelFormat _cursorFormat;

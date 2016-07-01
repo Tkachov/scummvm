@@ -346,7 +346,7 @@ Common::Rect TransparentSurface::blit(Graphics::Surface &target, int posX, int p
 	TransparentSurface srcImage(*this, false);
 	// TODO: Is the data really in the screen format?
 	if (format.bytesPerPixel != 4) {
-		warning("TransparentSurface can only blit 32bpp images, but got %d", format.bytesPerPixel * 8);
+		warning("TransparentSurface can only blit 32bpp images, but got %d", format.bytesPerPixel * 8); 
 		return retSize;
 	}
 
@@ -533,35 +533,10 @@ Common::Rect TransparentSurface::blitClip(Graphics::Surface &target, Common::Rec
 	}
 
 	// Handle off-screen clipping
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-=======
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 	if (posY < clippingArea.top) {
 		img->h = MAX(0, (int)img->h - (clippingArea.top - posY));
 		img->setPixels((byte *)img->getBasePtr(0, clippingArea.top - posY));
 		posY = clippingArea.top;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 1ed7481... GUI: Add blitClip()
-	if (posY < clippingArea.bottom) {
-		img->h = MAX(0, (int)img->h - (clippingArea.bottom - posY));
-		img->setPixels((byte *)img->getBasePtr(0, clippingArea.bottom - posY));
-		posY = clippingArea.bottom;
-<<<<<<< HEAD
->>>>>>> 1ed7481... GUI: Add blitClip()
-=======
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-=======
->>>>>>> 1ed7481... GUI: Add blitClip()
-=======
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 	}
 
 	if (posX < clippingArea.left) {
@@ -570,28 +545,8 @@ Common::Rect TransparentSurface::blitClip(Graphics::Surface &target, Common::Rec
 		posX = clippingArea.left;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	img->w = CLIP((int)img->w, 0, (int)MAX((int)clippingArea.right - posX, 0));
 	img->h = CLIP((int)img->h, 0, (int)MAX((int)clippingArea.bottom - posY, 0));
-=======
-	img->w = CLIP((int)img->w, 0, (int)MAX((int)clippingArea.width() - posX, 0));
-	img->h = CLIP((int)img->h, 0, (int)MAX((int)clippingArea.height() - posY, 0));
->>>>>>> 1ed7481... GUI: Add blitClip()
-=======
-	img->w = CLIP((int)img->w, 0, (int)MAX((int)clippingArea.right - posX, 0));
-	img->h = CLIP((int)img->h, 0, (int)MAX((int)clippingArea.bottom - posY, 0));
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-=======
-	img->w = CLIP((int)img->w, 0, (int)MAX((int)clippingArea.width() - posX, 0));
-	img->h = CLIP((int)img->h, 0, (int)MAX((int)clippingArea.height() - posY, 0));
->>>>>>> 1ed7481... GUI: Add blitClip()
-=======
-	img->w = CLIP((int)img->w, 0, (int)MAX((int)clippingArea.right - posX, 0));
-	img->h = CLIP((int)img->h, 0, (int)MAX((int)clippingArea.bottom - posY, 0));
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 
 	if ((img->w > 0) && (img->h > 0)) {
 		int xp = 0, yp = 0;
@@ -1022,6 +977,84 @@ TransparentSurface *TransparentSurface::scale(uint16 newWidth, uint16 newHeight)
 
 	return target;
 
+}
+
+TransparentSurface *TransparentSurface::convertTo(const PixelFormat &dstFormat, const byte *palette) const {
+	assert(pixels);
+
+	TransparentSurface *surface = new TransparentSurface();
+
+	// If the target format is the same, just copy
+	if (format == dstFormat) {
+		surface->copyFrom(*this);
+		return surface;
+	}
+
+	if (format.bytesPerPixel == 0 || format.bytesPerPixel > 4)
+		error("Surface::convertTo(): Can only convert from 1Bpp, 2Bpp, 3Bpp, and 4Bpp");
+
+	if (dstFormat.bytesPerPixel != 2 && dstFormat.bytesPerPixel != 4)
+		error("Surface::convertTo(): Can only convert to 2Bpp and 4Bpp");
+
+	surface->create(w, h, dstFormat);
+
+	if (format.bytesPerPixel == 1) {
+		// Converting from paletted to high color
+		assert(palette);
+
+		for (int y = 0; y < h; y++) {
+			const byte *srcRow = (const byte *)getBasePtr(0, y);
+			byte *dstRow = (byte *)surface->getBasePtr(0, y);
+
+			for (int x = 0; x < w; x++) {
+				byte index = *srcRow++;
+				byte r = palette[index * 3];
+				byte g = palette[index * 3 + 1];
+				byte b = palette[index * 3 + 2];
+
+				uint32 color = dstFormat.RGBToColor(r, g, b);
+
+				if (dstFormat.bytesPerPixel == 2)
+					*((uint16 *)dstRow) = color;
+				else
+					*((uint32 *)dstRow) = color;
+
+				dstRow += dstFormat.bytesPerPixel;
+			}
+		}
+	} else {
+		// Converting from high color to high color
+		for (int y = 0; y < h; y++) {
+			const byte *srcRow = (const byte *)getBasePtr(0, y);
+			byte *dstRow = (byte *)surface->getBasePtr(0, y);
+
+			for (int x = 0; x < w; x++) {
+				uint32 srcColor;
+				if (format.bytesPerPixel == 2)
+					srcColor = READ_UINT16(srcRow);
+				else if (format.bytesPerPixel == 3)
+					srcColor = READ_UINT24(srcRow);
+				else
+					srcColor = READ_UINT32(srcRow);
+
+				srcRow += format.bytesPerPixel;
+
+				// Convert that color to the new format
+				byte r, g, b, a;
+				format.colorToARGB(srcColor, a, r, g, b);
+				uint32 color = dstFormat.ARGBToColor(a, r, g, b);
+
+				if (dstFormat.bytesPerPixel == 2)
+					*((uint16 *)dstRow) = color;
+				else
+					*((uint32 *)dstRow) = color;
+
+				dstRow += dstFormat.bytesPerPixel;
+			}
+		}
+	}
+
+	return surface;
 }
 
 } // End of namespace Graphics

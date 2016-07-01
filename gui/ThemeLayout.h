@@ -29,7 +29,7 @@
 
 #ifdef LAYOUT_DEBUG_DIALOG
 namespace Graphics {
-class Surface;
+struct Surface;
 }
 #endif
 
@@ -45,26 +45,8 @@ public:
 		kLayoutMain,
 		kLayoutVertical,
 		kLayoutHorizontal,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		kLayoutWidget,
 		kLayoutTabWidget
-=======
-		kLayoutWidget
->>>>>>> e2cc59f... GUI: Revert _clippingArea
-=======
-		kLayoutWidget,
-		kLayoutTabWidget
->>>>>>> cdea070... GUI: Add ThemeLayoutTabWidget
-=======
-		kLayoutWidget
->>>>>>> e2cc59f... GUI: Revert _clippingArea
-=======
-		kLayoutWidget,
-		kLayoutTabWidget
->>>>>>> cdea070... GUI: Add ThemeLayoutTabWidget
 	};
 
 	ThemeLayout(ThemeLayout *p) :

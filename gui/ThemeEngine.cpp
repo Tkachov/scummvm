@@ -31,11 +31,13 @@
 #include "graphics/cursorman.h"
 #include "graphics/fontman.h"
 #include "graphics/surface.h"
+#include "graphics/transparent_surface.h"
 #include "graphics/VectorRenderer.h"
 #include "graphics/fonts/bdf.h"
 #include "graphics/fonts/ttf.h"
 
 #include "image/bmp.h"
+#include "image/png.h"
 
 #include "gui/widget.h"
 #include "gui/ThemeEngine.h"
@@ -168,16 +170,6 @@ protected:
 	bool _alpha;
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 class ThemeItemBitmapClip : public ThemeItem {
 public:
 	ThemeItemBitmapClip(ThemeEngine *engine, const Common::Rect &area, const Common::Rect &clip, const Graphics::Surface *bitmap, bool alpha) :
@@ -191,13 +183,6 @@ protected:
 	const Common::Rect _clip;
 };
 
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 class ThemeItemABitmap : public ThemeItem {
 public:
 	ThemeItemABitmap(ThemeEngine *engine, const Common::Rect &area, Graphics::TransparentSurface *bitmap, ThemeEngine::AutoScaleMode autoscale, int alpha) :
@@ -215,22 +200,9 @@ class ThemeItemABitmapClip : public ThemeItem {
 public:
 	ThemeItemABitmapClip(ThemeEngine *engine, const Common::Rect &area, const Common::Rect &clip, Graphics::TransparentSurface *bitmap, ThemeEngine::AutoScaleMode autoscale, int alpha) :
 		ThemeItem(engine, area), _bitmap(bitmap), _autoscale(autoscale), _alpha(alpha), _clip(clip) {}
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-	void drawSelf(bool draw, bool restore);
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-
-=======
 
 	void drawSelf(bool draw, bool restore);
 
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-=======
-
-	void drawSelf(bool draw, bool restore);
-
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 protected:
 	Graphics::TransparentSurface *_bitmap;
 	ThemeEngine::AutoScaleMode _autoscale;
@@ -333,10 +305,6 @@ void ThemeItemDrawDataClip::drawSelf(bool draw, bool restore) {
 
 	if (draw) {
 		Common::List<Graphics::DrawStep>::const_iterator step;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step) {
 			_engine->renderer()->drawStepClip(_area, _clip, *step, _dynamicData);
 		}
@@ -344,36 +312,6 @@ void ThemeItemDrawDataClip::drawSelf(bool draw, bool restore) {
 
 	extendedRect.clip(_clip);
 
-<<<<<<< HEAD
-=======
-		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step)
-			_engine->renderer()->drawStep(_area, *step, _dynamicData);
-=======
-		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step) {
-			_engine->renderer()->drawStepClip(_area, _clip, *step, _dynamicData);
-		}
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-	}
-
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
->>>>>>> 1f9b907... GUI: Make PopUpWidget clip
-=======
-		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step)
-			_engine->renderer()->drawStep(_area, *step, _dynamicData);
-=======
-		for (step = _data->_steps.begin(); step != _data->_steps.end(); ++step) {
-			_engine->renderer()->drawStepClip(_area, _clip, *step, _dynamicData);
-		}
->>>>>>> ef58fcf... GUI: drawRoundedSquareAlgClip
-	}
-
-<<<<<<< HEAD
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-	extendedRect.clip(_clip);
-
->>>>>>> 1f9b907... GUI: Make PopUpWidget clip
 	_engine->addDirtyRect(extendedRect);
 }
 
@@ -399,7 +337,7 @@ void ThemeItemBitmap::drawSelf(bool draw, bool restore) {
 
 	if (draw) {
 		if (_alpha)
-			_engine->renderer()->blitAlphaBitmap(_bitmap, _area);
+			_engine->renderer()->blitKeyBitmap(_bitmap, _area);
 		else
 			_engine->renderer()->blitSubSurface(_bitmap, _area);
 	}
@@ -407,16 +345,6 @@ void ThemeItemBitmap::drawSelf(bool draw, bool restore) {
 	_engine->addDirtyRect(_area);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 void ThemeItemBitmapClip::drawSelf(bool draw, bool restore) {
 	if (restore)
 		_engine->restoreBackground(_area);
@@ -433,13 +361,6 @@ void ThemeItemBitmapClip::drawSelf(bool draw, bool restore) {
 	_engine->addDirtyRect(dirtyRect);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 void ThemeItemABitmap::drawSelf(bool draw, bool restore) {
 	if (restore)
 		_engine->restoreBackground(_area);
@@ -461,13 +382,6 @@ void ThemeItemABitmapClip::drawSelf(bool draw, bool restore) {
 	dirtyRect.clip(_clip);
 	_engine->addDirtyRect(dirtyRect);
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-=======
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-=======
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 
 
 /**********************************************************
@@ -511,6 +425,12 @@ ThemeEngine::ThemeEngine(Common::String id, GraphicsMode mode) :
 	_themeArchive = 0;
 	_initOk = false;
 
+	_cursorHotspotX = _cursorHotspotY = 0;
+	_cursorWidth = _cursorHeight = 0;
+	_cursorPalSize = 0;
+
+	_needPaletteUpdates = false;
+
 	// We prefer files in archive bundles over the common search paths.
 	_themeFiles.add("default", &SearchMan, 0, false);
 }
@@ -532,6 +452,15 @@ ThemeEngine::~ThemeEngine() {
 		}
 	}
 	_bitmaps.clear();
+
+	for (AImagesMap::iterator i = _abitmaps.begin(); i != _abitmaps.end(); ++i) {
+		Graphics::TransparentSurface *surf = i->_value;
+		if (surf) {
+			surf->free();
+			delete surf;
+		}
+	}
+	_abitmaps.clear();
 
 	delete _parser;
 	delete _themeEval;
@@ -657,6 +586,15 @@ void ThemeEngine::refresh() {
 			}
 		}
 		_bitmaps.clear();
+
+		for (AImagesMap::iterator i = _abitmaps.begin(); i != _abitmaps.end(); ++i) {
+			Graphics::TransparentSurface *surf = i->_value;
+			if (surf) {
+				surf->free();
+				delete surf;
+			}
+		}
+		_abitmaps.clear();
 	}
 
 	init();
@@ -838,27 +776,96 @@ bool ThemeEngine::addBitmap(const Common::String &filename) {
 	if (surf)
 		return true;
 
-	// If not, try to load the bitmap via the BitmapDecoder class.
-	Image::BitmapDecoder bitmapDecoder;
 	const Graphics::Surface *srcSurface = 0;
-	Common::ArchiveMemberList members;
-	_themeFiles.listMatchingMembers(members, filename);
-	for (Common::ArchiveMemberList::const_iterator i = members.begin(), end = members.end(); i != end; ++i) {
-		Common::SeekableReadStream *stream = (*i)->createReadStream();
-		if (stream) {
-			bitmapDecoder.loadStream(*stream);
-			srcSurface = bitmapDecoder.getSurface();
-			delete stream;
-			if (srcSurface)
-				break;
-		}
-	}
 
-	if (srcSurface && srcSurface->format.bytesPerPixel != 1)
-		surf = srcSurface->convertTo(_overlayFormat);
+	if (filename.hasSuffix(".png")) {
+		// Maybe it is PNG?
+#ifdef USE_PNG
+		Image::PNGDecoder decoder;
+		Common::ArchiveMemberList members;
+		_themeFiles.listMatchingMembers(members, filename);
+		for (Common::ArchiveMemberList::const_iterator i = members.begin(), end = members.end(); i != end; ++i) {
+			Common::SeekableReadStream *stream = (*i)->createReadStream();
+			if (stream) {
+				if (!decoder.loadStream(*stream))
+					error("Error decoding PNG");
+
+				srcSurface = decoder.getSurface();
+				delete stream;
+				if (srcSurface)
+					break;
+			}
+		}
+
+		if (srcSurface && srcSurface->format.bytesPerPixel != 1)
+			surf = srcSurface->convertTo(_overlayFormat);
+#else
+		error("No PNG support compiled in");
+#endif
+	} else {
+		// If not, try to load the bitmap via the BitmapDecoder class.
+		Image::BitmapDecoder bitmapDecoder;
+		Common::ArchiveMemberList members;
+		_themeFiles.listMatchingMembers(members, filename);
+		for (Common::ArchiveMemberList::const_iterator i = members.begin(), end = members.end(); i != end; ++i) {
+			Common::SeekableReadStream *stream = (*i)->createReadStream();
+			if (stream) {
+				bitmapDecoder.loadStream(*stream);
+				srcSurface = bitmapDecoder.getSurface();
+				delete stream;
+				if (srcSurface)
+					break;
+			}
+		}
+
+		if (srcSurface && srcSurface->format.bytesPerPixel != 1)
+			surf = srcSurface->convertTo(_overlayFormat);
+	}
 
 	// Store the surface into our hashmap (attention, may store NULL entries!)
 	_bitmaps[filename] = surf;
+
+	return surf != 0;
+}
+
+bool ThemeEngine::addAlphaBitmap(const Common::String &filename) {
+	// Nothing has to be done if the bitmap already has been loaded.
+	Graphics::TransparentSurface *surf = _abitmaps[filename];
+	if (surf)
+		return true;
+
+	const Graphics::TransparentSurface *srcSurface = 0;
+
+	if (filename.hasSuffix(".png")) {
+		// Maybe it is PNG?
+#ifdef USE_PNG
+		Image::PNGDecoder decoder;
+		Common::ArchiveMemberList members;
+		_themeFiles.listMatchingMembers(members, filename);
+		for (Common::ArchiveMemberList::const_iterator i = members.begin(), end = members.end(); i != end; ++i) {
+			Common::SeekableReadStream *stream = (*i)->createReadStream();
+			if (stream) {
+				if (!decoder.loadStream(*stream))
+					error("Error decoding PNG");
+
+				srcSurface = new Graphics::TransparentSurface(*decoder.getSurface(), true);
+				delete stream;
+				if (srcSurface)
+					break;
+			}
+		}
+
+		if (srcSurface && srcSurface->format.bytesPerPixel != 1)
+			surf = srcSurface->convertTo(_overlayFormat);
+#else
+		error("No PNG support compiled in");
+#endif
+	} else {
+		error("Only PNG is supported as alphabitmap");
+	}
+
+	// Store the surface into our hashmap (attention, may store NULL entries!)
+	_abitmaps[filename] = surf;
 
 	return surf != 0;
 }
@@ -1062,30 +1069,8 @@ void ThemeEngine::queueDDClip(DrawData type, const Common::Rect &r, const Common
 
 	Common::Rect area = r;
 	area.clip(_screen.w, _screen.h);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 	ThemeItemDrawDataClip *q = new ThemeItemDrawDataClip(this, _widgets[type], area, clippingRect, dynamic);
-=======
-	area.clip(clippingRect);
-
-	ThemeItemDrawData *q = new ThemeItemDrawData(this, _widgets[type], area, dynamic);
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-
-	ThemeItemDrawDataClip *q = new ThemeItemDrawDataClip(this, _widgets[type], area, clippingRect, dynamic);
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
-=======
-	area.clip(clippingRect);
-
-	ThemeItemDrawData *q = new ThemeItemDrawData(this, _widgets[type], area, dynamic);
->>>>>>> 038b5e6... GUI: Prepare button to be clipped
-=======
-
-	ThemeItemDrawDataClip *q = new ThemeItemDrawDataClip(this, _widgets[type], area, clippingRect, dynamic);
->>>>>>> ea6c017... GUI: clippingRect propogated deeper
 
 	if (_buffering) {
 		if (_widgets[type]->_buffer) {
@@ -1126,11 +1111,6 @@ void ThemeEngine::queueDDTextClip(TextData type, TextColor color, const Common::
 
 	if (_texts[type] == 0)
 		return;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> e594cbd... GUI: Use boss's x/y/w/h instead of clippingArea
 
 	Common::Rect area = r;
 	area.clip(_screen.w, _screen.h);
@@ -1149,48 +1129,11 @@ void ThemeEngine::queueDDTextClip(TextData type, TextColor color, const Common::
 }
 
 void ThemeEngine::queueBitmap(const Graphics::Surface *bitmap, const Common::Rect &r, bool alpha) {
->>>>>>> e594cbd... GUI: Use boss's x/y/w/h instead of clippingArea
-
-	Common::Rect area = r;
-	area.clip(_screen.w, _screen.h);
-	Common::Rect textArea = drawableTextArea;
-	if (textArea.isEmpty()) textArea = clippingArea;
-	else textArea.clip(clippingArea);
-
-	ThemeItemTextData *q = new ThemeItemTextData(this, _texts[type], _textColors[color], area, textArea, text, alignH, alignV, ellipsis, restoreBg, deltax);
-
-	if (_buffering) {
-		_screenQueue.push_back(q);
-	} else {
-		q->drawSelf(true, false);
-		delete q;
-	}
-}
-
-<<<<<<< HEAD
-void ThemeEngine::queueBitmap(const Graphics::Surface *bitmap, const Common::Rect &r, bool alpha) {
-=======
-void ThemeEngine::queueBitmapClip(const Graphics::Surface *bitmap, const Common::Rect &r, const Common::Rect &clip, bool alpha) {
 
 	Common::Rect area = r;
 	area.clip(_screen.w, _screen.h);
 
-	ThemeItemBitmapClip *q = new ThemeItemBitmapClip(this, area, clip, bitmap, alpha);
-
-	if (_buffering) {
-		_screenQueue.push_back(q);
-	} else {
-		q->drawSelf(true, false);
-		delete q;
-	}
-}
-
-void ThemeEngine::queueBitmapClip(const Graphics::Surface *bitmap, const Common::Rect &r, const Common::Rect &clip, bool alpha) {
-
-	Common::Rect area = r;
-	area.clip(_screen.w, _screen.h);
-
-	ThemeItemBitmapClip *q = new ThemeItemBitmapClip(this, area, clip, bitmap, alpha);
+	ThemeItemBitmap *q = new ThemeItemBitmap(this, area, bitmap, alpha);
 
 	if (_buffering) {
 		_screenQueue.push_back(q);
@@ -1216,12 +1159,11 @@ void ThemeEngine::queueBitmapClip(const Graphics::Surface *bitmap, const Common:
 }
 
 void ThemeEngine::queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, AutoScaleMode autoscale, int alpha) {
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 
 	Common::Rect area = r;
 	area.clip(_screen.w, _screen.h);
 
-	ThemeItemBitmap *q = new ThemeItemBitmap(this, area, bitmap, alpha);
+	ThemeItemABitmap *q = new ThemeItemABitmap(this, area, bitmap, autoscale, alpha);
 
 	if (_buffering) {
 		_screenQueue.push_back(q);
@@ -1518,62 +1460,6 @@ void ThemeEngine::drawDialogBackground(const Common::Rect &r, DialogBackground b
 	case kDialogBackgroundDefault:
 		queueDD(kDDDefaultBackground, r);
 		break;
-	}
-}
-
-void ThemeEngine::drawDialogBackgroundClip(const Common::Rect &r, const Common::Rect &clip, DialogBackground bgtype, WidgetStateInfo state) {
-	if (!ready())
-		return;
-
-	switch (bgtype) {
-	case kDialogBackgroundMain:
-		queueDDClip(kDDMainDialogBackground, r, clip);
-		break;
-
-	case kDialogBackgroundSpecial:
-		queueDDClip(kDDSpecialColorBackground, r, clip);
-		break;
-
-	case kDialogBackgroundPlain:
-		queueDDClip(kDDPlainColorBackground, r, clip);
-		break;
-
-	case kDialogBackgroundTooltip:
-		queueDDClip(kDDTooltipBackground, r, clip);
-		break;
-
-	case kDialogBackgroundDefault:
-		queueDDClip(kDDDefaultBackground, r, clip);
-		break;
-	case kDialogBackgroundNone:
-		break;
-	}
-}
-
-void ThemeEngine::drawDialogBackgroundClip(const Common::Rect &r, const Common::Rect &clip, DialogBackground bgtype, WidgetStateInfo state) {
-	if (!ready())
-		return;
-
-	switch (bgtype) {
-	case kDialogBackgroundMain:
-		queueDDClip(kDDMainDialogBackground, r, clip);
-		break;
-
-	case kDialogBackgroundSpecial:
-		queueDDClip(kDDSpecialColorBackground, r, clip);
-		break;
-
-	case kDialogBackgroundPlain:
-		queueDDClip(kDDPlainColorBackground, r, clip);
-		break;
-
-	case kDialogBackgroundTooltip:
-		queueDDClip(kDDTooltipBackground, r, clip);
-		break;
-
-	case kDialogBackgroundDefault:
-		queueDDClip(kDDDefaultBackground, r, clip);
-		break;
 	case kDialogBackgroundNone:
 		break;
 	}
@@ -1664,23 +1550,7 @@ void ThemeEngine::drawPopUpWidgetClip(const Common::Rect &r, const Common::Rect 
 	else if (state == kStateDisabled)
 		dd = kDDPopUpDisabled;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	queueDDClip(dd, r, clip);	
-=======
-	queueDDClip(dd, r, clip);
->>>>>>> 1f9b907... GUI: Make PopUpWidget clip
-=======
-	queueDDClip(dd, r, clip);	
->>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
-=======
-	queueDDClip(dd, r, clip);
->>>>>>> 1f9b907... GUI: Make PopUpWidget clip
-=======
-	queueDDClip(dd, r, clip);	
->>>>>>> 0f8fee087c... GUI: Add VectorRendererSpec::drawTriangleClip()
 
 	if (!sel.empty()) {
 		Common::Rect text(r.left + 3, r.top + 1, r.right - 10, r.bottom);
@@ -1695,16 +1565,6 @@ void ThemeEngine::drawSurface(const Common::Rect &r, const Graphics::Surface &su
 	queueBitmap(&surface, r, themeTrans);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 void ThemeEngine::drawSurfaceClip(const Common::Rect &r, const Common::Rect &clip, const Graphics::Surface &surface, WidgetStateInfo state, int alpha, bool themeTrans) {
 	if (!ready())
 		return;
@@ -1712,13 +1572,6 @@ void ThemeEngine::drawSurfaceClip(const Common::Rect &r, const Common::Rect &cli
 	queueBitmapClip(&surface, r, clip, themeTrans);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
-=======
->>>>>>> 53e9a73... GUI: Fix non-transparent surfaces clipping
 void ThemeEngine::drawASurface(const Common::Rect &r, Graphics::TransparentSurface &surface, AutoScaleMode autoscale, int alpha) {
 	if (!ready())
 		return;
@@ -1733,13 +1586,6 @@ void ThemeEngine::drawASurfaceClip(const Common::Rect &r, const Common::Rect &cl
 	queueABitmapClip(&surface, r, clip, autoscale, alpha);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-=======
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
-=======
->>>>>>> f272f09... GUI: Finish blitAlphaBitmapClip()
 void ThemeEngine::drawWidgetBackground(const Common::Rect &r, uint16 hints, WidgetBackground background, WidgetStateInfo state) {
 	if (!ready())
 		return;
@@ -2053,8 +1899,15 @@ void ThemeEngine::updateScreen(bool render) {
 		_screenQueue.clear();
 	}
 
-	if (render)
+	if (render) {
+#ifdef LAYOUT_DEBUG_DIALOG
+		_vectorRenderer->fillSurface();
+		_themeEval->debugDraw(&_screen, _font);
+		_vectorRenderer->copyWholeFrame(_system);
+#else
 		renderDirtyScreen();
+#endif
+	}
 }
 
 void ThemeEngine::addDirtyRect(Common::Rect r) {
