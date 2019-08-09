@@ -215,7 +215,8 @@ public class ScummVMActivity extends Activity {
 			"ScummVM",
 			"--config=" + getFileStreamPath("scummvmrc").getPath(),
 			"--path=" + Environment.getExternalStorageDirectory().getPath(),
-			"--savepath=" + savePath
+			"--savepath=" + savePath,
+			"-d9"
 		});
 
 		Log.d(ScummVM.LOG_TAG, "Hover available: " + _hoverAvailable);
