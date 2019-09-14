@@ -445,6 +445,10 @@ bool AIScriptClovis::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 
 	case kGoalClovisKP07FlyAway:
 		Actor_Says(kActorMcCoy, 8501, kAnimationModeTalk);
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		Actor_Face_Actor(kActorClovis, kActorMcCoy, true);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		Actor_Says(kActorClovis, 1260, kAnimationModeTalk);
 		Actor_Says(kActorMcCoy, 8502, kAnimationModeTalk);
 		Actor_Says(kActorClovis, 1270, kAnimationModeTalk);
@@ -452,6 +456,10 @@ bool AIScriptClovis::GoalChanged(int currentGoalNumber, int newGoalNumber) {
 		Actor_Says(kActorClovis, 1290, kAnimationModeTalk);
 		Actor_Says(kActorMcCoy, 8505, kAnimationModeTalk);
 		Actor_Says(kActorClovis, 1300, kAnimationModeTalk);
+#if BLADERUNNER_ORIGINAL_BUGS
+#else
+		Actor_Face_Heading(kActorClovis, 780, true);
+#endif // BLADERUNNER_ORIGINAL_BUGS
 		Actor_Says(kActorClovis, 1310, kAnimationModeTalk);
 		Ambient_Sounds_Remove_All_Non_Looping_Sounds(true);
 		Ambient_Sounds_Remove_All_Looping_Sounds(1);
@@ -700,7 +708,7 @@ bool AIScriptClovis::UpdateAnimation(int *animation, int *frame) {
 		if (flag) {
 			*animation = 227;
 			_animationState = 0;
-			Actor_Change_Animation_Mode(kActorClovis, 0);
+			Actor_Change_Animation_Mode(kActorClovis, kAnimationModeIdle);
 		}
 		break;
 
@@ -872,7 +880,7 @@ bool AIScriptClovis::UpdateAnimation(int *animation, int *frame) {
 		if (flag) {
 			_animationState = 13;
 			*animation = 208;
-			Actor_Change_Animation_Mode(kActorClovis, 4);
+			Actor_Change_Animation_Mode(kActorClovis, kAnimationModeCombatIdle);
 		}
 		break;
 
@@ -893,7 +901,7 @@ bool AIScriptClovis::UpdateAnimation(int *animation, int *frame) {
 		if (flag) {
 			_animationState = 13;
 			*animation = 208;
-			Actor_Change_Animation_Mode(kActorClovis, 4);
+			Actor_Change_Animation_Mode(kActorClovis, kAnimationModeCombatIdle);
 		}
 		break;
 
@@ -914,7 +922,7 @@ bool AIScriptClovis::UpdateAnimation(int *animation, int *frame) {
 		if (flag) {
 			_animationState = 13;
 			*animation = 208;
-			Actor_Change_Animation_Mode(kActorClovis, 4);
+			Actor_Change_Animation_Mode(kActorClovis, kAnimationModeCombatIdle);
 		}
 		break;
 
@@ -935,7 +943,7 @@ bool AIScriptClovis::UpdateAnimation(int *animation, int *frame) {
 		if (flag) {
 			*animation = 227;
 			_animationState = 0;
-			Actor_Change_Animation_Mode(kActorClovis, 0);
+			Actor_Change_Animation_Mode(kActorClovis, kAnimationModeIdle);
 		}
 		break;
 
@@ -956,7 +964,7 @@ bool AIScriptClovis::UpdateAnimation(int *animation, int *frame) {
 		if (flag) {
 			*animation = 227;
 			_animationState = 0;
-			Actor_Change_Animation_Mode(kActorClovis, 0);
+			Actor_Change_Animation_Mode(kActorClovis, kAnimationModeIdle);
 		}
 		break;
 
@@ -1073,7 +1081,7 @@ bool AIScriptClovis::UpdateAnimation(int *animation, int *frame) {
 		if (flag) {
 			_animationState = 13;
 			*animation = 208;
-			Actor_Change_Animation_Mode(kActorClovis, 4);
+			Actor_Change_Animation_Mode(kActorClovis, kAnimationModeCombatIdle);
 		}
 		break;
 
@@ -1094,7 +1102,7 @@ bool AIScriptClovis::UpdateAnimation(int *animation, int *frame) {
 		if (flag) {
 			_animationState = 13;
 			*animation = 208;
-			Actor_Change_Animation_Mode(kActorClovis, 4);
+			Actor_Change_Animation_Mode(kActorClovis, kAnimationModeCombatIdle);
 		}
 		break;
 
@@ -1115,7 +1123,7 @@ bool AIScriptClovis::UpdateAnimation(int *animation, int *frame) {
 		if (flag) {
 			*animation = 227;
 			_animationState = 0;
-			Actor_Change_Animation_Mode(kActorClovis, 0);
+			Actor_Change_Animation_Mode(kActorClovis, kAnimationModeIdle);
 		}
 		break;
 

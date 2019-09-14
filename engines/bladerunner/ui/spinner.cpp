@@ -79,7 +79,8 @@ int Spinner::chooseDestination(int loopId, bool immediately) {
 	}
 
 	if (loopId < 0) {
-		_isOpen = true;
+		// call Spinner:open()
+		open();
 	} else {
 		_vm->playerLosesControl();
 		_vm->_scene->loopStartSpecial(kSceneLoopModeSpinner, loopId, immediately);
@@ -271,10 +272,10 @@ void Spinner::tick() {
 		_vm->_subtitles->tick(_vm->_surfaceFront);
 	}
 	_vm->blitToScreen(_vm->_surfaceFront);
+
 	if (_vm->_cutContent) {
 		tickDescription();
 	}
-	_vm->_system->delayMillis(10);
 }
 
 void Spinner::setSelectedDestination(int destination) {

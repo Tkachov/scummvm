@@ -104,7 +104,6 @@ void EndCredits::show() {
 
 		if (!_vm->_windowIsActive) {
 			timeLast = _vm->_time->currentSystem();
-
 			continue;
 		}
 
@@ -147,8 +146,6 @@ void EndCredits::show() {
 		_vm->_surfaceFront.fillRect(Common::Rect(0, 452, 640, 480), 0);
 
 		_vm->blitToScreen(_vm->_surfaceFront);
-
-		_vm->_system->delayMillis(10);
 	}
 
 	_vm->_vqaIsPlaying = false;

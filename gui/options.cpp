@@ -39,6 +39,7 @@
 #include "common/translation.h"
 #include "common/updates.h"
 #include "common/util.h"
+#include "common/text-to-speech.h"
 
 #include "audio/mididrv.h"
 #include "audio/musicplugin.h"
@@ -1523,6 +1524,11 @@ GlobalOptionsDialog::GlobalOptionsDialog(LauncherDialog *launcher)
 	_serverWasRunning = false;
 #endif
 #endif
+#ifdef USE_TTS
+	_enableTTS = false;
+	_ttsCheckbox = 0;
+	_ttsVoiceSelectionPopUp = 0;
+#endif
 }
 
 GlobalOptionsDialog::~GlobalOptionsDialog() {
@@ -1779,6 +1785,38 @@ void GlobalOptionsDialog::build() {
 #endif // USE_SDL_NET
 #endif // USE_CLOUD
 
+	//Accessibility
+#ifdef USE_TTS
+	if (g_system->getOverlayWidth() > 320)
+		tab->addTab(_("Accessibility"));
+	else
+		tab->addTab(_c("Accessibility", "lowres"));
+	_ttsCheckbox = new CheckboxWidget(tab, "GlobalOptions_Accessibility.TTSCheckbox",
+			_("Use Text to speech"), _("Will read text in gui on mouse over."));
+	if (ConfMan.hasKey("tts_enabled"))
+		_ttsCheckbox->setState(ConfMan.getBool("tts_enabled", _domain));
+	else
+		_ttsCheckbox->setState(false);
+
+	_ttsVoiceSelectionPopUp = new PopUpWidget(tab, "GlobalOptions_Accessibility.TTSVoiceSelection");
+	Common::TextToSpeechManager *ttsMan = g_system->getTextToSpeechManager();
+	Common::Array<Common::TTSVoice> voices;
+	if (ttsMan != nullptr)
+		voices = ttsMan->getVoicesArray();
+
+	for(unsigned i = 0; i < voices.size(); i++) {
+		_ttsVoiceSelectionPopUp->appendEntry(voices[i].getDescription(), i);
+	}
+	if (voices.empty())
+		_ttsVoiceSelectionPopUp->appendEntry("None", 0);
+
+	if (ConfMan.hasKey("tts_voice") && (unsigned) ConfMan.getInt("tts_voice", _domain) < voices.size())
+		_ttsVoiceSelectionPopUp->setSelectedTag(ConfMan.getInt("tts_voice", _domain)) ;
+	else
+		_ttsVoiceSelectionPopUp->setSelectedTag(0);
+
+#endif // USE_TTS
+
 	// Activate the first tab
 	tab->setActiveTab(0);
 	_tabWidget = tab;
@@ -1896,10 +1934,10 @@ void GlobalOptionsDialog::addCloudControls(GuiObject *boss, const Common::String
 	_storageLastSyncDesc = new StaticTextWidget(boss, prefix + "StorageLastSyncDesc", _("Last sync:"), _("When was the last time saved games were synced with this storage"));
 	_storageLastSync = new StaticTextWidget(boss, prefix + "StorageLastSyncLabel", _("<never>"), "", ThemeEngine::kFontStyleNormal);
 	if (lowres)
-		_storageSyncHint = new StaticTextWidget(boss, prefix + "StorageSyncHint", _c("Saves sync automatically on launch, after saving and on loading.", "lowres"), "", ThemeEngine::kFontStyleNormal);
+		_storageSyncHint = new StaticTextWidget(boss, prefix + "StorageSyncHint", _c("Saved games sync automatically on launch, after saving and on loading.", "lowres"), "", ThemeEngine::kFontStyleNormal);
 	else
-		_storageSyncHint = new StaticTextWidget(boss, prefix + "StorageSyncHint", _("Saves sync automatically on launch, after saving and on loading."), "", ThemeEngine::kFontStyleNormal);
-	_storageSyncSavesButton = new ButtonWidget(boss, prefix + "SyncSavesButton", _("Sync now"), _("Start saves sync"), kSyncSavesStorageCmd);
+		_storageSyncHint = new StaticTextWidget(boss, prefix + "StorageSyncHint", _("Saved games sync automatically on launch, after saving and on loading."), "", ThemeEngine::kFontStyleNormal);
+	_storageSyncSavesButton = new ButtonWidget(boss, prefix + "SyncSavesButton", _("Sync now"), _("Start saved games sync"), kSyncSavesStorageCmd);
 
 	if (lowres)
 		_storageDownloadHint = new StaticTextWidget(boss, prefix + "StorageDownloadHint", _c("You can download game files from your cloud ScummVM folder:", "lowres"));
@@ -2114,6 +2152,27 @@ void GlobalOptionsDialog::apply() {
 		MessageDialog error(errorMessage);
 		error.runModal();
 	}
+#ifdef USE_TTS
+	Common::TextToSpeechManager *ttsMan = g_system->getTextToSpeechManager();
+	if (newLang != oldLang) {
+		if (newLang == "C")
+			ttsMan->setLanguage("en");
+		else {
+			Common::String guiLang = newLang;
+			guiLang.setChar('\0', 2);
+			ttsMan->setLanguage(guiLang);
+		}
+		_ttsVoiceSelectionPopUp->setSelectedTag(0);
+	}
+	int volume = (ConfMan.getInt("speech_volume", "scummvm") * 100) / 256;
+	if (ConfMan.hasKey("mute", "scummvm") && ConfMan.getBool("mute", "scummvm"))
+		volume = 0;
+	ttsMan->setVolume(volume);
+	ConfMan.setBool("tts_enabled", _ttsCheckbox->getState(), _domain);
+	int selectedVoice = _ttsVoiceSelectionPopUp->getSelectedTag();
+	ConfMan.setInt("tts_voice", selectedVoice, _domain);
+	ttsMan->setVoice(selectedVoice);
+#endif
 
 	if (isRebuildNeeded) {
 		rebuild();

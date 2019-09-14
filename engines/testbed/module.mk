@@ -27,6 +27,11 @@ MODULE_OBJS += \
 	webserver.o
 endif
 
+ifdef USE_TTS
+MODULE_OBJS += \
+	speech.o
+endif
+
 MODULE_DIRS += \
 	engines/testbed
 

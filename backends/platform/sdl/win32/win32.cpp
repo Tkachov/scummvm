@@ -54,6 +54,10 @@
 #include "common/ustr.h"
 #include "common/encoding.h"
 
+#if defined(USE_TTS)
+#include "backends/text-to-speech/windows/windows-text-to-speech.h"
+#endif
+
 #define DEFAULT_CONFIG_FILE "scummvm.ini"
 
 void OSystem_Win32::init() {
@@ -114,6 +118,11 @@ void OSystem_Win32::initBackend() {
 #if defined(USE_SPARKLE)
 	// Initialize updates manager
 	_updateManager = new Win32UpdateManager();
+#endif
+
+	// Initialize text to speech
+#ifdef USE_TTS
+	_textToSpeechManager = new WindowsTextToSpeechManager();
 #endif
 
 	// Invoke parent implementation of this method

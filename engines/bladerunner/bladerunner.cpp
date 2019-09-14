@@ -34,6 +34,7 @@
 #include "bladerunner/crimes_database.h"
 #include "bladerunner/debugger.h"
 #include "bladerunner/dialogue_menu.h"
+#include "bladerunner/framelimiter.h"
 #include "bladerunner/font.h"
 #include "bladerunner/game_flags.h"
 #include "bladerunner/game_info.h"
@@ -168,6 +169,7 @@ BladeRunnerEngine::BladeRunnerEngine(OSystem *syst, const ADGameDescription *des
 	_obstacles               = nullptr;
 	_sceneScript             = nullptr;
 	_time                    = nullptr;
+	_framelimiter            = nullptr;
 	_gameInfo                = nullptr;
 	_waypoints               = nullptr;
 	_gameVars                = nullptr;
@@ -216,6 +218,7 @@ BladeRunnerEngine::BladeRunnerEngine(OSystem *syst, const ADGameDescription *des
 		_actors[i]           = nullptr;
 	}
 	_debugger                = nullptr;
+
 	walkingReset();
 
 	_actorUpdateCounter  = 0;
@@ -223,6 +226,7 @@ BladeRunnerEngine::BladeRunnerEngine(OSystem *syst, const ADGameDescription *des
 }
 
 BladeRunnerEngine::~BladeRunnerEngine() {
+	shutdown();
 }
 
 bool BladeRunnerEngine::hasFeature(EngineFeature f) const {
@@ -310,7 +314,6 @@ void BladeRunnerEngine::pauseEngineIntern(bool pause) {
 }
 
 Common::Error BladeRunnerEngine::run() {
-
 	Common::Array<Common::String> missingFiles;
 	if (!checkFiles(missingFiles)) {
 		Common::String missingFileStr = "";
@@ -320,22 +323,22 @@ Common::Error BladeRunnerEngine::run() {
 			}
 			missingFileStr += missingFiles[i];
 		}
-
+		// shutting down
 		return Common::Error(Common::kNoGameDataFoundError, missingFileStr);
 	}
 
-	Graphics::PixelFormat format = screenPixelFormat();
-	initGraphics(640, 480, &format);
+	_screenPixelFormat = g_system->getSupportedFormats().front();
+	debug("Using pixel format: %s", _screenPixelFormat.toString().c_str());
+	initGraphics(640, 480, &_screenPixelFormat);
 
 	_system->showMouse(true);
 
 	bool hasSavegames = !SaveFileManager::list(_targetName).empty();
 
 	if (!startup(hasSavegames)) {
-		shutdown();
+		// shutting down
 		return Common::Error(Common::kUnknownError, _("Failed to initialize resources"));
 	}
-
 
 	// improvement: Use a do-while() loop to handle the normal end-game state
 	// so that the game won't exit abruptly after end credits
@@ -400,8 +403,7 @@ Common::Error BladeRunnerEngine::run() {
 		}
 	} while (_gameOver); // if main game loop ended and _gameOver == false, then shutdown
 
-	shutdown();
-
+	// shutting down
 	return Common::kNoError;
 }
 
@@ -481,6 +483,8 @@ bool BladeRunnerEngine::startup(bool hasSavegames) {
 	_surfaceBack.create(640, 480, screenPixelFormat());
 
 	_time = new Time(this);
+
+	_framelimiter = new Framelimiter(this);
 
 	// Try to load the SUBTITLES.MIX first, before Startup.MIX
 	// allows overriding any identically named resources (such as the original font files and as a bonus also the TRE files for the UI and dialogue menu)
@@ -621,6 +625,8 @@ bool BladeRunnerEngine::startup(bool hasSavegames) {
 	if (!_textOptions->open("OPTIONS"))
 		return false;
 
+	_russianCP1251 = ((uint8)_textOptions->getText(0)[0]) == 209;
+
 	_dialogueMenu = new DialogueMenu(this);
 	if (!_dialogueMenu->loadText("DLGMENU"))
 		return false;
@@ -709,6 +715,8 @@ void BladeRunnerEngine::initChapterAndScene() {
 }
 
 void BladeRunnerEngine::shutdown() {
+	DebugMan.clearAllDebugChannels();
+
 	_mixer->stopAll();
 
 	// BLADE.INI as updated here
@@ -790,7 +798,11 @@ void BladeRunnerEngine::shutdown() {
 	_playerActor = nullptr;
 	delete _actors[kActorVoiceOver];
 	_actors[kActorVoiceOver] = nullptr;
-	int actorCount = (int)_gameInfo->getActorCount();
+	int actorCount = kActorCount;
+	if (_gameInfo) {
+		actorCount = (int)_gameInfo->getActorCount();
+	}
+
 	for (int i = 0; i < actorCount; ++i) {
 		delete _actors[i];
 		_actors[i] = nullptr;
@@ -892,6 +904,9 @@ void BladeRunnerEngine::shutdown() {
 		_subtitles = nullptr;
 	}
 
+	delete _framelimiter;
+	_framelimiter = nullptr;
+
 	delete _time;
 	_time = nullptr;
 
@@ -964,6 +979,7 @@ void BladeRunnerEngine::gameLoop() {
 }
 
 void BladeRunnerEngine::gameTick() {
+
 	handleEvents();
 
 	if (!_gameIsRunning || !_windowIsActive) {
@@ -1111,8 +1127,6 @@ void BladeRunnerEngine::gameTick() {
 	if (!_gameOver) {
 		blitToScreen(_surfaceFront);
 	}
-
-	_system->delayMillis(10);
 }
 
 void BladeRunnerEngine::actorsUpdate() {
@@ -1419,7 +1433,7 @@ void BladeRunnerEngine::handleMouseAction(int x, int y, bool mainButton, bool bu
 
 		if (_debugger->_showMouseClickInfo) {
 			// Region has highest priority when overlapping
-			debug("Mouse: %02.2f, %02.2f, %02.2f", scenePosition.x, scenePosition.y, scenePosition.z);
+			debug("Mouse: %02.2f, %02.2f, %02.2f at ScreenX: %d ScreenY: %d", scenePosition.x, scenePosition.y, scenePosition.z, x, y);
 			if ((sceneObjectId < kSceneObjectOffsetActors || sceneObjectId >= kSceneObjectOffsetItems) && exitIndex >= 0) {
 				debug("Clicked on Region-Exit=%d", exitIndex);
 			} else if (regionIndex >= 0) {
@@ -1919,13 +1933,22 @@ void BladeRunnerEngine::setSubtitlesEnabled(bool newVal) {
 }
 
 Common::SeekableReadStream *BladeRunnerEngine::getResourceStream(const Common::String &name) {
+	// If the file is extracted from MIX files use it directly, it is used by Russian translation patched by Siberian Studio
+	if (Common::File::exists(name)) {
+		Common::File directFile;
+		if (directFile.open(name)) {
+			Common::SeekableReadStream *stream = directFile.readStream(directFile.size());
+			directFile.close();
+			return stream;
+		}
+	}
+
 	for (int i = 0; i != kArchiveCount; ++i) {
 		if (!_archives[i].isOpen()) {
 			continue;
 		}
 
 		// debug("getResource: Searching archive %s for %s.", _archives[i].getName().c_str(), name.c_str());
-
 		Common::SeekableReadStream *stream = _archives[i].createReadStreamForMember(name);
 		if (stream) {
 			return stream;
@@ -2169,7 +2192,7 @@ void BladeRunnerEngine::newGame(int difficulty) {
 	for (uint i = 0; i < _gameInfo->getActorCount(); ++i) {
 		_actors[i]->setup(i);
 	}
-	_actors[kActorVoiceOver]->setup(99);
+	_actors[kActorVoiceOver]->setup(kActorVoiceOver);
 
 	for (uint i = 0; i < _gameInfo->getSuspectCount(); ++i) {
 		_suspectsDatabase->get(i)->reset();
@@ -2236,6 +2259,7 @@ void BladeRunnerEngine::ISez(const Common::String &str) {
 }
 
 void BladeRunnerEngine::blitToScreen(const Graphics::Surface &src) const {
+	_framelimiter->wait();
 	_system->copyRectToScreen(src.getPixels(), src.pitch, 0, 0, src.w, src.h);
 	_system->updateScreen();
 }
@@ -2248,12 +2272,12 @@ Graphics::Surface BladeRunnerEngine::generateThumbnail() const {
 		for (int x = 0; x < thumbnail.w; ++x) {
 			uint8 r, g, b;
 
-			uint16  srcPixel = *(const uint16 *)_surfaceFront.getBasePtr(CLIP(x * 8, 0, _surfaceFront.w - 1), CLIP(y * 8, 0, _surfaceFront.h - 1) );
-			uint16 *dstPixel = (uint16 *)thumbnail.getBasePtr(CLIP(x, 0, thumbnail.w - 1), CLIP(y, 0, thumbnail.h - 1));
+			uint32  srcPixel = READ_UINT32(_surfaceFront.getBasePtr(CLIP(x * 8, 0, _surfaceFront.w - 1), CLIP(y * 8, 0, _surfaceFront.h - 1)));
+			void   *dstPixel = thumbnail.getBasePtr(CLIP(x, 0, thumbnail.w - 1), CLIP(y, 0, thumbnail.h - 1));
 
 			// Throw away alpha channel as it is not needed
 			_surfaceFront.format.colorToRGB(srcPixel, r, g, b);
-			*dstPixel = thumbnail.format.RGBToColor(r, g, b);
+			drawPixel(thumbnail, dstPixel, thumbnail.format.RGBToColor(r, g, b));
 		}
 	}
 

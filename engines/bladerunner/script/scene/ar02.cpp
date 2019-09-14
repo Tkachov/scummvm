@@ -202,7 +202,7 @@ bool SceneScriptAR02::ClickedOnActor(int actorId) {
 							if (Actor_Query_Friendliness_To_Other(kActorInsectDealer, kActorMcCoy) > 40) {
 								Actor_Says(kActorInsectDealer, 460, 14);
 								Actor_Says(kActorInsectDealer, 470, 13); // This slug, perhaps.
-								Item_Pickup_Spin_Effect(kModelAnimationSlug, 288, 257);
+								Item_Pickup_Spin_Effect_From_Actor(kModelAnimationSlug, kActorInsectDealer, 0, -40);
 								dialogueWithInsectDealerBuySlug();
 							}
 							break;
@@ -252,49 +252,54 @@ bool SceneScriptAR02::ClickedOnActor(int actorId) {
 		if (actorId == kActorHasan
 		    && Global_Variable_Query(kVariableChapter) > 2) {
 
-			if (Actor_Clue_Query(kActorMcCoy, kClueStrangeScale1)
-			    && !Game_Flag_Query(kFlagWrongInvestigation)
-			) {
-				dialogueWithHassan();
-			} else {
-				switch (Global_Variable_Query(kVariableHasanBanterTalk)) {
-				case 0:
-					Global_Variable_Increment(kVariableHasanBanterTalk, 1);
-					Actor_Says(kActorMcCoy, 155, 13); // How's business?
-					Actor_Says(kActorHasan, 10, 13);
-					Actor_Says(kActorHasan, 20, 14);
-					break;
-				case 1:
-					Global_Variable_Increment(kVariableHasanBanterTalk, 1);
-					Actor_Says(kActorMcCoy, 6980, 13); // What's the word
-					Actor_Says(kActorHasan, 290, 13);
-					if (Actor_Query_Friendliness_To_Other(kActorHasan, kActorMcCoy) > 49) {
-						Actor_Says(kActorHasan, 300, 14);
-						Actor_Says(kActorHasan, 310, 13);
-						Item_Pickup_Spin_Effect(kModelAnimationGarterSnake, 328, 237); // TODO check co-ordinates
-						dialogueWithHassanBuySnake();
+			if (!Loop_Actor_Walk_To_XYZ(kActorMcCoy, -240.79f, 0.0f, -1328.89f, 12, true, false, false)) {
+				Actor_Face_Actor(kActorMcCoy, kActorHasan, true);
+				Actor_Face_Actor(kActorHasan, kActorMcCoy, true);
+
+				if (Actor_Clue_Query(kActorMcCoy, kClueStrangeScale1)
+					&& !Game_Flag_Query(kFlagWrongInvestigation)
+				) {
+					dialogueWithHassan();
+				} else {
+					switch (Global_Variable_Query(kVariableHasanBanterTalk)) {
+					case 0:
+						Global_Variable_Increment(kVariableHasanBanterTalk, 1);
+						Actor_Says(kActorMcCoy, 155, 13); // How's business?
+						Actor_Says(kActorHasan, 10, 13);
+						Actor_Says(kActorHasan, 20, 14);
+						break;
+					case 1:
+						Global_Variable_Increment(kVariableHasanBanterTalk, 1);
+						Actor_Says(kActorMcCoy, 6980, 13); // What's the word
+						Actor_Says(kActorHasan, 290, 13);
+						if (Actor_Query_Friendliness_To_Other(kActorHasan, kActorMcCoy) > 49) {
+							Actor_Says(kActorHasan, 300, 14);
+							Actor_Says(kActorHasan, 310, 13);
+							Item_Pickup_Spin_Effect_From_Actor(kModelAnimationGarterSnake, kActorHasan, 0, -40);
+							dialogueWithHassanBuySnake();
+						}
+						break;
+					case 2:
+						// offer to buy snake
+						Global_Variable_Increment(kVariableHasanBanterTalk, 1);
+						if (Player_Query_Agenda() == kPlayerAgendaSurly
+						   || Actor_Query_Friendliness_To_Other(kActorHasan, kActorMcCoy) <= 49 ) {
+							Actor_Says(kActorMcCoy, 8915, 14); // You got a minute, pal?
+							Actor_Says(kActorHasan, 260, 14); // My time is quite valuable, noble one
+							Actor_Modify_Friendliness_To_Other(kActorHasan, kActorMcCoy, -5);
+						} else {
+							Actor_Says(kActorMcCoy, 8615, 13); // Heard anything on the street?
+							Actor_Says(kActorHasan, 250, 13); // I'm afraid not, noble one. But you shall surely be the first to know, if I do hear something.
+						}
+						break;
+					default:
+						if (Actor_Query_Friendliness_To_Other(kActorHasan, kActorMcCoy) <= 45 ) {
+							Actor_Says(kActorMcCoy, 8940, 13);
+						} else {
+							Actor_Says(kActorMcCoy, 1315, 13);
+						}
+						break;
 					}
-					break;
-				case 2:
-					// offer to buy snake
-					Global_Variable_Increment(kVariableHasanBanterTalk, 1);
-					if (Player_Query_Agenda() == kPlayerAgendaSurly
-					   || Actor_Query_Friendliness_To_Other(kActorHasan, kActorMcCoy) <= 49 ) {
-						Actor_Says(kActorMcCoy, 8915, 14); // You got a minute, pal?
-						Actor_Says(kActorHasan, 260, 14); // My time is quite valuable, noble one
-						Actor_Modify_Friendliness_To_Other(kActorHasan, kActorMcCoy, -5);
-					} else {
-						Actor_Says(kActorMcCoy, 8615, 13); // Heard anything on the street?
-						Actor_Says(kActorHasan, 250, 13); // I'm afraid not, noble one. But you shall surely be the first to know, if I do hear something.
-					}
-					break;
-				default:
-					if (Actor_Query_Friendliness_To_Other(kActorHasan, kActorMcCoy) <= 45 ) {
-						Actor_Says(kActorMcCoy, 8940, 13);
-					} else {
-						Actor_Says(kActorMcCoy, 1315, 13);
-					}
-					break;
 				}
 			}
 		}
@@ -445,6 +450,11 @@ void SceneScriptAR02::dialogueWithInsectDealer1() {
 void SceneScriptAR02::dialogueWithInsectDealerBuyBracelet() {
 	Dialogue_Menu_Clear_List();
 
+	if (_vm->_cutContent) {
+		Dialogue_Menu_Clear_Never_Repeat_Was_Selected_Flag(530);
+		Dialogue_Menu_Clear_Never_Repeat_Was_Selected_Flag(540);
+	}
+
 	if (Global_Variable_Query(kVariableChinyen) >= 15
 	    || Query_Difficulty_Level() == kGameDifficultyEasy
 	) {
@@ -483,7 +493,7 @@ void SceneScriptAR02::dialogueWithInsectDealerBuySlug() {
 	Dialogue_Menu_Clear_Never_Repeat_Was_Selected_Flag(530);
 	Dialogue_Menu_Clear_Never_Repeat_Was_Selected_Flag(540);
 
-	if (Global_Variable_Query(kVariableChinyen) >= 85
+	if (Global_Variable_Query(kVariableChinyen) >= 125
 	    || Query_Difficulty_Level() == kGameDifficultyEasy
 	) {
 		DM_Add_To_List_Never_Repeat_Once_Selected(530, 7, 5, 3); // BUY
@@ -497,7 +507,7 @@ void SceneScriptAR02::dialogueWithInsectDealerBuySlug() {
 	if (answerValue == 530) { // BUY
 		Actor_Says(kActorMcCoy, 7000, 12);
 		if (Query_Difficulty_Level() != kGameDifficultyEasy) {
-			Global_Variable_Decrement(kVariableChinyen, 85);
+			Global_Variable_Decrement(kVariableChinyen, 125);
 		}
 		Actor_Clue_Acquire(kActorMcCoy, kClueSlug, true, kActorInsectDealer);
 		Actor_Modify_Friendliness_To_Other(kActorInsectDealer, kActorMcCoy, 5);
@@ -584,7 +594,7 @@ void SceneScriptAR02::dialogueWithHassanBuySnake() {
 	Dialogue_Menu_Clear_Never_Repeat_Was_Selected_Flag(530);
 	Dialogue_Menu_Clear_Never_Repeat_Was_Selected_Flag(540);
 
-	if (Global_Variable_Query(kVariableChinyen) >= 105
+	if (Global_Variable_Query(kVariableChinyen) >= 175
 	    || Query_Difficulty_Level() == kGameDifficultyEasy
 	) {
 		DM_Add_To_List_Never_Repeat_Once_Selected(530, 7, 5, 3); // BUY
@@ -598,7 +608,7 @@ void SceneScriptAR02::dialogueWithHassanBuySnake() {
 	if (answerValue == 530) { // BUY
 		Actor_Says(kActorMcCoy, 7000, 12);
 		if (Query_Difficulty_Level() != kGameDifficultyEasy) {
-			Global_Variable_Decrement(kVariableChinyen, 105);
+			Global_Variable_Decrement(kVariableChinyen, 175);
 		}
 		Actor_Clue_Acquire(kActorMcCoy, kClueGarterSnake, true, kActorHasan);
 		Actor_Modify_Friendliness_To_Other(kActorHasan, kActorMcCoy, 5);

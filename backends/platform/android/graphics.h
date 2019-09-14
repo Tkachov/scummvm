@@ -20,29 +20,36 @@
  *
  */
 
-#ifndef BACKEND_PSP_SAVES_H
-#define BACKEND_PSP_SAVES_H
+#ifndef ANDROID_GRAPHICS_H
+#define ANDROID_GRAPHICS_H
 
-#include "backends/saves/default/default-saves.h"
+#include "common/scummsys.h"
+#include "backends/graphics/opengl/opengl-graphics.h"
 
-/**
- * Customization of the DefaultSaveFileManager for the PSP platform.
- * The only two differences are that the default constructor sets
- * up a default savepath, and that checkPath tries to create the savedir,
- * if missing, via the sceIoMkdir() call.
- */
-class PSPSaveFileManager : public DefaultSaveFileManager {
+class AndroidGraphicsManager : public OpenGL::OpenGLGraphicsManager {
 public:
-	PSPSaveFileManager();
-//	PSPSaveFileManager(const Common::String &defaultSavepath);
+	AndroidGraphicsManager();
+	virtual ~AndroidGraphicsManager();
+
+	void initSurface();
+	void deinitSurface();
+
+	void updateScreen();
+
+	void displayMessageOnOSD(const char *msg);
+
+	bool notifyMousePosition(Common::Point &mouse);
+	Common::Point getMousePosition() { return Common::Point(_cursorX, _cursorY); }
 
 protected:
-	/**
-	 * Checks the given path for read access, existence, etc.
-	 * In addition, tries to create a missing savedir, if possible.
-	 * Sets the internal error and error message accordingly.
-	 */
-	virtual void checkPath(const Common::FSNode &dir);
+	void setSystemMousePosition(int x, int y) {}
+
+	bool loadVideoMode(uint requestedWidth, uint requestedHeight, const Graphics::PixelFormat &format);
+
+	void refreshScreen();
+
+	void *getProcAddress(const char *name) const;
+
 };
 
 #endif

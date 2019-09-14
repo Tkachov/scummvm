@@ -230,8 +230,8 @@ void Elevator::tick() {
 	_vm->_subtitles->tick(_vm->_surfaceFront);
 
 	_vm->blitToScreen(_vm->_surfaceFront);
+
 	tickDescription();
-	_vm->_system->delayMillis(10);
 }
 
 void Elevator::buttonClick(int buttonId) {

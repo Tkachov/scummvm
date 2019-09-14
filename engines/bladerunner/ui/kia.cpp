@@ -93,7 +93,7 @@ KIA::KIA(BladeRunnerEngine *vm) {
 
 	// original imageCount was 22. We add +1 to have a description box for objects in cut content
 	// We don't have separated cases here, for _vm->_cutContent since that causes assertion fault if
-	// loading a "restoed content" save game in a "original game" version
+	// loading a "restored content" save game in a "original game" version
 	_buttons = new UIImagePicker(_vm, 23);
 
 	_crimesSection     = new KIASectionCrimes(_vm, _vm->_playerActor->_clues);
@@ -383,7 +383,6 @@ void KIA::tick() {
 	_vm->_subtitles->tick(_vm->_surfaceFront);
 
 	_vm->blitToScreen(_vm->_surfaceFront);
-	_vm->_system->delayMillis(10);
 
 	_timeLast = timeNow;
 }
@@ -597,6 +596,49 @@ void KIA::playPhotograph(int photographId) {
 
 void KIA::playImage(const Graphics::Surface &image) {
 	_playerImage.copyFrom(image);
+	_playerImage.convertToInPlace(screenPixelFormat());
+}
+
+const char *KIA::scrambleSuspectsName(const char *name) {
+	static char buffer[32];
+
+	unsigned char *bufferPtr = (unsigned char *)buffer;
+	const unsigned char *namePtr = (const unsigned char *)name;
+
+	for (int i = 0 ; i < 6; ++i) {
+		if (_vm->_language == Common::RU_RUS && _vm->_russianCP1251) {
+			// Algorithm added by Siberian Studio in R4 patch
+			if (*namePtr >= 0xC0) {
+				unsigned char upper = *namePtr & 0xDF;
+				if (upper < 201) {
+					*bufferPtr++ = upper - 143; /* Map А-И to 1-9 */
+				} else {
+					*bufferPtr++ = upper - 136; /* Map Й-Я to A-W */
+				}
+			} else {
+				*bufferPtr++ = '0';
+			}
+		} else {
+			if (Common::isAlpha(*namePtr)) {
+				char upper = toupper(*namePtr);
+				if ( upper < 'J' ) {
+					*bufferPtr++ = upper - 16; /* Map A-I to 1-9 */
+				} else {
+					*bufferPtr++ = upper - 9;  /* Map J-Z to A-Q */
+				}
+			} else {
+				*bufferPtr++ = '0';
+			}
+		}
+		if (*namePtr) {
+			++namePtr;
+		}
+		if (i == 1) {
+			*bufferPtr++ = '-';
+		}
+	}
+	*bufferPtr = 0;
+	return buffer;
 }
 
 void KIA::mouseDownCallback(int buttonId, void *callbackData) {
@@ -621,7 +663,13 @@ void KIA::mouseDownCallback(int buttonId, void *callbackData) {
 	case 14:
 		self->_vm->_audioPlayer->playAud(self->_vm->_gameInfo->getSfxTrack(kSfxBUTN5P), 70, 0, 0, 50, 0);
 		if (buttonId == 12) {
-			self->_vm->_audioPlayer->playAud(self->_vm->_gameInfo->getSfxTrack(kSfxSHUTDOWN), 70, 0, 0, 50, 0);
+			int endTrackId = self->_vm->_audioPlayer->playAud(self->_vm->_gameInfo->getSfxTrack(kSfxSHUTDOWN), 70, 0, 0, 50, 0);
+			if (endTrackId != -1) {
+				// wait until the full clip has played (similar to the original)
+				while (self->_vm->_audioPlayer->isActive(endTrackId)) {
+					self->_vm->_system->delayMillis(16);
+				}
+			}
 		}
 		break;
 	case 15:
